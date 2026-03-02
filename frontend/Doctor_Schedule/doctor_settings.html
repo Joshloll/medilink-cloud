@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>MediLink Cloud - Doctor Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#137fec",
+                "primary-dark": "#0b63be",
+                "background-light": "#f6f7f8",
+                "background-dark": "#101922",
+                "card-light": "#ffffff",
+                "card-dark": "#1e2936",
+              },
+              fontFamily: {
+                "display": ["Inter", "sans-serif"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155; 
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+        
+        /* Loading animation */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Toggle switch */
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #137fec;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors duration-200 antialiased">
+    <div class="flex h-screen w-full">
+        <!-- Side Navigation -->
+        <aside class="flex w-72 flex-col border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-card-dark h-full hidden lg:flex flex-shrink-0 z-20">
+            <div class="flex flex-col h-full justify-between p-4">
+                <div class="flex flex-col gap-6">
+                    <!-- Branding -->
+                    <div class="flex items-center gap-3 px-2 py-2">
+                        <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-xl size-10 shadow-sm" data-alt="MediLink abstract blue logo with white cross" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCxI3pjrPKcPkRoL588sNS-yKX6G80NqVVkMieXpypt1lj312V87i-erOI8i4mqLjhj3QP28m5KRbbcziNuQY2PZzKxVMlJj24uAOgGhfQMyZFRnWUfDtcqnc4I3VrvQTbPnQ19nsh1ddL8Zo4-cJg3Ts_sGHmbKXa99HRr8V3rHK5zYGXhdgieZc99_a35nHHDRJyj16qqi53ARoZSf3Bme6i5wcgDNt5nEcxCd0qKNrfb0CJ_P5cOOTeQ5jArpJ100fP10o1aH0gl");'></div>
+                        <div class="flex flex-col">
+                            <h1 class="text-slate-900 dark:text-white text-lg font-bold leading-none tracking-tight">MediLink Cloud</h1>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs font-medium mt-1">Doctor Portal</p>
+                        </div>
+                    </div>
+                    <!-- Navigation Links -->
+                    <nav class="flex flex-col gap-2">
+                        <a id="navDashboard" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+                            <span class="material-symbols-outlined">dashboard</span>
+                            <span class="text-sm font-medium">Dashboard</span>
+                        </a>
+                        <a id="navSchedule" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+                            <span class="material-symbols-outlined">calendar_month</span>
+                            <span class="text-sm font-medium">Schedule</span>
+                        </a>
+                        <a id="navPatients" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+                            <span class="material-symbols-outlined">people</span>
+                            <span class="text-sm font-medium">Patients</span>
+                        </a>
+                        <a id="navRecords" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+                            <span class="material-symbols-outlined">description</span>
+                            <span class="text-sm font-medium">Records</span>
+                        </a>
+                        <a id="navSettings" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary text-white shadow-md shadow-primary/20 transition-all" href="#">
+                            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings</span>
+                            <span class="text-sm font-semibold">Settings</span>
+                        </a>
+                    </nav>
+                </div>
+                <!-- Bottom Action -->
+                <div class="mt-auto">
+                    <button class="flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl h-12 bg-slate-100 dark:bg-slate-800 text-primary dark:text-primary-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-sm font-bold tracking-wide">
+                        <span class="material-symbols-outlined text-[20px]">logout</span>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+        <!-- Main Content Area -->
+        <div class="flex-1 flex flex-col h-full overflow-hidden relative">
+            <!-- Top Header -->
+            <header class="flex items-center justify-between whitespace-nowrap border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-card-dark px-6 py-4 z-10 shrink-0">
+                <!-- Mobile Menu Toggle (Hidden on Desktop) -->
+                <button class="lg:hidden mr-4 text-slate-600 dark:text-slate-300">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <!-- Page Title & Breadcrumb -->
+                <div class="flex items-center gap-4">
+                    <h2 class="text-slate-900 dark:text-white text-xl font-bold leading-tight hidden sm:block">Settings</h2>
+                </div>
+                <!-- Search & Actions -->
+                <div class="flex items-center gap-4">
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                        <input type="text" placeholder="Search settings..." class="pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 rounded-lg text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/50 focus:border-primary w-64">
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Main Content -->
+            <main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark">
+                <div class="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+                    <!-- Settings Navigation -->
+                    <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 mb-6">
+                        <div class="flex flex-wrap gap-2 p-4">
+                            <button onclick="showSection('profile')" class="settings-nav-btn px-4 py-2 rounded-lg text-sm font-medium bg-primary text-white" data-section="profile">
+                                Profile
+                            </button>
+                            <button onclick="showSection('practice')" class="settings-nav-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700" data-section="practice">
+                                Practice Info
+                            </button>
+                            <button onclick="showSection('notifications')" class="settings-nav-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700" data-section="notifications">
+                                Notifications
+                            </button>
+                            <button onclick="showSection('security')" class="settings-nav-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700" data-section="security">
+                                Security
+                            </button>
+                            <button onclick="showSection('billing')" class="settings-nav-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700" data-section="billing">
+                                Billing
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Profile Section -->
+                    <div id="profileSection" class="settings-section">
+                        <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 mb-6">
+                            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Doctor Profile</h2>
+                            
+                            <div class="flex flex-col md:flex-row gap-6 mb-6">
+                                <div class="flex flex-col items-center">
+                                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-24 ring-4 ring-slate-200 dark:ring-slate-700 mb-4" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBCKt6RKQAnuSnonTcF3R8iVBDYEGe3j_18RGSfV5W7I6QMlBXRLnZi5uOJjA7uLmee5RwGPzOxR1SRtp34nPYCqqtr9lee2-Eb4PBTZ6CZ4dhJGjOHsJjDYqBGgp0FfZBXNttdldFQzG4xOKM5mi6LLnNhgETd0BQ_DfuFVLLxxr-eE1PqA2YOOu6jO9Jh3BYcp6JaQMaHG9f0IRQtQFwyTma2dMN3H5P03rk-iGS73ff8OQQ7IPz1BCpp3U2LBsSCVAsCSp74hGh1");'></div>
+                                    <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors text-sm">
+                                        Change Photo
+                                    </button>
+                                </div>
+                                
+                                <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">First Name</label>
+                                        <input type="text" value="Sarah" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Last Name</label>
+                                        <input type="text" value="Jenkins" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email</label>
+                                        <input type="email" value="sarah.jenkins@medilink.com" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Phone</label>
+                                        <input type="tel" value="+1 (555) 123-4567" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Specialization</label>
+                                        <select class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                            <option>Cardiology</option>
+                                            <option>General Practice</option>
+                                            <option>Neurology</option>
+                                            <option>Orthopedics</option>
+                                            <option>Pediatrics</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">License Number</label>
+                                        <input type="text" value="MD-123456" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Bio</label>
+                                <textarea class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white" rows="4">Dr. Sarah Jenkins is a board-certified cardiologist with over 12 years of experience in treating heart conditions and cardiovascular diseases. She specializes in preventative cardiology and heart failure management.</textarea>
+                            </div>
+                            
+                            <div class="flex gap-3">
+                                <button onclick="saveProfile()" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                                    Save Changes
+                                </button>
+                                <button class="px-6 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Practice Info Section -->
+                    <div id="practiceSection" class="settings-section hidden">
+                        <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 mb-6">
+                            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Practice Information</h2>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Practice Name</label>
+                                    <input type="text" value="Jenkins Cardiology Clinic" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Address</label>
+                                    <input type="text" value="123 Medical Center Dr, Suite 200" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">City</label>
+                                    <input type="text" value="New York" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">State</label>
+                                    <input type="text" value="NY" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">ZIP Code</label>
+                                    <input type="text" value="10001" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Phone</label>
+                                    <input type="tel" value="+1 (555) 987-6543" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Website</label>
+                                    <input type="url" value="www.jenkinscardiology.com" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-3">
+                                <button onclick="savePractice()" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                                    Save Changes
+                                </button>
+                                <button class="px-6 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notifications Section -->
+                    <div id="notificationsSection" class="settings-section hidden">
+                        <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 mb-6">
+                            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Notification Preferences</h2>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between py-3 border-b border-slate-200 dark:border-slate-800">
+                                    <div>
+                                        <h3 class="font-medium text-slate-900 dark:text-white">Email Notifications</h3>
+                                        <p class="text-sm text-slate-500 dark:text-slate-400">Receive appointment reminders and patient updates</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="flex items-center justify-between py-3 border-b border-slate-200 dark:border-slate-800">
+                                    <div>
+                                        <h3 class="font-medium text-slate-900 dark:text-white">SMS Notifications</h3>
+                                        <p class="text-sm text-slate-500 dark:text-slate-400">Get text messages for urgent matters</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="flex items-center justify-between py-3 border-b border-slate-200 dark:border-slate-800">
+                                    <div>
+                                        <h3 class="font-medium text-slate-900 dark:text-white">Appointment Reminders</h3>
+                                        <p class="text-sm text-slate-500 dark:text-slate-400">Remind me 1 hour before appointments</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="flex items-center justify-between py-3 border-b border-slate-200 dark:border-slate-800">
+                                    <div>
+                                        <h3 class="font-medium text-slate-900 dark:text-white">Lab Result Alerts</h3>
+                                        <p class="text-sm text-slate-500 dark:text-slate-400">Notify when lab results are ready</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="flex items-center justify-between py-3">
+                                    <div>
+                                        <h3 class="font-medium text-slate-900 dark:text-white">New Patient Alerts</h3>
+                                        <p class="text-sm text-slate-500 dark:text-slate-400">Alert me when new patients register</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6">
+                                <button onclick="saveNotifications()" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                                    Save Preferences
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Section -->
+                    <div id="securitySection" class="settings-section hidden">
+                        <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 mb-6">
+                            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Security Settings</h2>
+                            
+                            <div class="space-y-6">
+                                <div>
+                                    <h3 class="font-medium text-slate-900 dark:text-white mb-4">Password</h3>
+                                    <div class="space-y-3">
+                                        <input type="password" placeholder="Current Password" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                        <input type="password" placeholder="New Password" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                        <input type="password" placeholder="Confirm New Password" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                        <button onclick="changePassword()" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                                            Update Password
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="font-medium text-slate-900 dark:text-white mb-4">Two-Factor Authentication</h3>
+                                    <div class="flex items-center justify-between p-4 border border-slate-200 dark:border-slate-800 rounded-lg">
+                                        <div>
+                                            <p class="font-medium text-slate-900 dark:text-white">Enable 2FA</p>
+                                            <p class="text-sm text-slate-500 dark:text-slate-400">Add an extra layer of security</p>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Billing Section -->
+                    <div id="billingSection" class="settings-section hidden">
+                        <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 mb-6">
+                            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Billing & Payment</h2>
+                            
+                            <div class="space-y-6">
+                                <div>
+                                    <h3 class="font-medium text-slate-900 dark:text-white mb-4">Consultation Fees</h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Initial Consultation</label>
+                                            <input type="number" value="150" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Follow-up Consultation</label>
+                                            <input type="number" value="100" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="font-medium text-slate-900 dark:text-white mb-4">Payment Methods</h3>
+                                    <div class="space-y-3">
+                                        <label class="flex items-center gap-3">
+                                            <input type="checkbox" checked class="rounded border-slate-300 dark:border-slate-600">
+                                            <span class="text-sm text-slate-700 dark:text-slate-300">Credit Card</span>
+                                        </label>
+                                        <label class="flex items-center gap-3">
+                                            <input type="checkbox" checked class="rounded border-slate-300 dark:border-slate-600">
+                                            <span class="text-sm text-slate-700 dark:text-slate-300">Debit Card</span>
+                                        </label>
+                                        <label class="flex items-center gap-3">
+                                            <input type="checkbox" class="rounded border-slate-300 dark:border-slate-600">
+                                            <span class="text-sm text-slate-700 dark:text-slate-300">Cash</span>
+                                        </label>
+                                        <label class="flex items-center gap-3">
+                                            <input type="checkbox" checked class="rounded border-slate-300 dark:border-slate-600">
+                                            <span class="text-sm text-slate-700 dark:text-slate-300">Insurance</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-3">
+                                <button onclick="saveBilling()" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                                    Save Changes
+                                </button>
+                                <button class="px-6 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Doctor Settings functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Doctor Settings page loaded');
+        });
+        
+        // Show section
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.settings-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName + 'Section').classList.remove('hidden');
+            
+            // Update nav buttons
+            document.querySelectorAll('.settings-nav-btn').forEach(btn => {
+                if (btn.dataset.section === sectionName) {
+                    btn.classList.add('bg-primary', 'text-white');
+                    btn.classList.remove('text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-100', 'dark:hover:bg-slate-700');
+                } else {
+                    btn.classList.remove('bg-primary', 'text-white');
+                    btn.classList.add('text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-100', 'dark:hover:bg-slate-700');
+                }
+            });
+        }
+        
+        // Save functions
+        function saveProfile() {
+            alert('Profile information saved successfully!');
+        }
+        
+        function savePractice() {
+            alert('Practice information saved successfully!');
+        }
+        
+        function saveNotifications() {
+            alert('Notification preferences saved successfully!');
+        }
+        
+        function changePassword() {
+            alert('Password changed successfully!');
+        }
+        
+        function saveBilling() {
+            alert('Billing settings saved successfully!');
+        }
+        
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navDashboard = document.getElementById('navDashboard');
+            const navSchedule = document.getElementById('navSchedule');
+            const navPatients = document.getElementById('navPatients');
+            const navRecords = document.getElementById('navRecords');
+            const navSettings = document.getElementById('navSettings');
+            
+            if (navDashboard) {
+                navDashboard.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = 'doctor_dashboard.html';
+                });
+            }
+            
+            if (navSchedule) {
+                navSchedule.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = 'schedule.html';
+                });
+            }
+            
+            if (navPatients) {
+                navPatients.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = 'patients.html';
+                });
+            }
+            
+            if (navRecords) {
+                navRecords.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = 'records.html';
+                });
+            }
+            
+            if (navSettings) {
+                navSettings.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Already on settings
+                    console.log('Already on settings');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

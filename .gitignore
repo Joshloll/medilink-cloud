@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Operating System
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Logs
+logs/
+*.log
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Database
+*.sql.backup
+*.db
+
+# Uploads
+uploads/
+temp/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Cloud credentials
+*.pem
+*.key
+credentials.json
+
+# AWS
+.aws/
+
+# PM2
+.pm2/
+
+# Misc
+*.orig
+.cache/

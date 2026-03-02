@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Medical Records - MediLink Cloud</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#137fec",
+                "primary-dark": "#0b63be",
+                "background-light": "#f6f7f8",
+                "background-dark": "#101922",
+                "card-light": "#ffffff",
+                "card-dark": "#1e2936",
+              },
+              fontFamily: {
+                "display": ["Inter", "sans-serif"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155; 
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+        
+        /* Loading animation */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Hover effects */
+        .record-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors duration-200 antialiased">
+    <!-- Header -->
+    <header class="bg-white dark:bg-card-dark border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo and Back -->
+                <div class="flex items-center gap-4">
+                    <a href="dashboard.html" class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        <span class="font-medium">Back to Dashboard</span>
+                    </a>
+                    <div class="flex items-center gap-3">
+                        <div class="size-8 bg-primary/10 flex items-center justify-center rounded-lg">
+                            <span class="material-symbols-outlined text-primary">folder</span>
+                        </div>
+                        <h1 class="text-xl font-bold text-slate-900 dark:text-white">Medical Records</h1>
+                    </div>
+                </div>
+                
+                <!-- User Info -->
+                <div class="flex items-center gap-3">
+                    <div class="text-right hidden md:block">
+                        <p class="text-sm font-bold text-slate-900 dark:text-white">Sarah Jenkins</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Patient ID: #88392</p>
+                    </div>
+                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8 ring-2 ring-white dark:ring-slate-700 shadow-sm" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC7EVV5ypCihmYTSLn_G46OXG5ANaHMBRiwg5jjL07ySsqqpdonXwP9X7D_EVXqAHezuQLakGuBna0qhRsYHEQNBytapacC0kHXKbVQUBxmnrpM0Ok_Nald063RJcdBmpjc68W1Uypp8PA73IlgaetT7ApK9eDjULbNuc1FwR1RwGOJpCSpccRMIOqJpQUK_yrHkmaBb7MIUhHs-3opqyWFHnBN-X7Nu1TdjcOO2AXQVjf2WKonS1prMOvWbNOa46WJxFhJ9MzXA8Vq");'></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="min-h-screen bg-background-light dark:bg-background-dark">
+        <div class="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+            <!-- Filters and Search -->
+            <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 mb-6">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1 relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                        <input type="text" id="searchInput" placeholder="Search records by type, doctor, or date..." class="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary">
+                    </div>
+                    <div class="flex gap-2">
+                        <select id="typeFilter" class="px-4 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary">
+                            <option value="">All Types</option>
+                            <option value="consultation">Consultation</option>
+                            <option value="lab">Lab Results</option>
+                            <option value="prescription">Prescription</option>
+                            <option value="imaging">Imaging</option>
+                        </select>
+                        <select id="statusFilter" class="px-4 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary">
+                            <option value="">All Status</option>
+                            <option value="completed">Completed</option>
+                            <option value="pending">Pending</option>
+                            <option value="review">Under Review</option>
+                        </select>
+                        <button id="refreshBtn" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                            <span class="material-symbols-outlined">refresh</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Records List -->
+            <div id="recordsContainer" class="space-y-4">
+                <!-- Records will be populated here -->
+                <div class="text-center py-12">
+                    <div class="animate-spin size-8 mx-auto mb-4 text-primary">
+                        <span class="material-symbols-outlined">refresh</span>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400">Loading medical records...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Record Detail Modal -->
+    <div id="recordModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+        <div class="absolute inset-x-4 top-1/2 -translate-y-1/2 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2">
+            <div class="bg-white dark:bg-card-dark rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden transform transition-all">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-800">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Medical Record Details</h3>
+                    <button onclick="closeModal()" class="size-8 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center justify-center transition-colors">
+                        <span class="material-symbols-outlined text-slate-500">close</span>
+                    </button>
+                </div>
+                
+                <!-- Modal Content -->
+                <div id="modalContent" class="p-6 overflow-y-auto max-h-[60vh]">
+                    <!-- Content will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Medical Records functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Medical Records page loaded');
+            
+            // Mock data
+            const records = [
+                {
+                    id: 1,
+                    type: 'consultation',
+                    title: 'Cardiology Consultation',
+                    doctor: 'Dr. Emily Chen',
+                    date: 'Oct 25, 2023',
+                    status: 'completed',
+                    summary: 'Patient reports improved symptoms, medication adjustment made'
+                },
+                {
+                    id: 2,
+                    type: 'lab',
+                    title: 'Blood Test Results',
+                    doctor: 'Dr. Sarah Miller',
+                    date: 'Sep 25, 2023',
+                    status: 'pending',
+                    summary: 'Comprehensive metabolic panel ordered'
+                },
+                {
+                    id: 3,
+                    type: 'prescription',
+                    title: 'Prescription Refill',
+                    doctor: 'Dr. Robert Fox',
+                    date: 'Sep 20, 2023',
+                    status: 'completed',
+                    summary: 'Lisinopril refill approved for 30 days'
+                }
+            ];
+            
+            // Render records
+            function renderRecords() {
+                const container = document.getElementById('recordsContainer');
+                container.innerHTML = records.map(record => `
+                    <div class="record-card bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-md transition-all cursor-pointer" onclick="viewRecord(${record.id})">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-start gap-4">
+                                <div class="size-12 rounded-lg ${getTypeColor(record.type)} flex items-center justify-center shrink-0">
+                                    <span class="material-symbols-outlined text-xl">${getTypeIcon(record.type)}</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <h3 class="text-lg font-semibold text-slate-900 dark:text-white">${record.title}</h3>
+                                        <span class="px-2 py-1 rounded-full text-xs font-medium ${getTypeColor(record.type)}">
+                                            ${record.type.charAt(0).toUpperCase() + record.type.slice(1)}
+                                        </span>
+                                        <span class="px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(record.status)}">
+                                            ${record.status.charAt(0).toUpperCase() + record.status.slice(1)}
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+                                        <div class="flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-sm">person</span>
+                                            <span>${record.doctor}</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-sm">calendar_today</span>
+                                            <span>${record.date}</span>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-slate-600 dark:text-slate-300 mt-2 line-clamp-2">${record.summary}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" onclick="event.stopPropagation(); downloadRecord(${record.id})">
+                                    <span class="material-symbols-outlined text-slate-500">download</span>
+                                </button>
+                                <button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                                    <span class="material-symbols-outlined text-slate-500">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            function getTypeColor(type) {
+                const colors = {
+                    consultation: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+                    lab: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+                    prescription: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
+                    imaging: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+                };
+                return colors[type] || 'bg-slate-100 text-slate-700';
+            }
+            
+            function getTypeIcon(type) {
+                const icons = {
+                    consultation: 'medical_services',
+                    lab: 'science',
+                    prescription: 'medication',
+                    imaging: 'image'
+                };
+                return icons[type] || 'description';
+            }
+            
+            function getStatusColor(status) {
+                const colors = {
+                    completed: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400',
+                    pending: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
+                    review: 'bg-slate-100 text-slate-700 dark:bg-slate-900/30 dark:text-slate-400'
+                };
+                return colors[status] || 'bg-slate-100 text-slate-700';
+            }
+            
+            // View record details
+            window.viewRecord = function(recordId) {
+                const record = records.find(r => r.id === recordId);
+                if (!record) return;
+                
+                const modal = document.getElementById('recordModal');
+                const modalContent = document.getElementById('modalContent');
+                
+                modalContent.innerHTML = `
+                    <div class="space-y-6">
+                        <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+                            <h2 class="text-2xl font-bold text-slate-900 dark:text-white">${record.title}</h2>
+                            <div class="flex items-center gap-4 mt-2 text-sm text-slate-500 dark:text-slate-400">
+                                <span class="flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">person</span>
+                                    ${record.doctor}
+                                </span>
+                                <span class="flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">calendar_today</span>
+                                    ${record.date}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-4">
+                            <h3 class="font-semibold text-slate-900 dark:text-white mb-2">Summary</h3>
+                            <p class="text-sm text-slate-700 dark:text-slate-300">${record.summary}</p>
+                        </div>
+                        
+                        <div class="flex gap-2">
+                            <button onclick="downloadRecord(${record.id})" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                                Download
+                            </button>
+                            <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                                Share
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                modal.classList.remove('hidden');
+            };
+            
+            // Download record
+            window.downloadRecord = function(recordId) {
+                const record = records.find(r => r.id === recordId);
+                if (!record) return;
+                
+                const content = `Medical Record - ${record.title}\nDoctor: ${record.doctor}\nDate: ${record.date}\nStatus: ${record.status}\n\nSummary: ${record.summary}`;
+                
+                const blob = new Blob([content], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `medical-record-${record.id}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                
+                alert('Medical record downloaded successfully');
+            };
+            
+            // Close modal
+            window.closeModal = function() {
+                const modal = document.getElementById('recordModal');
+                modal.classList.add('hidden');
+            };
+            
+            // Filter functionality
+            document.getElementById('searchInput').addEventListener('input', filterRecords);
+            document.getElementById('typeFilter').addEventListener('change', filterRecords);
+            document.getElementById('statusFilter').addEventListener('change', filterRecords);
+            
+            function filterRecords() {
+                const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+                const typeFilter = document.getElementById('typeFilter').value;
+                const statusFilter = document.getElementById('statusFilter').value;
+                
+                const filtered = records.filter(record => {
+                    const matchesSearch = !searchTerm || 
+                        record.title.toLowerCase().includes(searchTerm) ||
+                        record.doctor.toLowerCase().includes(searchTerm);
+                    
+                    const matchesType = !typeFilter || record.type === typeFilter;
+                    const matchesStatus = !statusFilter || record.status === statusFilter;
+                    
+                    return matchesSearch && matchesType && matchesStatus;
+                });
+                
+                // Re-render with filtered results
+                const container = document.getElementById('recordsContainer');
+                if (filtered.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center py-12">
+                            <span class="material-symbols-outlined text-6xl text-slate-300 dark:text-slate-600">folder_open</span>
+                            <p class="text-slate-500 dark:text-slate-400 mt-4">No medical records found</p>
+                        </div>
+                    `;
+                } else {
+                    // Use the same render function but with filtered data
+                    container.innerHTML = filtered.map(record => `
+                        <div class="record-card bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-md transition-all cursor-pointer" onclick="viewRecord(${record.id})">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-start gap-4">
+                                    <div class="size-12 rounded-lg ${getTypeColor(record.type)} flex items-center justify-center shrink-0">
+                                        <span class="material-symbols-outlined text-xl">${getTypeIcon(record.type)}</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <h3 class="text-lg font-semibold text-slate-900 dark:text-white">${record.title}</h3>
+                                            <span class="px-2 py-1 rounded-full text-xs font-medium ${getTypeColor(record.type)}">
+                                                ${record.type.charAt(0).toUpperCase() + record.type.slice(1)}
+                                            </span>
+                                            <span class="px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(record.status)}">
+                                                ${record.status.charAt(0).toUpperCase() + record.status.slice(1)}
+                                            </span>
+                                        </div>
+                                        <div class="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+                                            <div class="flex items-center gap-1">
+                                                <span class="material-symbols-outlined text-sm">person</span>
+                                                <span>${record.doctor}</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <span class="material-symbols-outlined text-sm">calendar_today</span>
+                                                <span>${record.date}</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-sm text-slate-600 dark:text-slate-300 mt-2 line-clamp-2">${record.summary}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" onclick="event.stopPropagation(); downloadRecord(${record.id})">
+                                        <span class="material-symbols-outlined text-slate-500">download</span>
+                                    </button>
+                                    <button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                                        <span class="material-symbols-outlined text-slate-500">arrow_forward</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+            
+            // Refresh functionality
+            document.getElementById('refreshBtn').addEventListener('click', function() {
+                this.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span>';
+                setTimeout(() => {
+                    this.innerHTML = '<span class="material-symbols-outlined">refresh</span>';
+                    alert('Medical records refreshed successfully');
+                }, 1000);
+            });
+            
+            // Initial render
+            renderRecords();
+        });
+    </script>
+</body>
+</html>

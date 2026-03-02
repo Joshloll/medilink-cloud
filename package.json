@@ -1,0 +1,21 @@
+{
+  "name": "medilink-cloud",
+  "version": "1.0.0",
+  "description": "Cloud-Based Appointment and Health Record Management System",
+  "scripts": {
+    "setup": "npm install && cd backend && npm install",
+    "start:backend": "cd backend && npm start",
+    "dev:backend": "cd backend && npm run dev",
+    "migrate": "cd backend && npm run migrate",
+    "test": "cd backend && npm test"
+  },
+  "keywords": [
+    "healthcare",
+    "cloud",
+    "appointments",
+    "ehr",
+    "medical"
+  ],
+  "author": "",
+  "license": "MIT"
+}

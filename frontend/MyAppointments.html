@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>My Appointments - MediLink Cloud</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#137fec",
+                "primary-dark": "#0b63be",
+                "background-light": "#f6f7f8",
+                "background-dark": "#101922",
+                "card-light": "#ffffff",
+                "card-dark": "#1e2936",
+              },
+              fontFamily: {
+                "display": ["Inter", "sans-serif"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155; 
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+        
+        /* Loading animation */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Hover effects */
+        .appointment-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors duration-200 antialiased">
+    <!-- Header -->
+    <header class="bg-white dark:bg-card-dark border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo and Back -->
+                <div class="flex items-center gap-4">
+                    <a href="dashboard.html" class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        <span class="font-medium">Back to Dashboard</span>
+                    </a>
+                    <div class="flex items-center gap-3">
+                        <div class="size-8 bg-primary/10 flex items-center justify-center rounded-lg">
+                            <span class="material-symbols-outlined text-primary">calendar_month</span>
+                        </div>
+                        <h1 class="text-xl font-bold text-slate-900 dark:text-white">My Appointments</h1>
+                    </div>
+                </div>
+                
+                <!-- User Info -->
+                <div class="flex items-center gap-3">
+                    <div class="text-right hidden md:block">
+                        <p class="text-sm font-bold text-slate-900 dark:text-white">Sarah Jenkins</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Patient ID: #88392</p>
+                    </div>
+                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8 ring-2 ring-white dark:ring-slate-700 shadow-sm" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC7EVV5ypCihmYTSLn_G46OXG5ANaHMBRiwg5jjL07ySsqqpdonXwP9X7D_EVXqAHezuQLakGuBna0qhRsYHEQNBytapacC0kHXKbVQUBxmnrpM0Ok_Nald063RJcdBmpjc68W1Uypp8PA73IlgaetT7ApK9eDjULbNuc1FwR1RwGOJpCSpccRMIOqJpQUK_yrHkmaBb7MIUhHs-3opqyWFHnBN-X7Nu1TdjcOO2AXQVjf2WKonS1prMOvWbNOa46WJxFhJ9MzXA8Vq");'></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="min-h-screen bg-background-light dark:bg-background-dark">
+        <div class="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Total Appointments</p>
+                            <p class="text-2xl font-bold text-slate-900 dark:text-white">12</p>
+                        </div>
+                        <div class="size-12 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">calendar_today</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Upcoming</p>
+                            <p class="text-2xl font-bold text-slate-900 dark:text-white">3</p>
+                        </div>
+                        <div class="size-12 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-outlined text-green-600 dark:text-green-400">event_available</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Completed</p>
+                            <p class="text-2xl font-bold text-slate-900 dark:text-white">8</p>
+                        </div>
+                        <div class="size-12 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-outlined text-purple-600 dark:text-purple-400">check_circle</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Cancelled</p>
+                            <p class="text-2xl font-bold text-slate-900 dark:text-white">1</p>
+                        </div>
+                        <div class="size-12 bg-red-100 dark:bg-red-900/20 rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-outlined text-red-600 dark:text-red-400">cancel</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters and Actions -->
+            <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 mb-6">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1 relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                        <input type="text" id="searchInput" placeholder="Search appointments by doctor, type, or date..." class="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary">
+                    </div>
+                    <div class="flex gap-2">
+                        <select id="statusFilter" class="px-4 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary">
+                            <option value="">All Status</option>
+                            <option value="upcoming">Upcoming</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                        <select id="typeFilter" class="px-4 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary">
+                            <option value="">All Types</option>
+                            <option value="consultation">Consultation</option>
+                            <option value="followup">Follow-up</option>
+                            <option value="emergency">Emergency</option>
+                        </select>
+                        <button id="bookNewBtn" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors flex items-center gap-2">
+                            <span class="material-symbols-outlined">add</span>
+                            Book New
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appointments List -->
+            <div id="appointmentsContainer" class="space-y-4">
+                <!-- Appointments will be populated here -->
+                <div class="text-center py-12">
+                    <div class="animate-spin size-8 mx-auto mb-4 text-primary">
+                        <span class="material-symbols-outlined">refresh</span>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400">Loading appointments...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Appointment Detail Modal -->
+    <div id="appointmentModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+        <div class="absolute inset-x-4 top-1/2 -translate-y-1/2 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2">
+            <div class="bg-white dark:bg-card-dark rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden transform transition-all">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-800">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Appointment Details</h3>
+                    <button onclick="closeModal()" class="size-8 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center justify-center transition-colors">
+                        <span class="material-symbols-outlined text-slate-500">close</span>
+                    </button>
+                </div>
+                
+                <!-- Modal Content -->
+                <div id="modalContent" class="p-6 overflow-y-auto max-h-[60vh]">
+                    <!-- Content will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // MyAppointments functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('My Appointments page loaded');
+            
+            // Mock appointments data
+            const appointments = [
+                {
+                    id: 1,
+                    doctor: 'Dr. Emily Chen',
+                    specialty: 'Cardiology',
+                    date: '2023-10-25',
+                    time: '10:00 AM',
+                    type: 'Consultation',
+                    status: 'upcoming',
+                    location: 'Main Clinic',
+                    notes: 'Regular checkup',
+                    fee: 120
+                },
+                {
+                    id: 2,
+                    doctor: 'Dr. Sarah Miller',
+                    specialty: 'General Practice',
+                    date: '2023-10-28',
+                    time: '2:30 PM',
+                    type: 'Follow-up',
+                    status: 'upcoming',
+                    location: 'West Branch',
+                    notes: 'Blood pressure review',
+                    fee: 80
+                },
+                {
+                    id: 3,
+                    doctor: 'Dr. Robert Fox',
+                    specialty: 'Dermatology',
+                    date: '2023-09-15',
+                    time: '11:00 AM',
+                    type: 'Consultation',
+                    status: 'completed',
+                    location: 'Main Clinic',
+                    notes: 'Skin examination',
+                    fee: 150
+                },
+                {
+                    id: 4,
+                    doctor: 'Dr. Lisa Wang',
+                    specialty: 'Pediatrics',
+                    date: '2023-09-10',
+                    time: '3:00 PM',
+                    type: 'Emergency',
+                    status: 'cancelled',
+                    location: 'Emergency Room',
+                    notes: 'Fever and cough',
+                    fee: 200
+                }
+            ];
+            
+            // Render appointments
+            function renderAppointments() {
+                const container = document.getElementById('appointmentsContainer');
+                container.innerHTML = appointments.map(appointment => `
+                    <div class="appointment-card bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-md transition-all cursor-pointer" onclick="viewAppointment(${appointment.id})">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-start gap-4">
+                                <div class="size-12 rounded-lg ${getStatusColor(appointment.status)} flex items-center justify-center shrink-0">
+                                    <span class="material-symbols-outlined text-xl">${getStatusIcon(appointment.status)}</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <h3 class="text-lg font-semibold text-slate-900 dark:text-white">${appointment.doctor}</h3>
+                                        <span class="px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(appointment.status)}">
+                                            ${appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+                                        </span>
+                                        <span class="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                                            ${appointment.type}
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400 mb-2">
+                                        <div class="flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-sm">medical_services</span>
+                                            <span>${appointment.specialty}</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-sm">calendar_today</span>
+                                            <span>${formatDate(appointment.date)}</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-sm">schedule</span>
+                                            <span>${appointment.time}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+                                        <div class="flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-sm">location_on</span>
+                                            <span>${appointment.location}</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-sm">payments</span>
+                                            <span>$${appointment.fee}</span>
+                                        </div>
+                                    </div>
+                                    ${appointment.notes ? `
+                                        <p class="text-sm text-slate-600 dark:text-slate-300 mt-2">
+                                            <span class="font-medium">Notes:</span> ${appointment.notes}
+                                        </p>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                ${appointment.status === 'upcoming' ? `
+                                    <button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" onclick="event.stopPropagation(); rescheduleAppointment(${appointment.id})">
+                                        <span class="material-symbols-outlined text-slate-500">event</span>
+                                    </button>
+                                    <button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" onclick="event.stopPropagation(); cancelAppointment(${appointment.id})">
+                                        <span class="material-symbols-outlined text-slate-500">cancel</span>
+                                    </button>
+                                ` : ''}
+                                <button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                                    <span class="material-symbols-outlined text-slate-500">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            function getStatusColor(status) {
+                const colors = {
+                    upcoming: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+                    completed: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+                    cancelled: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                };
+                return colors[status] || 'bg-slate-100 text-slate-700';
+            }
+            
+            function getStatusIcon(status) {
+                const icons = {
+                    upcoming: 'event_available',
+                    completed: 'check_circle',
+                    cancelled: 'cancel'
+                };
+                return icons[status] || 'calendar_today';
+            }
+            
+            function formatDate(dateStr) {
+                const date = new Date(dateStr);
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            }
+            
+            // View appointment details
+            window.viewAppointment = function(appointmentId) {
+                const appointment = appointments.find(a => a.id === appointmentId);
+                if (!appointment) return;
+                
+                const modal = document.getElementById('appointmentModal');
+                const modalContent = document.getElementById('modalContent');
+                
+                modalContent.innerHTML = `
+                    <div class="space-y-6">
+                        <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+                            <h2 class="text-2xl font-bold text-slate-900 dark:text-white">${appointment.type} with ${appointment.doctor}</h2>
+                            <div class="flex items-center gap-4 mt-2 text-sm text-slate-500 dark:text-slate-400">
+                                <span class="flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">medical_services</span>
+                                    ${appointment.specialty}
+                                </span>
+                                <span class="flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">calendar_today</span>
+                                    ${formatDate(appointment.date)}
+                                </span>
+                                <span class="flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">schedule</span>
+                                    ${appointment.time}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Appointment Information</h3>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                                        <span class="text-sm text-slate-500 dark:text-slate-400">Status</span>
+                                        <span class="text-sm font-medium text-slate-900 dark:text-white">${appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}</span>
+                                    </div>
+                                    <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                                        <span class="text-sm text-slate-500 dark:text-slate-400">Type</span>
+                                        <span class="text-sm font-medium text-slate-900 dark:text-white">${appointment.type}</span>
+                                    </div>
+                                    <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                                        <span class="text-sm text-slate-500 dark:text-slate-400">Location</span>
+                                        <span class="text-sm font-medium text-slate-900 dark:text-white">${appointment.location}</span>
+                                    </div>
+                                    <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                                        <span class="text-sm text-slate-500 dark:text-slate-400">Fee</span>
+                                        <span class="text-sm font-medium text-slate-900 dark:text-white">$${appointment.fee}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Doctor Information</h3>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                                        <span class="text-sm text-slate-500 dark:text-slate-400">Doctor</span>
+                                        <span class="text-sm font-medium text-slate-900 dark:text-white">${appointment.doctor}</span>
+                                    </div>
+                                    <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                                        <span class="text-sm text-slate-500 dark:text-slate-400">Specialty</span>
+                                        <span class="text-sm font-medium text-slate-900 dark:text-white">${appointment.specialty}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        ${appointment.notes ? `
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Notes</h3>
+                                <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-4">
+                                    <p class="text-sm text-slate-700 dark:text-slate-300">${appointment.notes}</p>
+                                </div>
+                            </div>
+                        ` : ''}
+                        
+                        <div class="flex gap-2">
+                            ${appointment.status === 'upcoming' ? `
+                                <button onclick="rescheduleAppointment(${appointment.id})" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                                    Reschedule
+                                </button>
+                                <button onclick="cancelAppointment(${appointment.id})" class="px-4 py-2 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/30 transition-colors">
+                                    Cancel
+                                </button>
+                            ` : ''}
+                            <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                                Download Receipt
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                modal.classList.remove('hidden');
+            };
+            
+            // Reschedule appointment
+            window.rescheduleAppointment = function(appointmentId) {
+                alert('Reschedule functionality would open calendar to select new date/time');
+                closeModal();
+            };
+            
+            // Cancel appointment
+            window.cancelAppointment = function(appointmentId) {
+                if (confirm('Are you sure you want to cancel this appointment?')) {
+                    alert('Appointment cancelled successfully');
+                    closeModal();
+                    // In real app, this would update the appointment status
+                }
+            };
+            
+            // Close modal
+            window.closeModal = function() {
+                const modal = document.getElementById('appointmentModal');
+                modal.classList.add('hidden');
+            };
+            
+            // Filter functionality
+            document.getElementById('searchInput').addEventListener('input', filterAppointments);
+            document.getElementById('statusFilter').addEventListener('change', filterAppointments);
+            document.getElementById('typeFilter').addEventListener('change', filterAppointments);
+            
+            function filterAppointments() {
+                const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+                const statusFilter = document.getElementById('statusFilter').value;
+                const typeFilter = document.getElementById('typeFilter').value;
+                
+                const filtered = appointments.filter(appointment => {
+                    const matchesSearch = !searchTerm || 
+                        appointment.doctor.toLowerCase().includes(searchTerm) ||
+                        appointment.specialty.toLowerCase().includes(searchTerm) ||
+                        appointment.type.toLowerCase().includes(searchTerm);
+                    
+                    const matchesStatus = !statusFilter || appointment.status === statusFilter;
+                    const matchesType = !typeFilter || appointment.type === typeFilter;
+                    
+                    return matchesSearch && matchesStatus && matchesType;
+                });
+                
+                // Re-render with filtered results
+                const container = document.getElementById('appointmentsContainer');
+                if (filtered.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center py-12">
+                            <span class="material-symbols-outlined text-6xl text-slate-300 dark:text-slate-600">calendar_month</span>
+                            <p class="text-slate-500 dark:text-slate-400 mt-4">No appointments found</p>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = filtered.map(appointment => `
+                        <div class="appointment-card bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-md transition-all cursor-pointer" onclick="viewAppointment(${appointment.id})">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-start gap-4">
+                                    <div class="size-12 rounded-lg ${getStatusColor(appointment.status)} flex items-center justify-center shrink-0">
+                                        <span class="material-symbols-outlined text-xl">${getStatusIcon(appointment.status)}</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <h3 class="text-lg font-semibold text-slate-900 dark:text-white">${appointment.doctor}</h3>
+                                            <span class="px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(appointment.status)}">
+                                                ${appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+                                            </span>
+                                            <span class="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                                                ${appointment.type}
+                                            </span>
+                                        </div>
+                                        <div class="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400 mb-2">
+                                            <div class="flex items-center gap-1">
+                                                <span class="material-symbols-outlined text-sm">medical_services</span>
+                                                <span>${appointment.specialty}</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <span class="material-symbols-outlined text-sm">calendar_today</span>
+                                                <span>${formatDate(appointment.date)}</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <span class="material-symbols-outlined text-sm">schedule</span>
+                                                <span>${appointment.time}</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+                                            <div class="flex items-center gap-1">
+                                                <span class="material-symbols-outlined text-sm">location_on</span>
+                                                <span>${appointment.location}</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <span class="material-symbols-outlined text-sm">payments</span>
+                                                <span>$${appointment.fee}</span>
+                                            </div>
+                                        </div>
+                                        ${appointment.notes ? `
+                                            <p class="text-sm text-slate-600 dark:text-slate-300 mt-2">
+                                                <span class="font-medium">Notes:</span> ${appointment.notes}
+                                            </p>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    ${appointment.status === 'upcoming' ? `
+                                        <button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" onclick="event.stopPropagation(); rescheduleAppointment(${appointment.id})">
+                                            <span class="material-symbols-outlined text-slate-500">event</span>
+                                        </button>
+                                        <button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" onclick="event.stopPropagation(); cancelAppointment(${appointment.id})">
+                                            <span class="material-symbols-outlined text-slate-500">cancel</span>
+                                        </button>
+                                    ` : ''}
+                                    <button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                                        <span class="material-symbols-outlined text-slate-500">arrow_forward</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+            
+            // Book new appointment
+            document.getElementById('bookNewBtn').addEventListener('click', function() {
+                window.location.href = 'BookAppointment.html';
+            });
+            
+            // Initial render
+            renderAppointments();
+        });
+    </script>
+</body>
+</html>

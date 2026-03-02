@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>MediLink Cloud - Medical Records</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#137fec",
+                "primary-dark": "#0b63be",
+                "background-light": "#f6f7f8",
+                "background-dark": "#101922",
+                "card-light": "#ffffff",
+                "card-dark": "#1e2936",
+              },
+              fontFamily: {
+                "display": ["Inter", "sans-serif"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155; 
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+        
+        /* Loading animation */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Hover effects */
+        .record-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors duration-200 antialiased">
+    <div class="flex h-screen w-full">
+        <!-- Side Navigation -->
+        <aside class="flex w-72 flex-col border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-card-dark h-full hidden lg:flex flex-shrink-0 z-20">
+            <div class="flex flex-col h-full justify-between p-4">
+                <div class="flex flex-col gap-6">
+                    <!-- Branding -->
+                    <div class="flex items-center gap-3 px-2 py-2">
+                        <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-xl size-10 shadow-sm" data-alt="MediLink abstract blue logo with white cross" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCxI3pjrPKcPkRoL588sNS-yKX6G80NqVVkMieXpypt1lj312V87i-erOI8i4mqLjhj3QP28m5KRbbcziNuQY2PZzKxVMlJj24uAOgGhfQMyZFRnWUfDtcqnc4I3VrvQTbPnQ19nsh1ddL8Zo4-cJg3Ts_sGHmbKXa99HRr8V3rHK5zYGXhdgieZc99_a35nHHDRJyj16qqi53ARoZSf3Bme6i5wcgDNt5nEcxCd0qKNrfb0CJ_P5cOOTeQ5jArpJ100fP10o1aH0gl");'></div>
+                        <div class="flex flex-col">
+                            <h1 class="text-slate-900 dark:text-white text-lg font-bold leading-none tracking-tight">MediLink Cloud</h1>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs font-medium mt-1">Doctor Portal</p>
+                        </div>
+                    </div>
+                    <!-- Navigation Links -->
+                    <nav class="flex flex-col gap-2">
+                        <a id="navDashboard" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+                            <span class="material-symbols-outlined">dashboard</span>
+                            <span class="text-sm font-medium">Dashboard</span>
+                        </a>
+                        <a id="navSchedule" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+                            <span class="material-symbols-outlined">calendar_month</span>
+                            <span class="text-sm font-medium">Schedule</span>
+                        </a>
+                        <a id="navPatients" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+                            <span class="material-symbols-outlined">people</span>
+                            <span class="text-sm font-medium">Patients</span>
+                        </a>
+                        <a id="navRecords" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary text-white shadow-md shadow-primary/20 transition-all" href="#">
+                            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">description</span>
+                            <span class="text-sm font-semibold">Records</span>
+                        </a>
+                        <a id="navSettings" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+                            <span class="material-symbols-outlined">settings</span>
+                            <span class="text-sm font-medium">Settings</span>
+                        </a>
+                    </nav>
+                </div>
+                <!-- Bottom Action -->
+                <div class="mt-auto">
+                    <button class="flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl h-12 bg-slate-100 dark:bg-slate-800 text-primary dark:text-primary-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-sm font-bold tracking-wide">
+                        <span class="material-symbols-outlined text-[20px]">logout</span>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+        <!-- Main Content Area -->
+        <div class="flex-1 flex flex-col h-full overflow-hidden relative">
+            <!-- Top Header -->
+            <header class="flex items-center justify-between whitespace-nowrap border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-card-dark px-6 py-4 z-10 shrink-0">
+                <!-- Mobile Menu Toggle (Hidden on Desktop) -->
+                <button class="lg:hidden mr-4 text-slate-600 dark:text-slate-300">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <!-- Page Title & Breadcrumb -->
+                <div class="flex items-center gap-4">
+                    <h2 class="text-slate-900 dark:text-white text-xl font-bold leading-tight hidden sm:block">Medical Records</h2>
+                </div>
+                <!-- Search & Actions -->
+                <div class="flex items-center gap-4">
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                        <input type="text" id="searchInput" placeholder="Search records..." class="pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 rounded-lg text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/50 focus:border-primary w-64">
+                    </div>
+                    <button id="addRecordBtn" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors flex items-center gap-2">
+                        <span class="material-symbols-outlined">add</span>
+                        New Record
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Main Content -->
+            <main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark">
+                <div class="p-6">
+                    <!-- Stats Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400">Total Records</p>
+                                    <p class="text-2xl font-bold text-slate-900 dark:text-white">1,247</p>
+                                    <p class="text-xs text-green-600 dark:text-green-400 mt-1">+45 this month</p>
+                                </div>
+                                <div class="size-12 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">description</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400">This Week</p>
+                                    <p class="text-2xl font-bold text-slate-900 dark:text-white">28</p>
+                                    <p class="text-xs text-green-600 dark:text-green-400 mt-1">+12% vs last week</p>
+                                </div>
+                                <div class="size-12 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-green-600 dark:text-green-400">trending_up</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400">Pending Review</p>
+                                    <p class="text-2xl font-bold text-slate-900 dark:text-white">8</p>
+                                    <p class="text-xs text-amber-600 dark:text-amber-400 mt-1">3 urgent</p>
+                                </div>
+                                <div class="size-12 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-amber-600 dark:text-amber-400">pending</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400">Lab Results</p>
+                                    <p class="text-2xl font-bold text-slate-900 dark:text-white">156</p>
+                                    <p class="text-xs text-purple-600 dark:text-purple-400 mt-1">+8 this week</p>
+                                </div>
+                                <div class="size-12 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-purple-600 dark:text-purple-400">science</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-4 mb-6">
+                        <div class="flex flex-wrap gap-4">
+                            <select id="typeFilter" class="px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-sm text-slate-900 dark:text-white">
+                                <option value="">All Types</option>
+                                <option value="consultation">Consultation</option>
+                                <option value="lab">Lab Results</option>
+                                <option value="prescription">Prescription</option>
+                                <option value="imaging">Imaging</option>
+                            </select>
+                            <select id="statusFilter" class="px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-sm text-slate-900 dark:text-white">
+                                <option value="">All Status</option>
+                                <option value="completed">Completed</option>
+                                <option value="pending">Pending Review</option>
+                                <option value="draft">Draft</option>
+                            </select>
+                            <select id="dateFilter" class="px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-sm text-slate-900 dark:text-white">
+                                <option value="">All Time</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="year">This Year</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Records List -->
+                    <div id="recordsContainer" class="space-y-4">
+                        <!-- Records will be populated here -->
+                        <div class="text-center py-12">
+                            <div class="animate-spin size-8 mx-auto mb-4 text-primary">
+                                <span class="material-symbols-outlined">refresh</span>
+                            </div>
+                            <p class="text-slate-500 dark:text-slate-400">Loading records...</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Record Detail Modal -->
+    <div id="recordModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+        <div class="absolute inset-x-4 top-1/2 -translate-y-1/2 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2">
+            <div class="bg-white dark:bg-card-dark rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden transform transition-all">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-800">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Medical Record Details</h3>
+                    <button onclick="closeModal()" class="size-8 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center justify-center transition-colors">
+                        <span class="material-symbols-outlined text-slate-500">close</span>
+                    </button>
+                </div>
+                
+                <!-- Modal Content -->
+                <div id="modalContent" class="p-6 overflow-y-auto max-h-[60vh]">
+                    <!-- Content will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Records functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Records page loaded');
+            
+            // Mock records data
+            const records = [
+                {
+                    id: 1,
+                    patientName: 'John Smith',
+                    patientId: 'P001',
+                    type: 'consultation',
+                    date: '2023-10-20',
+                    doctor: 'Dr. Sarah Jenkins',
+                    status: 'completed',
+                    diagnosis: 'Hypertension',
+                    treatment: 'Lifestyle modifications and medication',
+                    notes: 'Patient responding well to treatment. BP controlled.',
+                    attachments: ['blood_test.pdf', 'ecg.pdf']
+                },
+                {
+                    id: 2,
+                    patientName: 'Emily Johnson',
+                    patientId: 'P002',
+                    type: 'lab',
+                    date: '2023-10-19',
+                    doctor: 'Dr. Sarah Jenkins',
+                    status: 'pending',
+                    diagnosis: 'Diabetes Type 2',
+                    treatment: 'Awaiting lab results',
+                    notes: 'Blood work ordered. Results expected in 2 days.',
+                    attachments: ['lab_order.pdf']
+                },
+                {
+                    id: 3,
+                    patientName: 'Michael Brown',
+                    patientId: 'P003',
+                    type: 'prescription',
+                    date: '2023-10-18',
+                    doctor: 'Dr. Sarah Jenkins',
+                    status: 'completed',
+                    diagnosis: 'Coronary Artery Disease',
+                    treatment: 'Atorvastatin 40mg daily',
+                    notes: 'Patient educated on medication adherence.',
+                    attachments: ['prescription.pdf']
+                },
+                {
+                    id: 4,
+                    patientName: 'Sarah Davis',
+                    patientId: 'P004',
+                    type: 'imaging',
+                    date: '2023-10-17',
+                    doctor: 'Dr. Sarah Jenkins',
+                    status: 'completed',
+                    diagnosis: 'Chest X-ray',
+                    treatment: 'Normal findings',
+                    notes: 'No acute cardiopulmonary abnormality detected.',
+                    attachments: ['xray.jpg', 'report.pdf']
+                }
+            ];
+            
+            // Render records
+            function renderRecords() {
+                const container = document.getElementById('recordsContainer');
+                container.innerHTML = records.map(record => `
+                    <div class="record-card bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-md transition-all cursor-pointer" onclick="viewRecord(${record.id})">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-start gap-4">
+                                <div class="size-12 rounded-lg ${getTypeColor(record.type)} flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-xl">${getTypeIcon(record.type)}</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <h3 class="text-lg font-semibold text-slate-900 dark:text-white">${record.patientName}</h3>
+                                        <span class="px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(record.status)}">
+                                            ${record.status.charAt(0).toUpperCase() + record.status.slice(1)}
+                                        </span>
+                                        <span class="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                                            ${record.type.charAt(0).toUpperCase() + record.type.slice(1)}
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400 mb-2">
+                                        <div class="flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-sm">badge</span>
+                                            <span>${record.patientId}</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-sm">person</span>
+                                            <span>${record.doctor}</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-sm">calendar_today</span>
+                                            <span>${formatDate(record.date)}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-4 text-sm text-slate-600 dark:text-slate-300">
+                                        <div class="flex-1">
+                                            <p class="font-medium text-slate-900 dark:text-white mb-1">Diagnosis:</p>
+                                            <p>${record.diagnosis}</p>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="font-medium text-slate-900 dark:text-white mb-1">Treatment:</p>
+                                            <p>${record.treatment}</p>
+                                        </div>
+                                    </div>
+                                    ${record.attachments && record.attachments.length > 0 ? `
+                                        <div class="flex items-center gap-2 mt-2">
+                                            <span class="material-symbols-outlined text-sm text-slate-400">attach_file</span>
+                                            <span class="text-xs text-slate-500 dark:text-slate-400">${record.attachments.length} attachment(s)</span>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" onclick="event.stopPropagation(); editRecord(${record.id})">
+                                    <span class="material-symbols-outlined text-slate-500">edit</span>
+                                </button>
+                                <button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" onclick="event.stopPropagation(); downloadRecord(${record.id})">
+                                    <span class="material-symbols-outlined text-slate-500">download</span>
+                                </button>
+                                <button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                                    <span class="material-symbols-outlined text-slate-500">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            function getTypeColor(type) {
+                const colors = {
+                    consultation: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+                    lab: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+                    prescription: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
+                    imaging: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+                };
+                return colors[type] || 'bg-slate-100 text-slate-700';
+            }
+            
+            function getTypeIcon(type) {
+                const icons = {
+                    consultation: 'medical_services',
+                    lab: 'science',
+                    prescription: 'medication',
+                    imaging: 'image'
+                };
+                return icons[type] || 'description';
+            }
+            
+            function getStatusColor(status) {
+                const colors = {
+                    completed: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+                    pending: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
+                    draft: 'bg-slate-100 text-slate-700 dark:bg-slate-900/30 dark:text-slate-400'
+                };
+                return colors[status] || 'bg-slate-100 text-slate-700';
+            }
+            
+            function formatDate(dateStr) {
+                const date = new Date(dateStr);
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            }
+            
+            // View record details
+            window.viewRecord = function(recordId) {
+                const record = records.find(r => r.id === recordId);
+                if (!record) return;
+                
+                const modal = document.getElementById('recordModal');
+                const modalContent = document.getElementById('modalContent');
+                
+                modalContent.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Patient Information</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                                    <span class="text-sm text-slate-500 dark:text-slate-400">Patient Name</span>
+                                    <span class="text-sm font-medium text-slate-900 dark:text-white">${record.patientName}</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                                    <span class="text-sm text-slate-500 dark:text-slate-400">Patient ID</span>
+                                    <span class="text-sm font-medium text-slate-900 dark:text-white">${record.patientId}</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                                    <span class="text-sm text-slate-500 dark:text-slate-400">Date</span>
+                                    <span class="text-sm font-medium text-slate-900 dark:text-white">${formatDate(record.date)}</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                                    <span class="text-sm text-slate-500 dark:text-slate-400">Doctor</span>
+                                    <span class="text-sm font-medium text-slate-900 dark:text-white">${record.doctor}</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                                    <span class="text-sm text-slate-500 dark:text-slate-400">Type</span>
+                                    <span class="text-sm font-medium text-slate-900 dark:text-white">${record.type.charAt(0).toUpperCase() + record.type.slice(1)}</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                                    <span class="text-sm text-slate-500 dark:text-slate-400">Status</span>
+                                    <span class="text-sm font-medium text-slate-900 dark:text-white">${record.status.charAt(0).toUpperCase() + record.status.slice(1)}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Medical Details</h3>
+                            <div class="space-y-3">
+                                <div class="py-2 border-b border-slate-100 dark:border-slate-800">
+                                    <span class="text-sm text-slate-500 dark:text-slate-400 block mb-2">Diagnosis</span>
+                                    <p class="text-sm font-medium text-slate-900 dark:text-white">${record.diagnosis}</p>
+                                </div>
+                                <div class="py-2 border-b border-slate-100 dark:border-slate-800">
+                                    <span class="text-sm text-slate-500 dark:text-slate-400 block mb-2">Treatment</span>
+                                    <p class="text-sm font-medium text-slate-900 dark:text-white">${record.treatment}</p>
+                                </div>
+                                <div class="py-2 border-b border-slate-100 dark:border-slate-800">
+                                    <span class="text-sm text-slate-500 dark:text-slate-400 block mb-2">Notes</span>
+                                    <p class="text-sm font-medium text-slate-900 dark:text-white">${record.notes}</p>
+                                </div>
+                                ${record.attachments && record.attachments.length > 0 ? `
+                                    <div class="py-2">
+                                        <span class="text-sm text-slate-500 dark:text-slate-400 block mb-2">Attachments</span>
+                                        <div class="space-y-2">
+                                            ${record.attachments.map(file => `
+                                                <div class="flex items-center gap-2 p-2 bg-slate-50 dark:bg-slate-800 rounded">
+                                                    <span class="material-symbols-outlined text-slate-400">description</span>
+                                                    <span class="text-sm text-slate-700 dark:text-slate-300">${file}</span>
+                                                    <button class="ml-auto text-primary hover:underline">Download</button>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-6">
+                        <button onclick="editRecord(${record.id})" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                            Edit Record
+                        </button>
+                        <button onclick="downloadRecord(${record.id})" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                            Download PDF
+                        </button>
+                        <button class="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                            Print
+                        </button>
+                    </div>
+                `;
+                
+                modal.classList.remove('hidden');
+            };
+            
+            // Edit record
+            window.editRecord = function(recordId) {
+                alert('Edit record functionality would open here');
+                closeModal();
+            };
+            
+            // Download record
+            window.downloadRecord = function(recordId) {
+                alert('Download record as PDF functionality would execute here');
+            };
+            
+            // Close modal
+            window.closeModal = function() {
+                const modal = document.getElementById('recordModal');
+                modal.classList.add('hidden');
+            };
+            
+            // Filter functionality
+            document.getElementById('searchInput').addEventListener('input', filterRecords);
+            document.getElementById('typeFilter').addEventListener('change', filterRecords);
+            document.getElementById('statusFilter').addEventListener('change', filterRecords);
+            document.getElementById('dateFilter').addEventListener('change', filterRecords);
+            
+            function filterRecords() {
+                const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+                const typeFilter = document.getElementById('typeFilter').value;
+                const statusFilter = document.getElementById('statusFilter').value;
+                const dateFilter = document.getElementById('dateFilter').value;
+                
+                const filtered = records.filter(record => {
+                    const matchesSearch = !searchTerm || 
+                        record.patientName.toLowerCase().includes(searchTerm) ||
+                        record.diagnosis.toLowerCase().includes(searchTerm) ||
+                        record.treatment.toLowerCase().includes(searchTerm);
+                    
+                    const matchesType = !typeFilter || record.type === typeFilter;
+                    const matchesStatus = !statusFilter || record.status === statusFilter;
+                    
+                    let matchesDate = true;
+                    if (dateFilter) {
+                        const recordDate = new Date(record.date);
+                        const today = new Date();
+                        
+                        if (dateFilter === 'today') {
+                            matchesDate = recordDate.toDateString() === today.toDateString();
+                        } else if (dateFilter === 'week') {
+                            const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+                            matchesDate = recordDate >= weekAgo;
+                        } else if (dateFilter === 'month') {
+                            const monthAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
+                            matchesDate = recordDate >= monthAgo;
+                        } else if (dateFilter === 'year') {
+                            const yearAgo = new Date(today.getTime() - 365 * 24 * 60 * 60 * 1000);
+                            matchesDate = recordDate >= yearAgo;
+                        }
+                    }
+                    
+                    return matchesSearch && matchesType && matchesStatus && matchesDate;
+                });
+                
+                // Re-render with filtered results
+                const container = document.getElementById('recordsContainer');
+                if (filtered.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center py-12">
+                            <span class="material-symbols-outlined text-6xl text-slate-300 dark:text-slate-600">description</span>
+                            <p class="text-slate-500 dark:text-slate-400 mt-4">No records found</p>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = filtered.map(record => `
+                        <div class="record-card bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-md transition-all cursor-pointer" onclick="viewRecord(${record.id})">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-start gap-4">
+                                    <div class="size-12 rounded-lg ${getTypeColor(record.type)} flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-xl">${getTypeIcon(record.type)}</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <h3 class="text-lg font-semibold text-slate-900 dark:text-white">${record.patientName}</h3>
+                                            <span class="px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(record.status)}">
+                                                ${record.status.charAt(0).toUpperCase() + record.status.slice(1)}
+                                            </span>
+                                            <span class="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                                                ${record.type.charAt(0).toUpperCase() + record.type.slice(1)}
+                                            </span>
+                                        </div>
+                                        <div class="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400 mb-2">
+                                            <div class="flex items-center gap-1">
+                                                <span class="material-symbols-outlined text-sm">badge</span>
+                                                <span>${record.patientId}</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <span class="material-symbols-outlined text-sm">person</span>
+                                                <span>${record.doctor}</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <span class="material-symbols-outlined text-sm">calendar_today</span>
+                                                <span>${formatDate(record.date)}</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start gap-4 text-sm text-slate-600 dark:text-slate-300">
+                                            <div class="flex-1">
+                                                <p class="font-medium text-slate-900 dark:text-white mb-1">Diagnosis:</p>
+                                                <p>${record.diagnosis}</p>
+                                            </div>
+                                            <div class="flex-1">
+                                                <p class="font-medium text-slate-900 dark:text-white mb-1">Treatment:</p>
+                                                <p>${record.treatment}</p>
+                                            </div>
+                                        </div>
+                                        ${record.attachments && record.attachments.length > 0 ? `
+                                            <div class="flex items-center gap-2 mt-2">
+                                                <span class="material-symbols-outlined text-sm text-slate-400">attach_file</span>
+                                                <span class="text-xs text-slate-500 dark:text-slate-400">${record.attachments.length} attachment(s)</span>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" onclick="event.stopPropagation(); editRecord(${record.id})">
+                                        <span class="material-symbols-outlined text-slate-500">edit</span>
+                                    </button>
+                                    <button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" onclick="event.stopPropagation(); downloadRecord(${record.id})">
+                                        <span class="material-symbols-outlined text-slate-500">download</span>
+                                    </button>
+                                    <button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                                        <span class="material-symbols-outlined text-slate-500">arrow_forward</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+            
+            // Add record button
+            document.getElementById('addRecordBtn').addEventListener('click', function() {
+                alert('New record form would open here');
+            });
+            
+            // Initial render
+            renderRecords();
+        });
+        
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navDashboard = document.getElementById('navDashboard');
+            const navSchedule = document.getElementById('navSchedule');
+            const navPatients = document.getElementById('navPatients');
+            const navRecords = document.getElementById('navRecords');
+            const navSettings = document.getElementById('navSettings');
+            
+            if (navDashboard) {
+                navDashboard.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = 'doctor_dashboard.html';
+                });
+            }
+            
+            if (navSchedule) {
+                navSchedule.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = 'schedule.html';
+                });
+            }
+            
+            if (navPatients) {
+                navPatients.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = 'patients.html';
+                });
+            }
+            
+            if (navRecords) {
+                navRecords.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Already on records
+                    console.log('Already on records');
+                });
+            }
+            
+            if (navSettings) {
+                navSettings.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = 'doctor_settings.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Settings - MediLink Cloud</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#137fec",
+                "primary-dark": "#0b63be",
+                "background-light": "#f6f7f8",
+                "background-dark": "#101922",
+                "card-light": "#ffffff",
+                "card-dark": "#1e2936",
+              },
+              fontFamily: {
+                "display": ["Inter", "sans-serif"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155; 
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+        
+        /* Loading animation */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Toggle switch */
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #137fec;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors duration-200 antialiased">
+    <!-- Header -->
+    <header class="bg-white dark:bg-card-dark border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo and Back -->
+                <div class="flex items-center gap-4">
+                    <a href="dashboard.html" class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        <span class="font-medium">Back to Dashboard</span>
+                    </a>
+                    <div class="flex items-center gap-3">
+                        <div class="size-8 bg-primary/10 flex items-center justify-center rounded-lg">
+                            <span class="material-symbols-outlined text-primary">settings</span>
+                        </div>
+                        <h1 class="text-xl font-bold text-slate-900 dark:text-white">Settings</h1>
+                    </div>
+                </div>
+                
+                <!-- User Info -->
+                <div class="flex items-center gap-3">
+                    <div class="text-right hidden md:block">
+                        <p class="text-sm font-bold text-slate-900 dark:text-white">Sarah Jenkins</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Patient ID: #88392</p>
+                    </div>
+                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8 ring-2 ring-white dark:ring-slate-700 shadow-sm" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC7EVV5ypCihmYTSLn_G46OXG5ANaHMBRiwg5jjL07ySsqqpdonXwP9X7D_EVXqAHezuQLakGuBna0qhRsYHEQNBytapacC0kHXKbVQUBxmnrpM0Ok_Nald063RJcdBmpjc68W1Uypp8PA73IlgaetT7ApK9eDjULbNuc1FwR1RwGOJpCSpccRMIOqJpQUK_yrHkmaBb7MIUhHs-3opqyWFHnBN-X7Nu1TdjcOO2AXQVjf2WKonS1prMOvWbNOa46WJxFhJ9MzXA8Vq");'></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="min-h-screen bg-background-light dark:bg-background-dark">
+        <div class="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+            <!-- Settings Navigation -->
+            <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 mb-6">
+                <div class="flex flex-wrap gap-2 p-4">
+                    <button onclick="showSection('profile')" class="settings-nav-btn px-4 py-2 rounded-lg text-sm font-medium bg-primary text-white" data-section="profile">
+                        Profile
+                    </button>
+                    <button onclick="showSection('notifications')" class="settings-nav-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700" data-section="notifications">
+                        Notifications
+                    </button>
+                    <button onclick="showSection('privacy')" class="settings-nav-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700" data-section="privacy">
+                        Privacy & Security
+                    </button>
+                    <button onclick="showSection('appearance')" class="settings-nav-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700" data-section="appearance">
+                        Appearance
+                    </button>
+                    <button onclick="showSection('billing')" class="settings-nav-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700" data-section="billing">
+                        Billing
+                    </button>
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div id="profileSection" class="settings-section">
+                <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 mb-6">
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Profile Information</h2>
+                    
+                    <div class="flex flex-col md:flex-row gap-6 mb-6">
+                        <div class="flex flex-col items-center">
+                            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-24 ring-4 ring-slate-200 dark:ring-slate-700 mb-4" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC7EVV5ypCihmYTSLn_G46OXG5ANaHMBRiwg5jjL07ySsqqpdonXwP9X7D_EVXqAHezuQLakGuBna0qhRsYHEQNBytapacC0kHXKbVQUBxmnrpM0Ok_Nald063RJcdBmpjc68W1Uypp8PA73IlgaetT7ApK9eDjULbNuc1FwR1RwGOJpCSpccRMIOqJpQUK_yrHkmaBb7MIUhHs-3opqyWFHnBN-X7Nu1TdjcOO2AXQVjf2WKonS1prMOvWbNOa46WJxFhJ9MzXA8Vq");'></div>
+                            <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors text-sm">
+                                Change Photo
+                            </button>
+                        </div>
+                        
+                        <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">First Name</label>
+                                <input type="text" value="Sarah" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Last Name</label>
+                                <input type="text" value="Jenkins" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email</label>
+                                <input type="email" value="sarah.jenkins@email.com" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Phone</label>
+                                <input type="tel" value="+1 (555) 123-4567" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Date of Birth</label>
+                                <input type="date" value="1989-05-15" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Blood Type</label>
+                                <select class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                    <option>O+</option>
+                                    <option>O-</option>
+                                    <option>A+</option>
+                                    <option>A-</option>
+                                    <option>B+</option>
+                                    <option>B-</option>
+                                    <option>AB+</option>
+                                    <option>AB-</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Address</label>
+                        <input type="text" value="123 Main Street, Apt 4B" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white mb-2">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                            <input type="text" value="New York" placeholder="City" class="px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                            <input type="text" value="NY" placeholder="State" class="px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                            <input type="text" value="10001" placeholder="ZIP" class="px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        <button onclick="saveProfile()" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                            Save Changes
+                        </button>
+                        <button class="px-6 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications Section -->
+            <div id="notificationsSection" class="settings-section hidden">
+                <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 mb-6">
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Notification Preferences</h2>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between py-3 border-b border-slate-200 dark:border-slate-800">
+                            <div>
+                                <h3 class="font-medium text-slate-900 dark:text-white">Email Notifications</h3>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">Receive appointment reminders and updates via email</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="flex items-center justify-between py-3 border-b border-slate-200 dark:border-slate-800">
+                            <div>
+                                <h3 class="font-medium text-slate-900 dark:text-white">SMS Notifications</h3>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">Get text messages for urgent updates</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="flex items-center justify-between py-3 border-b border-slate-200 dark:border-slate-800">
+                            <div>
+                                <h3 class="font-medium text-slate-900 dark:text-white">Appointment Reminders</h3>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">Remind me 24 hours before appointments</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="flex items-center justify-between py-3 border-b border-slate-200 dark:border-slate-800">
+                            <div>
+                                <h3 class="font-medium text-slate-900 dark:text-white">Lab Results</h3>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">Notify when lab results are available</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="flex items-center justify-between py-3 border-b border-slate-200 dark:border-slate-800">
+                            <div>
+                                <h3 class="font-medium text-slate-900 dark:text-white">Prescription Refills</h3>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">Remind me when refills are due</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="flex items-center justify-between py-3">
+                            <div>
+                                <h3 class="font-medium text-slate-900 dark:text-white">Marketing Communications</h3>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">Receive health tips and promotional offers</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <button onclick="saveNotifications()" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                            Save Preferences
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Privacy & Security Section -->
+            <div id="privacySection" class="settings-section hidden">
+                <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 mb-6">
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Privacy & Security</h2>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="font-medium text-slate-900 dark:text-white mb-4">Password</h3>
+                            <div class="space-y-3">
+                                <input type="password" placeholder="Current Password" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                <input type="password" placeholder="New Password" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                <input type="password" placeholder="Confirm New Password" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                <button onclick="changePassword()" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                                    Update Password
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-medium text-slate-900 dark:text-white mb-4">Two-Factor Authentication</h3>
+                            <div class="flex items-center justify-between p-4 border border-slate-200 dark:border-slate-800 rounded-lg">
+                                <div>
+                                    <p class="font-medium text-slate-900 dark:text-white">Enable 2FA</p>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400">Add an extra layer of security to your account</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-medium text-slate-900 dark:text-white mb-4">Data Sharing</h3>
+                            <div class="space-y-3">
+                                <label class="flex items-center gap-3">
+                                    <input type="checkbox" checked class="rounded border-slate-300 dark:border-slate-600">
+                                    <span class="text-sm text-slate-700 dark:text-slate-300">Share data with healthcare providers</span>
+                                </label>
+                                <label class="flex items-center gap-3">
+                                    <input type="checkbox" class="rounded border-slate-300 dark:border-slate-600">
+                                    <span class="text-sm text-slate-700 dark:text-slate-300">Share data for research purposes</span>
+                                </label>
+                                <label class="flex items-center gap-3">
+                                    <input type="checkbox" checked class="rounded border-slate-300 dark:border-slate-600">
+                                    <span class="text-sm text-slate-700 dark:text-slate-300">Share data with insurance companies</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appearance Section -->
+            <div id="appearanceSection" class="settings-section hidden">
+                <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 mb-6">
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Appearance</h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="font-medium text-slate-900 dark:text-white mb-4">Theme</h3>
+                            <div class="flex gap-3">
+                                <button onclick="setTheme('light')" class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                    <span class="material-symbols-outlined">light_mode</span> Light
+                                </button>
+                                <button onclick="setTheme('dark')" class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                    <span class="material-symbols-outlined">dark_mode</span> Dark
+                                </button>
+                                <button onclick="setTheme('system')" class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                    <span class="material-symbols-outlined">computer</span> System
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-medium text-slate-900 dark:text-white mb-4">Language</h3>
+                            <select class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                <option>English</option>
+                                <option>Spanish</option>
+                                <option>French</option>
+                                <option>German</option>
+                                <option>Chinese</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-medium text-slate-900 dark:text-white mb-4">Time Zone</h3>
+                            <select class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                <option>Eastern Time (ET)</option>
+                                <option>Central Time (CT)</option>
+                                <option>Mountain Time (MT)</option>
+                                <option>Pacific Time (PT)</option>
+                                <option>Alaska Time (AKT)</option>
+                                <option>Hawaii Time (HT)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Billing Section -->
+            <div id="billingSection" class="settings-section hidden">
+                <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 mb-6">
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Billing & Payment</h2>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="font-medium text-slate-900 dark:text-white mb-4">Payment Methods</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-4 border border-slate-200 dark:border-slate-800 rounded-lg">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined text-blue-600">credit_card</span>
+                                        <div>
+                                            <p class="font-medium text-slate-900 dark:text-white">Visa ending in 4242</p>
+                                            <p class="text-sm text-slate-500 dark:text-slate-400">Expires 12/24</p>
+                                        </div>
+                                    </div>
+                                    <button class="text-sm text-primary hover:underline">Edit</button>
+                                </div>
+                                <button class="w-full px-4 py-2 border border-dashed border-slate-300 dark:border-slate-600 rounded-lg hover:border-primary transition-colors">
+                                    + Add Payment Method
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-medium text-slate-900 dark:text-white mb-4">Insurance Information</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Insurance Provider</label>
+                                    <input type="text" value="Blue Cross Blue Shield" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Policy Number</label>
+                                    <input type="text" value="BCB-123456789" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Group Number</label>
+                                    <input type="text" value="GRP-987654" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Settings functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Settings page loaded');
+        });
+        
+        // Show section
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.settings-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName + 'Section').classList.remove('hidden');
+            
+            // Update nav buttons
+            document.querySelectorAll('.settings-nav-btn').forEach(btn => {
+                if (btn.dataset.section === sectionName) {
+                    btn.classList.add('bg-primary', 'text-white');
+                    btn.classList.remove('text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-100', 'dark:hover:bg-slate-700');
+                } else {
+                    btn.classList.remove('bg-primary', 'text-white');
+                    btn.classList.add('text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-100', 'dark:hover:bg-slate-700');
+                }
+            });
+        }
+        
+        // Save functions
+        function saveProfile() {
+            alert('Profile information saved successfully!');
+        }
+        
+        function saveNotifications() {
+            alert('Notification preferences saved successfully!');
+        }
+        
+        function changePassword() {
+            alert('Password changed successfully!');
+        }
+        
+        // Theme functions
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else if (theme === 'light') {
+                document.documentElement.classList.remove('dark');
+            } else {
+                // System theme - check preference
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            }
+            localStorage.setItem('theme', theme);
+            alert(`Theme changed to ${theme}`);
+        }
+        
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MediLink Cloud - The most advanced HIPAA-compliant healthcare platform. Trusted by 10,000+ professionals.">
+    <title>MediLink Cloud - Next-Gen Healthcare Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --text-light: #999999;
+            --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.15);
+            --border-radius: 16px;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            transition: var(--transition);
+        }
+
+        .nav.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            position: relative;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-gradient);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+        }
+
+        /* ensure secondary button is legible on hero background */
+        .hero .btn-secondary {
+            color: #FFFFFF;
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        .hero .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 6rem;
+            color: #FFFFFF;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            opacity: 0.12;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 720px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-title {
+            font-size: clamp(2.75rem, 7.5vw, 4.75rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: #FFFFFF;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+            animation: fadeInUp 0.8s ease-out 0.8s both;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFFFFF 0%, #E5E7EB 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.75);
+            font-weight: 500;
+        }
+
+        /* Visual Section */
+        .visual-section {
+            position: absolute;
+            top: 50%;
+            right: 10%;
+            transform: translateY(-50%);
+            width: 500px;
+            height: 600px;
+            animation: fadeInRight 1s ease-out 0.5s both;
+        }
+
+        .dashboard-mockup {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-strong);
+            overflow: hidden;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .mockup-header {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .mockup-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .mockup-content {
+            padding: 2rem;
+            height: calc(100% - 80px);
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .metric-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .metric-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .metric-info h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-info p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .chart-placeholder {
+            flex: 1;
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 8rem 0;
+            background: #fafbfc;
+        }
+
+        .features-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .features-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+
+        .features-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 6rem 0;
+            background: var(--primary-gradient);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+
+        .cta-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-brand h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .footer-links h4 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-bottom p {
+            color: var(--text-light);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-content {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                text-align: center;
+                padding: 2rem 1rem;
+            }
+
+            .visual-section {
+                position: static;
+                transform: none;
+                width: 100%;
+                height: 400px;
+                margin-top: 4rem;
+            }
+
+            .hero-content {
+                max-width: none;
+            }
+
+            .hero-cta {
+                justify-content: center;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="container nav-content">
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="8" fill="url(#logo-gradient)"/>
+                    <path d="M16 8L12 12H14V18H12L16 24L20 18H18V12H20L16 8Z" fill="white"/>
+                    <defs>
+                        <linearGradient id="logo-gradient" x1="0" y1="0" x2="32" y2="32">
+                            <stop stop-color="#667eea"/>
+                            <stop offset="1" stop-color="#764ba2"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                MediLink Cloud
+            </div>
+            <div class="nav-links">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#solutions" class="nav-link">Solutions</a>
+                <a href="#pricing" class="nav-link">Pricing</a>
+                <a href="#contact" class="nav-link">Contact</a>
+                <a href="login.html" class="btn btn-secondary">Sign In</a>
+                <a href="register.html" class="btn btn-primary">Start Free Trial</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 0L10.5 5.5H16L11.5 9L13 14.5L8 11L3 14.5L4.5 9L0 5.5H5.5L8 0Z" fill="currentColor"/>
+                    </svg>
+                    Trusted by 10,000+ healthcare professionals
+                </div>
+                <h1 class="hero-title">
+                    The Future of<br>
+                    <span style="background: var(--secondary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Healthcare</span><br>
+                    Management
+                </h1>
+                <p class="hero-subtitle">
+                    Streamline patient care, enhance collaboration, and ensure compliance with our comprehensive healthcare platform designed for modern medical practices.
+                </p>
+                <div class="hero-cta">
+                    <a href="register.html" class="btn btn-primary">
+                        Start Free Trial
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 3L13 8L8 13M13 8H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <a href="#features" class="btn btn-secondary">
+                        Learn More
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">500K+</span>
+                        <span class="stat-label">Patients Served</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">10K+</span>
+                        <span class="stat-label">Healthcare Providers</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">99.9%</span>
+                        <span class="stat-label">Uptime</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Support</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="visual-section">
+            <div class="dashboard-mockup">
+                <div class="mockup-header">
+                    <div class="mockup-title">MediLink Dashboard</div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ef4444;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #f59e0b;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #10b981;"></div>
+                    </div>
+                </div>
+                <div class="mockup-content">
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M16 7C16 5.34315 14.6569 4 13 4H11C9.34315 4 8 5.34315 8 7V9H16V7Z" fill="currentColor"/>
+                                <path d="M8 11V19C8 20.1046 8.89543 21 10 21H14C15.1046 21 16 20.1046 16 19V11H8Z" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <div class="metric-info">
+                            <h3>1,247</h3>
+                            <p>Active Patients</p>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M8 7V3C8 2.44772 8.44772 2 9 2H15C15.5523 2 16 2.44772 16 3V7M8 7H16M8 7H6C4.89543 7 4 7.89543 4 9V19C4 20.1046 4.89543 21 6 21H18C19.1046 21 20 20.1046 20 19V9C20 7.89543 19.1046 7 18 7H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="metric-info">
+                            <h3>28</h3>
+                            <p>Today's Appointments</p>
+                        </div>
+                    </div>
+                    <div class="chart-placeholder">
+                        Patient Analytics Chart
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="features-header">
+                <h2 class="features-title">Everything you need to manage healthcare</h2>
+                <p class="features-subtitle">
+                    Comprehensive tools designed specifically for modern healthcare practices, ensuring compliance, efficiency, and exceptional patient care.
+                </p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <path d="M16 4C12.6863 4 10 6.68629 10 10V16H6C4.89543 16 4 16.8954 4 18V26C4 27.1046 4.89543 28 6 28H26C27.1046 28 28 27.1046 28 26V18C28 16.8954 27.1046 16 26 16H22V10C22 6.68629 19.3137 4 16 4Z" fill="currentColor"/>
+                            <path d="M16 20C17.1046 20 18 19.1046 18 18C18 16.8954 17.1046 16 16 16C14.8954 16 14 16.8954 14 18C14 19.1046 14.8954 20 16 20Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Secure & Compliant</h3>
+                    <p class="feature-description">
+                        HIPAA-compliant platform with enterprise-grade security, ensuring patient data protection and regulatory compliance.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <path d="M16 8L12 12H14V18H12L16 24L20 18H18V12H20L16 8Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Smart Scheduling</h3>
+                    <p class="feature-description">
+                        Intelligent appointment scheduling with automated reminders, conflict resolution, and optimized resource allocation.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <path d="M8 12H24M8 16H24M8 20H16M4 8H28V24C28 25.1046 27.1046 26 26 26H6C4.89543 26 4 25.1046 4 24V8Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Complete EHR</h3>
+                    <p class="feature-description">
+                        Comprehensive electronic health records with intuitive interfaces, customizable templates, and seamless integration.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <path d="M12 6V18M12 6L8 10M12 6L16 10M6 12H18M6 12L10 8M6 12L10 16M18 12L14 8M18 12L14 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">AI-Powered Insights</h3>
+                    <p class="feature-description">
+                        Advanced analytics and AI-driven insights to optimize operations, predict trends, and improve patient outcomes.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <path d="M20 12C20 10.8954 19.1046 10 18 10H14C12.8954 10 12 10.8954 12 12V20C12 21.1046 12.8954 22 14 22H18C19.1046 22 20 21.1046 20 20V12Z" fill="currentColor"/>
+                            <path d="M8 14H12M20 14H24M8 18H12M20 18H24" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Telemedicine Ready</h3>
+                    <p class="feature-description">
+                        Built-in video conferencing, remote monitoring, and virtual care capabilities for comprehensive telemedicine solutions.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">24/7 Support</h3>
+                    <p class="feature-description">
+                        Round-the-clock technical support and dedicated account management to ensure your practice runs smoothly.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2 class="cta-title">Ready to transform your healthcare practice?</h2>
+            <p class="cta-subtitle">
+                Join thousands of healthcare professionals who trust MediLink Cloud for their practice management needs.
+            </p>
+            <div class="cta-buttons">
+                <a href="register.html" class="btn btn-primary">
+                    Start Your Free Trial
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 3L13 8L8 13M13 8H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+                <a href="#contact" class="btn btn-secondary">
+                    Contact Sales
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>MediLink Cloud</h3>
+                    <p>
+                        The most advanced healthcare management platform, trusted by medical professionals worldwide for secure, efficient, and compliant patient care.
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#solutions">Solutions</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#security">Security</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#careers">Careers</a></li>
+                        <li><a href="#press">Press</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#help">Help Center</a></li>
+                        <li><a href="#docs">Documentation</a></li>
+                        <li><a href="#status">System Status</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 MediLink Cloud. All rights reserved.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-link">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10 0C4.477 0 0 4.477 0 10c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V10h2.54V7.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V10h2.773l-.443 2.89h-2.33v6.988C16.343 19.128 20 14.991 20 10c0-5.523-4.477-10-10-10z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M20 10c0-5.523-4.477-10-10-10S0 4.477 0 10c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V10h2.54V7.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V10h2.773l-.443 2.89h-2.33v6.988C16.343 19.128 20 14.991 20 10z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation scroll effect
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe feature cards
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
+        
+        <div class="hero-container">
+            <div class="hero-content-premium">
+                <div class="hero-badge-container">
+                    <div class="hero-badge">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                            <circle cx="8" cy="8" r="3" fill="currentColor"/>
+                        </svg>
+                        <span>Trusted by 10,000+ Healthcare Professionals</span>
+                    </div>
+                </div>
+                
+                <h1 class="hero-title-premium">
+                    The Future of
+                    <span class="gradient-text-premium">Healthcare</span>
+                    Management
+                </h1>
+                
+                <p class="hero-subtitle-premium">
+                    HIPAA-compliant platform combining intelligent scheduling, comprehensive EHR, 
+                    and seamless patient engagement. Built for modern healthcare providers who 
+                    demand excellence.
+                </p>
+                
+                <div class="hero-cta-group">
+                    <a href="register.html" class="cta-primary-premium">
+                        <span>Start Free Trial</span>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7 13L13 7M13 7H8M13 7V12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </a>
+                    <a href="#demo" class="cta-secondary-premium">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18Z" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M8 7L13 10L8 13V7Z" fill="currentColor"/>
+                        </svg>
+                        <span>Watch Demo</span>
+                    </a>
+                </div>
+                
+                <div class="hero-trust-bar">
+                    <div class="trust-item-premium">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill="#10B981"/>
+                        </svg>
+                        <span>HIPAA Compliant</span>
+                    </div>
+                    <div class="trust-item-premium">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill="#10B981"/>
+                        </svg>
+                        <span>SOC 2 Type II</span>
+                    </div>
+                    <div class="trust-item-premium">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill="#10B981"/>
+                        </svg>
+                        <span>99.99% Uptime</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-visual-premium">
+                <div class="dashboard-mockup">
+                    <div class="mockup-header">
+                        <div class="mockup-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <div class="mockup-title">MediLink Dashboard</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="stat-card stat-card-1">
+                            <div class="stat-icon stat-icon-blue">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <rect x="3" y="6" width="18" height="15" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+                                    <path d="M3 10h18M8 6V4M16 6V4" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label">Today's Appointments</span>
+                                <span class="stat-value">28</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card stat-card-2">
+                            <div class="stat-icon stat-icon-purple">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="2"/>
+                                    <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label">Active Patients</span>
+                                <span class="stat-value">1,247</span>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-preview">
+                            <div class="chart-header">
+                                <span>Appointment Trends</span>
+                                <span class="trend-up">+12.5%</span>
+                            </div>
+                            <div class="mini-chart">
+                                <div class="chart-bar" style="height: 40%"></div>
+                                <div class="chart-bar" style="height: 65%"></div>
+                                <div class="chart-bar" style="height: 50%"></div>
+                                <div class="chart-bar" style="height: 80%"></div>
+                                <div class="chart-bar" style="height: 70%"></div>
+                                <div class="chart-bar" style="height: 90%"></div>
+                                <div class="chart-bar" style="height: 95%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="appointment-list">
+                            <div class="appointment-item">
+                                <div class="appointment-avatar" style="background: linear-gradient(135deg, #3B82F6, #2563EB)">SC</div>
+                                <div class="appointment-details">
+                                    <span class="appointment-name">Sarah Chen</span>
+                                    <span class="appointment-time">2:30 PM - Checkup</span>
+                                </div>
+                                <div class="appointment-status status-confirmed">Confirmed</div>
+                            </div>
+                            <div class="appointment-item">
+                                <div class="appointment-avatar" style="background: linear-gradient(135deg, #8B5CF6, #7C3AED)">MJ</div>
+                                <div class="appointment-details">
+                                    <span class="appointment-name">Michael Johnson</span>
+                                    <span class="appointment-time">3:00 PM - Follow-up</span>
+                                </div>
+                                <div class="appointment-status status-pending">Pending</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="floating-card card-1">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 11l3 3L22 4" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span>Record Updated</span>
+                </div>
+                
+                <div class="floating-card card-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 8v4l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <span>Next: 15 mins</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="stats-bar">
+        <div class="stats-container">
+            <div class="stat-item-bar">
+                <div class="stat-number-bar">10K+</div>
+                <div class="stat-label-bar">Healthcare Providers</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item-bar">
+                <div class="stat-number-bar">500K+</div>
+                <div class="stat-label-bar">Patients Served</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item-bar">
+                <div class="stat-number-bar">99.99%</div>
+                <div class="stat-label-bar">Uptime SLA</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item-bar">
+                <div class="stat-number-bar">24/7</div>
+                <div class="stat-label-bar">Support</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section - Premium -->
+    <section id="features" class="features-premium">
+        <div class="section-container">
+            <div class="section-header-premium">
+                <span class="section-label">Platform Capabilities</span>
+                <h2 class="section-title-premium">Everything you need.<br/>Nothing you don't.</h2>
+                <p class="section-description-premium">Enterprise-grade features designed for healthcare excellence</p>
+            </div>
+            
+            <div class="features-grid-premium">
+                <div class="feature-card-premium">
+                    <div class="feature-icon-premium icon-gradient-blue">
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                            <rect x="4" y="7" width="20" height="17" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <path d="M4 11h20M10 7V4M18 7V4" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="10" cy="15" r="1.5" fill="currentColor"/>
+                            <circle cx="14" cy="15" r="1.5" fill="currentColor"/>
+                            <circle cx="18" cy="15" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title-premium">Intelligent Scheduling</h3>
+                    <p class="feature-description-premium">AI-powered appointment booking with automatic conflict resolution, smart reminders, and real-time availability.</p>
+                    <a href="#" class="feature-link">Learn more →</a>
+                </div>
+                
+                <div class="feature-card-premium">
+                    <div class="feature-icon-premium icon-gradient-purple">
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                            <path d="M23 24v-2a5 5 0 00-5-5h-8a5 5 0 00-5 5v2" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="14" cy="8" r="5" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <path d="M21 11h4M23 9v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title-premium">Complete EHR System</h3>
+                    <p class="feature-description-premium">Comprehensive electronic health records with secure storage, instant access, and seamless interoperability.</p>
+                    <a href="#" class="feature-link">Learn more →</a>
+                </div>
+                
+                <div class="feature-card-premium">
+                    <div class="feature-icon-premium icon-gradient-green">
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                            <path d="M14 4L5 8v7c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V8l-9-4z" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <path d="M11 14l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title-premium">Enterprise Security</h3>
+                    <p class="feature-description-premium">HIPAA-compliant infrastructure with end-to-end encryption, SOC 2 certification, and comprehensive audit logs.</p>
+                    <a href="#" class="feature-link">Learn more →</a>
+                </div>
+                
+                <div class="feature-card-premium">
+                    <div class="feature-icon-premium icon-gradient-orange">
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                            <path d="M24 14a3 3 0 01-3 3H7a3 3 0 01-3-3V7a3 3 0 013-3h14a3 3 0 013 3v7z" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <path d="M24 14L14 21L4 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="18" cy="10" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title-premium">Smart Automation</h3>
+                    <p class="feature-description-premium">Automated workflows, intelligent notifications, and AI-assisted diagnostics to save time and reduce errors.</p>
+                    <a href="#" class="feature-link">Learn more →</a>
+                </div>
+                
+                <div class="feature-card-premium">
+                    <div class="feature-icon-premium icon-gradient-pink">
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                            <path d="M4 21V7a3 3 0 013-3h14a3 3 0 013 3v14a3 3 0 01-3 3H7a3 3 0 01-3-3z" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <path d="M4 11h20M9 7v4M19 7v4" stroke="currentColor" stroke-width="2"/>
+                            <path d="M10 16h8M10 19h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title-premium">Advanced Analytics</h3>
+                    <p class="feature-description-premium">Real-time insights, performance metrics, and predictive analytics to optimize your practice.</p>
+                    <a href="#" class="feature-link">Learn more →</a>
+                </div>
+                
+                <div class="feature-card-premium">
+                    <div class="feature-icon-premium icon-gradient-teal">
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                            <circle cx="14" cy="14" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <path d="M14 6v8l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title-premium">Patient Portal</h3>
+                    <p class="feature-description-premium">Empower patients with 24/7 access to records, online booking, telemedicine, and secure messaging.</p>
+                    <a href="#" class="feature-link">Learn more →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solutions Section -->
+    <section id="solutions" class="solutions-section">
+        <div class="section-container">
+            <div class="section-header-premium">
+                <span class="section-label">Built for Healthcare</span>
+                <h2 class="section-title-premium">Trusted by providers.<br/>Loved by patients.</h2>
+            </div>
+            
+            <div class="solutions-grid">
+                <div class="solution-card">
+                    <div class="solution-number">01</div>
+                    <h3 class="solution-title">For Patients</h3>
+                    <p class="solution-description">Book appointments instantly, access health records anytime, and stay connected with your healthcare team.</p>
+                    <ul class="solution-features">
+                        <li>One-click appointment booking</li>
+                        <li>Complete medical history access</li>
+                        <li>Secure provider messaging</li>
+                        <li>Prescription management</li>
+                    </ul>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-number">02</div>
+                    <h3 class="solution-title">For Providers</h3>
+                    <p class="solution-description">Streamline workflows, reduce admin burden, and focus on what matters most - patient care.</p>
+                    <ul class="solution-features">
+                        <li>Unified patient dashboard</li>
+                        <li>Smart scheduling assistant</li>
+                        <li>E-prescribing integration</li>
+                        <li>Performance analytics</li>
+                    </ul>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-number">03</div>
+                    <h3 class="solution-title">For Administrators</h3>
+                    <p class="solution-description">Complete visibility and control over your healthcare organization with powerful management tools.</p>
+                    <ul class="solution-features">
+                        <li>Multi-location management</li>
+                        <li>Revenue cycle optimization</li>
+                        <li>Compliance monitoring</li>
+                        <li>Custom reporting suite</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-premium">
+        <div class="cta-container">
+            <div class="cta-content-premium">
+                <h2 class="cta-title-premium">Ready to transform your practice?</h2>
+                <p class="cta-subtitle-premium">Join thousands of healthcare providers delivering exceptional care with MediLink Cloud.</p>
+                <div class="cta-buttons-premium">
+                    <a href="register.html" class="cta-btn-primary-premium">Start Free Trial</a>
+                    <a href="#demo" class="cta-btn-secondary-premium">Schedule Demo</a>
+                </div>
+                <p class="cta-note">No credit card required · 14-day free trial · Cancel anytime</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Premium -->
+    <footer class="footer-premium">
+        <div class="footer-container">
+            <div class="footer-grid-premium">
+                <div class="footer-brand-col">
+                    <div class="footer-brand-premium">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="8" fill="url(#gradient2)"/>
+                            <path d="M16 8L12 12H14V18H12L16 24L20 18H18V12H20L16 8Z" fill="white"/>
+                            <defs>
+                                <linearGradient id="gradient2" x1="0" y1="0" x2="32" y2="32">
+                                    <stop stop-color="#2563EB"/>
+                                    <stop offset="1" stop-color="#7C3AED"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <span>MediLink Cloud</span>
+                    </div>
+                    <p class="footer-description">The most advanced healthcare management platform. HIPAA-compliant, secure, and trusted by thousands.</p>
+                    <div class="footer-certifications">
+                        <span class="cert-badge">HIPAA</span>
+                        <span class="cert-badge">SOC 2</span>
+                        <span class="cert-badge">ISO 27001</span>
+                    </div>
+                </div>
+                
+                <div class="footer-links-col">
+                    <h4 class="footer-col-title">Product</h4>
+                    <a href="#features" class="footer-link-premium">Features</a>
+                    <a href="#" class="footer-link-premium">Pricing</a>
+                    <a href="#" class="footer-link-premium">Security</a>
+                    <a href="#" class="footer-link-premium">Integrations</a>
+                </div>
+                
+                <div class="footer-links-col">
+                    <h4 class="footer-col-title">Solutions</h4>
+                    <a href="#" class="footer-link-premium">For Patients</a>
+                    <a href="#" class="footer-link-premium">For Providers</a>
+                    <a href="#" class="footer-link-premium">For Administrators</a>
+                    <a href="#" class="footer-link-premium">Enterprise</a>
+                </div>
+                
+                <div class="footer-links-col">
+                    <h4 class="footer-col-title">Company</h4>
+                    <a href="#" class="footer-link-premium">About Us</a>
+                    <a href="#" class="footer-link-premium">Careers</a>
+                    <a href="#" class="footer-link-premium">Blog</a>
+                    <a href="#" class="footer-link-premium">Contact</a>
+                </div>
+                
+                <div class="footer-links-col">
+                    <h4 class="footer-col-title">Resources</h4>
+                    <a href="#" class="footer-link-premium">Documentation</a>
+                    <a href="#" class="footer-link-premium">API Reference</a>
+                    <a href="#" class="footer-link-premium">Help Center</a>
+                    <a href="#" class="footer-link-premium">Status</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom-premium">
+                <p class="footer-copyright">&copy; 2026 MediLink Cloud. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="#" class="footer-legal-link">Privacy Policy</a>
+                    <a href="#" class="footer-legal-link">Terms of Service</a>
+                    <a href="#" class="footer-legal-link">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
