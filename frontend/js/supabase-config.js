@@ -1,7 +1,12 @@
 // Supabase Configuration
-// Use environment variables in production, fallback to hardcoded values for development
-const SUPABASE_URL = import.meta.env?.VITE_SUPABASE_URL || 'https://zczlhrsmlecannuqknju.supabase.co';
-const SUPABASE_ANON_KEY = import.meta.env?.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjemxocnNtbGVjYW5udXFrbmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Njk3MjEsImV4cCI6MjA4ODA0NTcyMX0.bymF387OBZ_5JNojgm2cbm8rAUMyUfdaSKScrjnvMfc'; 
+// Uses environment variables for security - NO HARDCODED CREDENTIALS
+const SUPABASE_URL = import.meta.env?.VITE_SUPABASE_URL || import.meta.env?.SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env?.VITE_SUPABASE_ANON_KEY || import.meta.env?.SUPABASE_ANON_KEY;
+
+// Validate environment variables
+if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+    throw new Error('Supabase credentials not found. Please check your environment variables.');
+} 
 
 // Initialize Supabase client
 const { createClient } = supabase;
