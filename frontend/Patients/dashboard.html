@@ -54,7 +54,7 @@
             background: #475569; 
         }
     </style>
-    <script type="module" src="js/Patient_Dashboard.js"></script>
+    <script type="module" src="../js/Patient_Dashboard.js"></script>
 </head>
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors duration-200 antialiased overflow-hidden">
     <div class="flex h-screen w-full">
@@ -99,14 +99,10 @@
                     </nav>
                 </div>
                 <!-- Bottom Action -->
-                <div class="mt-auto flex flex-col gap-2">
+                <div class="mt-auto">
                     <button class="flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl h-12 bg-slate-100 dark:bg-slate-800 text-primary dark:text-primary-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-sm font-bold tracking-wide">
                         <span class="material-symbols-outlined text-[20px]">support_agent</span>
                         <span>Get Help</span>
-                    </button>
-                    <button onclick="logout()" class="flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl h-12 bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/30 transition-colors text-sm font-bold tracking-wide">
-                        <span class="material-symbols-outlined text-[20px]">logout</span>
-                        <span>Logout</span>
                     </button>
                 </div>
             </div>
@@ -143,8 +139,8 @@
                     <!-- User Profile -->
                     <div class="flex items-center gap-3 pl-2 border-l border-slate-200 dark:border-slate-700">
                         <div class="text-right hidden md:block">
-                            <p class="text-sm font-bold text-slate-900 dark:text-white leading-none">Sarah Jenkins</p>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Patient ID: #88392</p>
+                            <p id="patientName" class="text-sm font-bold text-slate-900 dark:text-white leading-none">Loading...</p>
+                            <p id="patientId" class="text-xs text-slate-500 dark:text-slate-400 mt-1">Patient ID: #00000</p>
                         </div>
                         <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-white dark:ring-slate-700 shadow-sm cursor-pointer" data-alt="Profile picture of Sarah Jenkins, smiling woman" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC7EVV5ypCihmYTSLn_G46OXG5ANaHMBRiwg5jjL07ySsqqpdonXwP9X7D_EVXqAHezuQLakGuBna0qhRsYHEQNBytapacC0kHXKbVQUBxmnrpM0Ok_Nald063RJcdBmpjc68W1Uypp8PA73IlgaetT7ApK9eDjULbNuc1FwR1RwGOJpCSpccRMIOqJpQUK_yrHkmaBb7MIUhHs-3opqyWFHnBN-X7Nu1TdjcOO2AXQVjf2WKonS1prMOvWbNOa46WJxFhJ9MzXA8Vq");'></div>
                     </div>
@@ -156,7 +152,7 @@
                     <!-- Welcome Section -->
                     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                         <div class="flex flex-col gap-2">
-                            <h1 class="text-slate-900 dark:text-white text-3xl sm:text-4xl font-black tracking-tight">Welcome back, Sarah</h1>
+                            <h1 id="patientGreeting" class="text-slate-900 dark:text-white text-3xl sm:text-4xl font-black tracking-tight">Welcome back</h1>
                             <p class="text-slate-500 dark:text-slate-400 text-base">Today is Oct 24, 2023. You have <span class="text-primary font-bold">1 upcoming appointment</span>.</p>
                         </div>
                         <button id="bookAppointmentBtn" class="flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-primary-dark text-white shadow-lg shadow-primary/25 transition-all active:scale-95">
@@ -379,6 +375,54 @@
     </div>
     
     <script>
+        // Supabase Configuration
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+        const supabase = createClient(
+            'https://zczlhrsmlecannuqknju.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6emxocnNtbGVjYW5udXFrbmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk2MzE3OTMsImV4cCI6MjAyNTIwNzc5M30.Kat3PGSQ3wNRLQN0xB8Sy_dUKH0mZMfW9BF8TM0yMWI'
+        )
+
+        // Load user profile and update UI
+        async function loadPatientProfile() {
+            try {
+                const { data: { session } } = await supabase.auth.getSession()
+                if (!session) {
+                    window.location.href = '../auth.html'
+                    return
+                }
+
+                const { data: profile, error } = await supabase
+                    .from('user_profiles')
+                    .select('*')
+                    .eq('user_id', session.user.id)
+                    .single()
+
+                if (error || !profile) {
+                    console.error('Profile error:', error)
+                    return
+                }
+
+                // Update greeting
+                const greeting = document.getElementById('patientGreeting')
+                if (greeting && profile.first_name) {
+                    greeting.textContent = `Welcome back, ${profile.first_name}`
+                }
+
+                // Update header name
+                const patientName = document.getElementById('patientName')
+                if (patientName) {
+                    patientName.textContent = `${profile.first_name || ''} ${profile.last_name || ''}`.trim()
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error)
+            }
+        }
+
+        // Call on page load
+        document.addEventListener('DOMContentLoaded', loadPatientProfile)
+    </script>
+    
+    <script>
         // Make Book Appointment button work
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Dashboard loaded');
@@ -387,7 +431,7 @@
             if (bookAppointmentBtn) {
                 bookAppointmentBtn.addEventListener('click', function() {
                     console.log('Book Appointment clicked!');
-                    window.location.href = 'BookAppointment.html';
+                    window.location.href = '../BookAppointment.html';
                 });
                 console.log('Book Appointment button listener attached');
             } else {
@@ -445,22 +489,6 @@
                 });
             }
         });
-    </script>
-    <script>
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                // Sign out from Supabase if available
-                if (typeof supabase !== 'undefined') {
-                    supabase.auth.signOut().then(() => {
-                        window.location.href = 'auth.html';
-                    });
-                } else {
-                    // Fallback if Supabase is not loaded
-                    localStorage.clear();
-                    window.location.href = 'auth.html';
-                }
-            }
-        }
     </script>
 </body>
 </html>

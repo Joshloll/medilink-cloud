@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Confirm Doctor - MediLink Cloud</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1e293b",
+                        "border-light": "#e2e8f0",
+                        "border-dark": "#334155",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.375rem", 
+                        "lg": "0.5rem", 
+                        "xl": "0.75rem", 
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display transition-colors duration-200 overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- SideNavBar -->
+<aside class="w-64 flex-shrink-0 border-r border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark flex flex-col justify-between hidden md:flex z-20">
+<div class="flex flex-col p-4 gap-6">
+<!-- Brand -->
+<div class="flex items-center gap-3 px-2">
+<div class="bg-primary/10 flex items-center justify-center rounded-lg size-10 text-primary">
+<span class="material-symbols-outlined text-2xl">local_hospital</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-base font-bold leading-tight">MediLink Cloud</h1>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-normal">Admin Portal</p>
+</div>
+</div>
+<!-- Navigation -->
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="dashboard.html">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="schedule.html">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="text-sm font-medium">Schedule</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="patients.html">
+<span class="material-symbols-outlined">groups</span>
+<span class="text-sm font-medium">Patients</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="billing.html">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-sm font-medium">Billing</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="staff.html">
+<span class="material-symbols-outlined">stethoscope</span>
+<span class="text-sm font-medium">Staff</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="settings.html">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+</div>
+<!-- Bottom Actions -->
+<div class="p-4 border-t border-border-light dark:border-border-dark">
+<button onclick="handleLogout()" class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-md hover:bg-blue-600 transition-colors">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+<span class="truncate">Lock Screen</span>
+</button>
+</div>
+</aside>
+<!-- Main Content -->
+<div class="flex-1 flex flex-col h-full overflow-hidden relative">
+<!-- TopNavBar -->
+<header class="h-16 flex items-center justify-between px-6 border-b border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark flex-shrink-0 z-10">
+<div class="flex items-center gap-4">
+<!-- Mobile Menu Toggle (Visible on small screens) -->
+<button class="md:hidden text-slate-500 hover:text-slate-700">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="hidden sm:block text-lg font-bold tracking-tight">Doctor Verification</h2>
+<!-- Search Bar -->
+<div class="hidden md:flex w-80 items-center h-10 rounded-lg bg-background-light dark:bg-slate-800 border border-transparent focus-within:border-primary focus-within:ring-1 focus-within:ring-primary ml-4 transition-all">
+<div class="pl-3 text-slate-400 dark:text-slate-500 flex items-center justify-center">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="w-full h-full bg-transparent border-none text-sm px-3 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:ring-0" placeholder="Search doctors..."/>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="h-6 w-px bg-slate-200 dark:bg-slate-700 mx-1"></div>
+<button class="relative p-2 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full border-2 border-surface-light dark:border-surface-dark"></span>
+</button>
+<div class="flex items-center gap-2 ml-2 pl-2 border-l border-slate-200 dark:border-slate-700">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-medium leading-none">Dr. Sarah West</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Admin</p>
+</div>
+<div class="size-9 rounded-full bg-slate-200 bg-cover bg-center border border-slate-200 dark:border-slate-700" data-alt="Profile picture of Dr. Sarah West" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA7ysvdVtAVeubo-bHhGUxDQ4Z7xg3CEs1GyFkZ_pHsM9QBIzyl0ABC5LNqsdwvh6Jh1M9H6hCr9yUDQoxXCVCLLQ3qqmOK0bdGDGhrqiSPEeaYqIX2FIBx7t_o5B3BfK37G93gFuWeErliUaIC6ytdNoqDoEMpMJOz-oxZGjqW8r-BzhkT-x6HZPdvj0VyI73TZ8jpfGcQNyKaZxapM4AXOk6leZ52Sd682w4YDZtytaG-NK58T_wBG-CfVjRlPOoZzbsylFb1TlFX')"></div>
+</div>
+</div>
+</header>
+<!-- Scrollable Dashboard Content -->
+<main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6">
+<!-- Search Bar -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm p-4">
+<div class="flex items-center gap-4">
+<div class="flex-1 relative">
+<div class="pl-3 text-slate-400 dark:text-slate-500 flex items-center justify-center absolute left-0 top-1/2 transform -translate-y-1/2">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input type="text" id="doctorAppsSearch" class="w-full h-10 pl-10 pr-4 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary" placeholder="Search by Name or Specialty...">
+</div>
+<button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+Filter
+</button>
+</div>
+</div>
+
+<!-- Doctor Applications -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm overflow-hidden">
+<div class="p-6 border-b border-border-light dark:border-border-dark">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white">Doctor Applications</h3>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead class="bg-slate-50 dark:bg-slate-800/50 border-b border-border-light dark:border-border-dark">
+<tr>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Full Name</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Specialty Field</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 hidden md:table-cell">Applied Date</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 hidden lg:table-cell">Experience</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Status</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-light dark:divide-border-dark">
+<!-- Applicant 1 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Dr. Anderson" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA8669_zuSSsORaYd7YG_0uAHl729RJLDjJhqjlbO5IxDnGq9jC-y7Fc0usaQ_VVglloZlI7p1xpcX15ZACNhZjr6v_NPXp7rQDbQImCGcPcwz-qtDQfIrsX3VpUcIMKpZBOd-N57kRdueZx5e-MnlyQGqTvD2zlmI-U3O69_soI7czcUZ4wsdyq-sPNNcu8Vooxa9DqcvtMV6oOmKuKgLhPVNuDXpiY6Gzy5TPDaFqVue30CLAG2ygQ_qti0LqJmBnEFAqOCztRd3T')"></div>
+<div>
+<div class="font-medium text-slate-900 dark:text-white">Dr. James Anderson</div>
+<div class="text-xs text-slate-500">ID: #DOC-008</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm text-slate-900 dark:text-white">Cardiology</div>
+<div class="text-xs text-slate-500">Interventional</div>
+</td>
+<td class="px-6 py-4 hidden md:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">Mar 2, 2026</div>
+</td>
+<td class="px-6 py-4 hidden lg:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">12 years</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 text-xs font-medium rounded">Pending</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button onclick="viewDoctorDetails('DOC-008')" class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button onclick="confirmDoctor('DOC-008')" class="text-green-600 hover:text-green-700 transition-colors">
+<span class="material-symbols-outlined">check_circle</span>
+</button>
+<button onclick="rejectDoctor('DOC-008')" class="text-red-600 hover:text-red-700 transition-colors">
+<span class="material-symbols-outlined">cancel</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Applicant 2 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Dr. Garcia" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAMWX1lDWa2heeqITJSAV6q8fR4ruUTD2qj7yRL5wZ5NQB0EJYThZlkrwPs0sRG2SrSXTPy0N1XNyzoOmtPalz4kwtkDwtubkURZ0xefHoJIcmg3QQG9orC0MAG3y0iooJqiCJHOA7EafSyLiBoNEKpItBs--qzZO2P6YkFo6fKhqE4RFx-Di6-D7L19mMYhMziEyrl6jawRVEcnDx9bn7iTaYo1WJqt52hFm0SEZLHzQbLT60uVMIyN7RKQXDZi1li6wvC3ENffgKB')"></div>
+<div>
+<div class="font-medium text-slate-900 dark:text-white">Dr. Maria Garcia</div>
+<div class="text-xs text-slate-500">ID: #DOC-009</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm text-slate-900 dark:text-white">Pediatrics</div>
+<div class="text-xs text-slate-500">General Pediatrics</div>
+</td>
+<td class="px-6 py-4 hidden md:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">Mar 3, 2026</div>
+</td>
+<td class="px-6 py-4 hidden lg:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">8 years</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 text-xs font-medium rounded">Pending</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button onclick="viewDoctorDetails('DOC-009')" class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button onclick="confirmDoctor('DOC-009')" class="text-green-600 hover:text-green-700 transition-colors">
+<span class="material-symbols-outlined">check_circle</span>
+</button>
+<button onclick="rejectDoctor('DOC-009')" class="text-red-600 hover:text-red-700 transition-colors">
+<span class="material-symbols-outlined">cancel</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Applicant 3 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Dr. Chen" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCewJ8Mze6HkTANfR8Q-qhr3L2VE6ByqVInBr3SrADZLf8AaicQlgME4dziL1IpnZu0aPfLWDoKVo16ljkSG4ZAZaidcMoYi5r3WSSF7HgL0XPGTnLXGPPt8Q6Tsc-obzXNze1rvuWLLVXjCDiCRevQi9qf5DZLmLUyXUyBPtGkZtTLNvIf4K4Bf4gmfMbIFzab9r8LWbEn4J3oXozh4diCCTGMrZeZXzYMxvXtjWnQCm4hIaEuRBsrd6PrBi5oe7Y4fFb99Rh6fEBt')"></div>
+<div>
+<div class="font-medium text-slate-900 dark:text-white">Dr. Lisa Chen</div>
+<div class="text-xs text-slate-500">ID: #DOC-010</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm text-slate-900 dark:text-white">Orthopedics</div>
+<div class="text-xs text-slate-500">Sports Medicine</div>
+</td>
+<td class="px-6 py-4 hidden md:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">Mar 1, 2026</div>
+</td>
+<td class="px-6 py-4 hidden lg:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">15 years</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 text-xs font-medium rounded">Pending</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button onclick="viewDoctorDetails('DOC-010')" class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button onclick="confirmDoctor('DOC-010')" class="text-green-600 hover:text-green-700 transition-colors">
+<span class="material-symbols-outlined">check_circle</span>
+</button>
+<button onclick="rejectDoctor('DOC-010')" class="text-red-600 hover:text-red-700 transition-colors">
+<span class="material-symbols-outlined">cancel</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Applicant 4 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Dr. Thompson" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCNTskn7UVIQNK0Q0AgngK71B2Kx-lWaoKDVri_EiQxLCW4L0eKQLfa3hJvdE5_KJV9MlXwfLd2don1TnIiOoyjmAMcr81rpjRNN3gOrcYIyY3XJFRIDse-Gm1D43hrpm2bNZzsAbzsGWPqOwEaxG83NNpI2YU9pP_uJrRTup0h1XYn1k--H16NzazjMbRAGqbVk-aS_5E8G-c2zwtcys4_1UdgYxJp_TMlXLWrN05e0M4Cjb_HAIuIzG15XgNLTDlEqr8L9Id5k2XO')"></div>
+<div>
+<div class="font-medium text-slate-900 dark:text-white">Dr. Robert Thompson</div>
+<div class="text-xs text-slate-500">ID: #DOC-011</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm text-slate-900 dark:text-white">Neurology</div>
+<div class="text-xs text-slate-500">Clinical Neurology</div>
+</td>
+<td class="px-6 py-4 hidden md:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">Feb 28, 2026</div>
+</td>
+<td class="px-6 py-4 hidden lg:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">10 years</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 text-xs font-medium rounded">Pending</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button onclick="viewDoctorDetails('DOC-011')" class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button onclick="confirmDoctor('DOC-011')" class="text-green-600 hover:text-green-700 transition-colors">
+<span class="material-symbols-outlined">check_circle</span>
+</button>
+<button onclick="rejectDoctor('DOC-011')" class="text-red-600 hover:text-red-700 transition-colors">
+<span class="material-symbols-outlined">cancel</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Applicant 5 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Dr. Williams" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuABfUwRh5QH-R8IKUdSTdK9xc9-9_-nbNtVdBQ2tjVD8_IUFCk5cLnXhPyGM5gxoTjVud3HGCGCd-DFfTfLnG2E663mks1ZVopMEASce3ZHJk6XzFdlZRWPRag9HxDhUaDAp5Dchf7JVRyp4yGlgnKeI-QmmxYXz3p9dDEhex0O_JcByLH6nrsAQRbde2CwdSfqBARCiXhJMX6VPmSXYUsff7cslngd8X8xosysoU2ZfEWsKQjsr6-AGp7BPGTlstQ_nnn6I_EOHp5C')"></div>
+<div>
+<div class="font-medium text-slate-900 dark:text-white">Dr. Jennifer Williams</div>
+<div class="text-xs text-slate-500">ID: #DOC-012</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm text-slate-900 dark:text-white">Dermatology</div>
+<div class="text-xs text-slate-500">Cosmetic Dermatology</div>
+</td>
+<td class="px-6 py-4 hidden md:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">Feb 25, 2026</div>
+</td>
+<td class="px-6 py-4 hidden lg:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">6 years</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 text-xs font-medium rounded">Pending</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button onclick="viewDoctorDetails('DOC-012')" class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button onclick="confirmDoctor('DOC-012')" class="text-green-600 hover:text-green-700 transition-colors">
+<span class="material-symbols-outlined">check_circle</span>
+</button>
+<button onclick="rejectDoctor('DOC-012')" class="text-red-600 hover:text-red-700 transition-colors">
+<span class="material-symbols-outlined">cancel</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-4 border-t border-border-light dark:border-border-dark flex items-center justify-between">
+<p class="text-sm text-slate-500 dark:text-slate-400">Showing 1-5 of 8 pending applications</p>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">Previous</button>
+<button class="px-3 py-1 text-sm rounded-lg bg-primary text-white">1</button>
+<button class="px-3 py-1 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">2</button>
+<button class="px-3 py-1 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">Next</button>
+</div>
+</div>
+</div>
+<!-- Pending Verifications -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm overflow-hidden">
+<div class="p-6 border-b border-border-light dark:border-border-dark">
+<div class="flex items-center justify-between">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white">Pending Doctor Verifications</h3>
+<div class="flex items-center gap-2">
+<select class="px-3 py-1.5 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-border-light dark:border-border-dark">
+<option value="all">All Status</option>
+<option value="pending">Pending</option>
+<option value="verified">Verified</option>
+<option value="rejected">Rejected</option>
+</select>
+<button class="px-3 py-1.5 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+Filter
+</button>
+</div>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead class="bg-slate-50 dark:bg-slate-800/50 border-b border-border-light dark:border-border-dark">
+<tr>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Doctor</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 hidden md:table-cell">Specialization</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 hidden lg:table-cell">License</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Applied</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Status</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-light dark:divide-border-dark">
+<!-- Pending Doctor 1 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Doctor" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA8669_zuSSsORaYd7YG_0uAHl729RJLDjJhqjlbO5IxDnGq9jC-y7Fc0usaQ_VVglloZlI7p1xpcX15ZACNhZjr6v_NPXp7rQDbQImCGcPcwz-qtDQfIrsX3VpUcIMKpZBOd-N57kRdueZx5e-MnlyQGqTvD2zlmI-U3O69_soI7czcUZ4wsdyq-sPNNcu8Vooxa9DqcvtMV6oOmKuKgLhPVNuDXpiY6Gzy5TPDaFqVue30CLAG2ygQ_qti0LqJmBnEFAqOCztRd3T')"></div>
+<div>
+<div class="font-medium text-slate-900 dark:text-white">Dr. James Anderson</div>
+<div class="text-xs text-slate-500">ID: #DOC-008</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 hidden md:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">Cardiology</div>
+</td>
+<td class="px-6 py-4 hidden lg:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">MD-123456</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm text-slate-600 dark:text-slate-400">Mar 2, 2026</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 text-xs font-medium rounded">Pending</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button onclick="viewDoctorDetails('DOC-008')" class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button onclick="confirmDoctor('DOC-008')" class="text-green-600 hover:text-green-700 transition-colors">
+<span class="material-symbols-outlined">check_circle</span>
+</button>
+<button onclick="rejectDoctor('DOC-008')" class="text-red-600 hover:text-red-700 transition-colors">
+<span class="material-symbols-outlined">cancel</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Pending Doctor 2 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Doctor" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAMWX1lDWa2heeqITJSAV6q8fR4ruUTD2qj7yRL5wZ5NQB0EJYThZlkrwPs0sRG2SrSXTPy0N1XNyzoOmtPalz4kwtkDwtubkURZ0xefHoJIcmg3QQG9orC0MAG3y0iooJqiCJHOA7EafSyLiBoNEKpItBs--qzZO2P6YkFo6fKhqE4RFx-Di6-D7L19mMYhMziEyrl6jawRVEcnDx9bn7iTaYo1WJqt52hFm0SEZLHzQbLT60uVMIyN7RKQXDZi1li6wvC3ENffgKB')"></div>
+<div>
+<div class="font-medium text-slate-900 dark:text-white">Dr. Maria Garcia</div>
+<div class="text-xs text-slate-500">ID: #DOC-009</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 hidden md:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">Pediatrics</div>
+</td>
+<td class="px-6 py-4 hidden lg:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">MD-789012</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm text-slate-600 dark:text-slate-400">Mar 3, 2026</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 text-xs font-medium rounded">Pending</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button onclick="viewDoctorDetails('DOC-009')" class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button onclick="confirmDoctor('DOC-009')" class="text-green-600 hover:text-green-700 transition-colors">
+<span class="material-symbols-outlined">check_circle</span>
+</button>
+<button onclick="rejectDoctor('DOC-009')" class="text-red-600 hover:text-red-700 transition-colors">
+<span class="material-symbols-outlined">cancel</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Verified Doctor -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Doctor" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAE4wBSjCeHCweeMUnPfkaTd8I0m88Q6r2x3CAp37e6SdqowAzOmkUjLHGF9DjDSa_i0k92680EDSTdQdHBump2JmNpj-1BuWvIxc_p4gIjiXrF-bz72Si_BNQ2zNC8-ImsecQ5s7ffdHvdKIYND9oykm4Nk0A0pAIEf0cydFW5eRTxd9EljFvRcNNCkl4cRquEuyHRZ02oUQdZGtUYhuulsqZmRdy3dGCxmy9K0m69gH-X5qpXmRUOly4dKJwcdsv3EwwcFET_ASOC')"></div>
+<div>
+<div class="font-medium text-slate-900 dark:text-white">Dr. Michael Smith</div>
+<div class="text-xs text-slate-500">ID: #DOC-001</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 hidden md:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">General Practice</div>
+</td>
+<td class="px-6 py-4 hidden lg:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">MD-456789</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm text-slate-600 dark:text-slate-400">Feb 15, 2026</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300 text-xs font-medium rounded">Verified</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button onclick="viewDoctorDetails('DOC-001')" class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-4 border-t border-border-light dark:border-border-dark flex items-center justify-between">
+<p class="text-sm text-slate-500 dark:text-slate-400">Showing 1-10 of 58 doctors</p>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">Previous</button>
+<button class="px-3 py-1 text-sm rounded-lg bg-primary text-white">1</button>
+<button class="px-3 py-1 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">2</button>
+<button class="px-3 py-1 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">3</button>
+<button class="px-3 py-1 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">Next</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+
+<!-- Doctor Details Modal -->
+<div id="doctorDetailsModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Doctor Verification Details</h3>
+<div id="doctorDetailsContent">
+<!-- Content will be dynamically loaded -->
+</div>
+<div class="flex gap-2 pt-4">
+<button type="button" onclick="closeDoctorDetails()" class="flex-1 px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700">Close</button>
+<button type="button" onclick="confirmDoctorFromModal()" class="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Confirm Doctor</button>
+<button type="button" onclick="rejectDoctorFromModal()" class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Reject Application</button>
+</div>
+</div>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-6 w-full max-w-md">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4" id="confirmModalTitle">Confirm Action</h3>
+<p class="text-sm text-slate-600 dark:text-slate-400 mb-6" id="confirmModalMessage">Are you sure you want to proceed?</p>
+<div class="flex gap-2">
+<button type="button" onclick="closeConfirmModal()" class="flex-1 px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700">Cancel</button>
+<button type="button" onclick="executeConfirmAction()" class="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600" id="confirmActionButton">Confirm</button>
+</div>
+</div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+
+const supabase = createClient(
+  'https://zczlhrsmlecannuqknju.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjemxocnNtbGVjYW5udXFrbmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Njk3MjEsImV4cCI6MjA4ODA0NTcyMX0.bymF387OBZ_5JNojgm2cbm8rAUMyUfdaSKScrjnvMfc'
+);
+
+// Check authentication on page load
+async function checkAuth() {
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (!session) {
+      window.location.href = '../login.html';
+      return;
+    }
+
+    const { data: profile } = await supabase
+      .from('user_profiles')
+      .select('*')
+      .eq('user_id', session.user.id)
+      .single();
+
+    if (!profile || profile.role !== 'doctor') {
+      window.location.href = profile?.role === 'patient' ? '../dashboard.html' : '../login.html';
+      return;
+    }
+
+    updateUserInfo(profile);
+  } catch (error) {
+    console.error('Auth check error:', error);
+    window.location.href = '../login.html';
+  }
+}
+
+function updateUserInfo(profile) {
+  const userName = document.querySelector('.text-right.hidden.sm:block p.text-sm.font-medium');
+  if (userName) {
+    userName.textContent = `Dr. ${profile.first_name} ${profile.last_name}`;
+  }
+}
+
+async function handleLogout() {
+  try {
+    await supabase.auth.signOut();
+    window.location.href = '../login.html';
+  } catch (error) {
+    console.error('Logout error:', error);
+    window.location.href = '../login.html';
+  }
+}
+
+// Doctor verification functions
+let currentDoctorId = null;
+let currentAction = null;
+
+function viewDoctorDetails(doctorId) {
+  currentDoctorId = doctorId;
+  
+  // Simulate loading doctor details
+  const doctorDetails = {
+    'DOC-008': {
+      name: 'Dr. James Anderson',
+      email: 'j.anderson@email.com',
+      phone: '+1 (555) 123-4567',
+      specialization: 'Cardiology',
+      license: 'MD-123456',
+      experience: '12 years',
+      education: 'Harvard Medical School',
+      appliedDate: 'March 2, 2026',
+      documents: ['Medical License', 'Board Certification', 'Malpractice Insurance']
+    },
+    'DOC-009': {
+      name: 'Dr. Maria Garcia',
+      email: 'm.garcia@email.com',
+      phone: '+1 (555) 234-5678',
+      specialization: 'Pediatrics',
+      license: 'MD-789012',
+      experience: '8 years',
+      education: 'Johns Hopkins University',
+      appliedDate: 'March 3, 2026',
+      documents: ['Medical License', 'Board Certification', 'CPR Certification']
+    }
+  };
+
+  const doctor = doctorDetails[doctorId] || doctorDetails['DOC-008'];
+  
+  const content = `
+    <div class="space-y-4">
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <p class="text-sm text-slate-500">Full Name</p>
+          <p class="font-medium">${doctor.name}</p>
+        </div>
+        <div>
+          <p class="text-sm text-slate-500">Email</p>
+          <p class="font-medium">${doctor.email}</p>
+        </div>
+        <div>
+          <p class="text-sm text-slate-500">Phone</p>
+          <p class="font-medium">${doctor.phone}</p>
+        </div>
+        <div>
+          <p class="text-sm text-slate-500">Specialization</p>
+          <p class="font-medium">${doctor.specialization}</p>
+        </div>
+        <div>
+          <p class="text-sm text-slate-500">License Number</p>
+          <p class="font-medium">${doctor.license}</p>
+        </div>
+        <div>
+          <p class="text-sm text-slate-500">Experience</p>
+          <p class="font-medium">${doctor.experience}</p>
+        </div>
+      </div>
+      <div>
+        <p class="text-sm text-slate-500 mb-2">Education</p>
+        <p class="font-medium">${doctor.education}</p>
+      </div>
+      <div>
+        <p class="text-sm text-slate-500 mb-2">Applied Date</p>
+        <p class="font-medium">${doctor.appliedDate}</p>
+      </div>
+      <div>
+        <p class="text-sm text-slate-500 mb-2">Uploaded Documents</p>
+        <div class="space-y-2">
+          ${doctor.documents.map(doc => `
+            <div class="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800 rounded">
+              <span class="text-sm">${doc}</span>
+              <button class="text-primary text-sm hover:underline">View</button>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('doctorDetailsContent').innerHTML = content;
+  document.getElementById('doctorDetailsModal').classList.remove('hidden');
+}
+
+function closeDoctorDetails() {
+  document.getElementById('doctorDetailsModal').classList.add('hidden');
+  currentDoctorId = null;
+}
+
+function confirmDoctor(doctorId) {
+  currentDoctorId = doctorId;
+  currentAction = 'confirm';
+  
+  document.getElementById('confirmModalTitle').textContent = 'Confirm Doctor';
+  document.getElementById('confirmModalMessage').textContent = 'Are you sure you want to confirm this doctor? They will be able to access the system.';
+  document.getElementById('confirmActionButton').textContent = 'Confirm Doctor';
+  document.getElementById('confirmActionButton').className = 'flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700';
+  
+  document.getElementById('confirmModal').classList.remove('hidden');
+}
+
+function rejectDoctor(doctorId) {
+  currentDoctorId = doctorId;
+  currentAction = 'reject';
+  
+  document.getElementById('confirmModalTitle').textContent = 'Reject Application';
+  document.getElementById('confirmModalMessage').textContent = 'Are you sure you want to reject this doctor application? They will need to reapply.';
+  document.getElementById('confirmActionButton').textContent = 'Reject Application';
+  document.getElementById('confirmActionButton').className = 'flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700';
+  
+  document.getElementById('confirmModal').classList.remove('hidden');
+}
+
+function confirmDoctorFromModal() {
+  if (currentDoctorId) {
+    confirmDoctor(currentDoctorId);
+  }
+}
+
+function rejectDoctorFromModal() {
+  if (currentDoctorId) {
+    rejectDoctor(currentDoctorId);
+  }
+}
+
+function closeConfirmModal() {
+  document.getElementById('confirmModal').classList.add('hidden');
+  currentDoctorId = null;
+  currentAction = null;
+}
+
+function executeConfirmAction() {
+  if (!currentDoctorId || !currentAction) return;
+  
+  // Simulate API call
+  console.log(`${currentAction} doctor: ${currentDoctorId}`);
+  
+  // Show success message
+  const message = currentAction === 'confirm' 
+    ? 'Doctor has been successfully confirmed and notified.' 
+    : 'Doctor application has been rejected and notified.';
+  
+  alert(message);
+  
+  closeConfirmModal();
+  closeDoctorDetails();
+  
+  // In a real application, you would refresh the table data here
+  window.location.reload();
+}
+
+// Make functions global
+window.handleLogout = handleLogout;
+window.viewDoctorDetails = viewDoctorDetails;
+window.closeDoctorDetails = closeDoctorDetails;
+window.confirmDoctor = confirmDoctor;
+window.rejectDoctor = rejectDoctor;
+window.confirmDoctorFromModal = confirmDoctorFromModal;
+window.rejectDoctorFromModal = rejectDoctorFromModal;
+window.closeConfirmModal = closeConfirmModal;
+window.executeConfirmAction = executeConfirmAction;
+
+checkAuth();
+supabase.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_OUT') {
+    window.location.href = '../login.html';
+  } else if (event === 'SIGNED_IN') {
+    checkAuth();
+  }
+});
+</script>
+
+</body>
+</html>

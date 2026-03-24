@@ -1,444 +1,774 @@
 <!DOCTYPE html>
-
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
 <title>MediLink Cloud - Book Appointment</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#137fec",
-                        "primary-dark": "#0b63b8",
-                        "background-light": "#f6f7f8",
-                        "background-dark": "#101922",
-                        "surface-light": "#ffffff",
-                        "surface-dark": "#1a242f",
-                    },
-                    fontFamily: {
-                        "display": ["Inter", "sans-serif"]
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0.25rem", 
-                        "lg": "0.5rem", 
-                        "xl": "0.75rem", 
-                        "2xl": "1rem",
-                        "full": "9999px"
-                    },
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#137fec",
+                    "primary-dark": "#0b63be",
+                    "background-light": "#f6f7f8",
+                    "background-dark": "#101922",
+                    "card-light": "#ffffff",
+                    "card-dark": "#1e2936",
+                },
+                fontFamily: {
+                    "display": ["Inter", "sans-serif"]
+                },
+                borderRadius: {
+                    "DEFAULT": "0.25rem", 
+                    "lg": "0.5rem", 
+                    "xl": "0.75rem", 
+                    "2xl": "1rem",
+                    "full": "9999px"
                 },
             },
-        }
-    </script>
+        },
+    }
+</script>
 </head>
 <body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden transition-colors duration-200">
 <div class="relative flex min-h-screen flex-col">
-<!-- Top Navigation -->
-<header class="sticky top-0 z-50 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-surface-light/80 dark:bg-surface-dark/80 backdrop-blur-md px-6 py-3 lg:px-10">
-<div class="flex items-center gap-4">
-<div class="flex items-center justify-center size-10 rounded-lg bg-primary/10 text-primary">
-<span class="material-symbols-outlined text-3xl">medical_services</span>
-</div>
-<h2 class="text-xl font-bold leading-tight tracking-tight text-slate-900 dark:text-white">MediLink Cloud</h2>
-</div>
-<div class="hidden md:flex flex-1 justify-end items-center gap-8">
-<nav class="flex items-center gap-6">
-<a class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary transition-colors" href="dashboard.html">Dashboard</a>
-<a class="text-sm font-medium text-primary" href="#">Appointments</a>
-<a class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary transition-colors" href="#">Patients</a>
-<a class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary transition-colors" href="#">Billing</a>
-</nav>
-<div class="flex items-center gap-4 pl-4 border-l border-slate-200 dark:border-slate-700">
-<a class="text-sm font-medium text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white" href="#">Manage existing booking</a>
-<div class="relative">
-<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-white dark:ring-slate-800 shadow-sm cursor-pointer" data-alt="User profile picture of a doctor in a white coat" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBCKt6RKQAnuSnonTcF3R8iVBDYEGe3j_18RGSfV5W7I6QMlBXRLnZi5uOJjA7uLmee5RwGPzOxR1SRtp34nPYCqqtr9lee2-Eb4PBTZ6CZ4dhJGjOHsJjDYqBGgp0FfZBXNttdldFQzG4xOKM5mi6LLnNhgETd0BQ_DfuFVLLxxr-eE1PqA2YOOu6jO9Jh3BYcp6JaQMaHG9f0IRQtQFwyTma2dMN3H5P03rk-iGS73ff8OQQ7IPz1BCpp3U2LBsSCVAsCSp74hGh1");'>
-</div>
-<div class="absolute bottom-0 right-0 size-3 rounded-full bg-green-500 border-2 border-white dark:border-slate-800"></div>
+
+<!-- Top Header (Matching Dashboard) -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-card-dark px-6 py-4 z-10 sticky top-0">
+<!-- Logo & Branding (Left Side) -->
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-xl size-10 shadow-sm" data-alt="MediLink abstract blue logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCxI3pjrPKcPkRoL588sNS-yKX6G80NqVVkMieXpypt1lj312V87i-erOI8i4mqLjhj3QP28m5KRbbcziNuQY2PZzKxVMlJj24uAOgGhfQMyZFRnWUfDtcqnc4I3VrvQTbPnQ19nsh1ddL8Zo4-cJg3Ts_sGHmbKXa99HRr8V3rHK5zYGXhdgieZc99_a35nHHDRJyj16qqi53ARoZSf3Bme6i5wcgDNt5nEcxCd0qKNrfb0CJ_P5cOOTeQ5jArpJ100fP10o1aH0gl");'></div>
+<div class="flex flex-col hidden sm:block">
+<h1 class="text-slate-900 dark:text-white text-lg font-bold leading-none tracking-tight">MediLink Cloud</h1>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium mt-1">Patient Portal</p>
 </div>
 </div>
+
+<!-- Right Side: Search & User Profile -->
+<div class="flex flex-1 justify-end items-center gap-4 sm:gap-6">
+<!-- Search Bar -->
+<div class="hidden md:flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl px-4 py-2 w-full max-w-xs transition-colors focus-within:ring-2 focus-within:ring-primary/20">
+<span class="material-symbols-outlined text-slate-400">search</span>
+<input class="bg-transparent border-none text-sm text-slate-700 dark:text-slate-200 placeholder-slate-400 focus:ring-0 w-full ml-2" placeholder="Search..."/>
 </div>
-<!-- Mobile Menu Icon -->
-<button class="md:hidden p-2 text-slate-600 dark:text-slate-300">
-<span class="material-symbols-outlined">menu</span>
+<!-- Notifications & Icons -->
+<div class="flex items-center gap-2">
+<button class="flex items-center justify-center size-10 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-card-dark"></span>
 </button>
+<button class="flex items-center justify-center size-10 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors">
+<span class="material-symbols-outlined">chat_bubble</span>
+</button>
+</div>
+<!-- User Profile -->
+<div class="flex items-center gap-3 pl-2 border-l border-slate-200 dark:border-slate-700">
+<div class="text-right hidden md:block">
+<p class="text-sm font-bold text-slate-900 dark:text-white leading-none">Sarah Jenkins</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Patient ID: #88392</p>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-white dark:ring-slate-700 shadow-sm cursor-pointer" data-alt="Profile picture of patient" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC7EVV5ypCihmYTSLn_G46OXG5ANaHMBRiwg5jjL07ySsqqpdonXwP9X7D_EVXqAHezuQLakGuBna0qhRsYHEQNBytapacC0kHXKbVQUBxmnrpM0Ok_Nald063RJcdBmpjc68W1Uypp8PA73IlgaetT7ApK9eDjULbNuc1FwR1RwGOJpCSpccRMIOqJpQUK_yrHkmaBb7MIUhHs-3opqyWFHnBN-X7Nu1TdjcOO2AXQVjf2WKonS1prMOvWbNOa46WJxFhJ9MzXA8Vq");'></div>
+</div>
+</div>
 </header>
+
 <main class="flex-grow w-full max-w-[1280px] mx-auto px-4 lg:px-8 py-8">
-<!-- Page Heading & Introduction -->
+
+<!-- Page Heading -->
 <div class="mb-8">
 <h1 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-2 tracking-tight">Book an Appointment</h1>
-<p class="text-slate-500 dark:text-slate-400 text-lg">Select a specialist and a time that works for you</p>
+<p class="text-slate-500 dark:text-slate-400 text-lg">Select a specialist and time that works for you</p>
 </div>
-<!-- Stepper / Breadcrumbs -->
+
+<!-- Stepper Progress -->
 <div class="mb-10 w-full overflow-x-auto pb-4 md:pb-0">
 <div class="min-w-[600px] flex items-center justify-between relative">
-<!-- Progress Bar Background -->
 <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-200 dark:bg-slate-700 -z-10 rounded-full"></div>
-<!-- Progress Bar Active (50% for Step 2) -->
-<div class="absolute left-0 top-1/2 -translate-y-1/2 w-1/2 h-1 bg-primary -z-10 rounded-full"></div>
-<!-- Step 1: Service (Completed) -->
-<div class="flex flex-col items-center gap-2 group cursor-pointer">
-<div class="size-8 rounded-full bg-primary text-white flex items-center justify-center font-bold ring-4 ring-background-light dark:ring-background-dark">
-<span class="material-symbols-outlined text-sm">check</span>
+<div id="progressBar" class="absolute left-0 top-1/2 -translate-y-1/2 w-1/4 h-1 bg-primary -z-10 rounded-full transition-all duration-500"></div>
+
+<div class="step-indicator flex flex-col items-center gap-2" data-step="1">
+<div class="step-circle size-8 rounded-full bg-primary text-white flex items-center justify-center font-bold ring-4 ring-background-light dark:ring-background-dark">
+<span class="text-sm">1</span>
 </div>
 <span class="text-sm font-semibold text-primary">Service</span>
 </div>
-<!-- Step 2: Doctor (Active) -->
-<div class="flex flex-col items-center gap-2 group cursor-pointer">
-<div class="size-8 rounded-full bg-primary text-white flex items-center justify-center font-bold ring-4 ring-background-light dark:ring-background-dark shadow-[0_0_0_2px_#137fec]">
+
+<div class="step-indicator flex flex-col items-center gap-2" data-step="2">
+<div class="step-circle size-8 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400 flex items-center justify-center font-bold ring-4 ring-background-light dark:ring-background-dark transition-all">
 <span class="text-sm">2</span>
 </div>
-<span class="text-sm font-bold text-slate-900 dark:text-white">Select Doctor</span>
+<span class="text-sm font-medium text-slate-500 dark:text-slate-400">Doctor</span>
 </div>
-<!-- Step 3: Date & Time -->
-<div class="flex flex-col items-center gap-2 group">
-<div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400 flex items-center justify-center font-bold ring-4 ring-background-light dark:ring-background-dark">
+
+<div class="step-indicator flex flex-col items-center gap-2" data-step="3">
+<div class="step-circle size-8 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400 flex items-center justify-center font-bold ring-4 ring-background-light dark:ring-background-dark transition-all">
 <span class="text-sm">3</span>
 </div>
-<span class="text-sm font-medium text-slate-500 dark:text-slate-400">Date &amp; Time</span>
+<span class="text-sm font-medium text-slate-500 dark:text-slate-400">Date & Time</span>
 </div>
-<!-- Step 4: Confirmation -->
-<div class="flex flex-col items-center gap-2 group">
-<div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400 flex items-center justify-center font-bold ring-4 ring-background-light dark:ring-background-dark">
+
+<div class="step-indicator flex flex-col items-center gap-2" data-step="4">
+<div class="step-circle size-8 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400 flex items-center justify-center font-bold ring-4 ring-background-light dark:ring-background-dark transition-all">
 <span class="text-sm">4</span>
 </div>
-<span class="text-sm font-medium text-slate-500 dark:text-slate-400">Confirmation</span>
+<span class="text-sm font-medium text-slate-500 dark:text-slate-400">Confirm</span>
 </div>
 </div>
 </div>
+
+<!-- Main Content -->
 <div class="flex flex-col lg:flex-row gap-8">
-<!-- LEFT COLUMN: Filters & Doctor Selection -->
-<div class="w-full lg:w-2/3 flex flex-col gap-6">
-<!-- Search & Filter Bar -->
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
-<div class="relative flex-1">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-<input class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="Search by doctor name or condition..." type="text"/>
+
+<!-- LEFT COLUMN: Step Content -->
+<div class="w-full lg:w-2/3">
+
+<!-- ============ STEP 1: SERVICE SELECTION ============ -->
+<div id="step-1" class="step-content">
+<div class="bg-card-light dark:bg-card-dark rounded-xl shadow-md border border-slate-200 dark:border-slate-800 p-6">
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Select a Service</h2>
+<p class="text-slate-600 dark:text-slate-300 mb-6">Choose the type of consultation you need</p>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+<!-- Service Card: Cardiology -->
+<div class="service-card cursor-pointer p-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 hover:border-primary/50 hover:shadow-md transition-all" data-service="cardiology" data-name="Cardiology Consultation" data-price="1200">
+<div class="flex items-start gap-3 overflow-hidden">
+<div class="size-12 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 flex items-center justify-center shrink-0 flex-shrink-0">
+<span class="material-symbols-outlined text-lg">cardiology</span>
 </div>
-<div class="flex gap-2 overflow-x-auto pb-2 md:pb-0 no-scrollbar">
-<!-- Reuse Chips Style -->
-<button class="flex items-center gap-2 px-3 py-2 bg-primary text-white rounded-lg text-sm font-medium whitespace-nowrap shadow-sm hover:bg-primary-dark transition-colors">
-<span>Cardiology</span>
-<span class="material-symbols-outlined text-[18px]">close</span>
-</button>
-<button class="flex items-center gap-2 px-3 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
-<span>Availability</span>
-<span class="material-symbols-outlined text-[18px]">expand_more</span>
-</button>
-<button class="flex items-center gap-2 px-3 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
-<span>Gender</span>
-<span class="material-symbols-outlined text-[18px]">expand_more</span>
-</button>
-</div>
-</div>
-<!-- Doctor Card 1 (Active/Expanded) -->
-<div class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-md border-2 border-primary dark:border-primary overflow-hidden transition-all duration-300">
-<div class="p-6">
-<div class="flex flex-col sm:flex-row gap-5">
-<div class="relative shrink-0">
-<div class="size-24 rounded-lg bg-cover bg-center shadow-inner" data-alt="Portrait of Dr. Sarah Jenkins" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCLBRAEiO7RmFMrhDFWnB__7lx5B8N5HMSDIBH_lDYwM-zoxeyhOfUEUx4q9QjmG5MNAIaaLrQw8eYaDAt7u5KDNKBlsjq806YrAwW5m-keHY9R_1kY9273gy_YpUnU2CEMFJu8S9LPjbVmTH-KT-0kZXLtfu9iv5PVQXNhSKLDbyf54olOL4NvJcJgDpCTBE9ojhE45QRedesi5kje_zMXDCNymu84JgZ4Shya3fM6-O-IlY58Nt18-6e5jhkYA40gi82lk3Bdnas1");'></div>
-<div class="absolute -bottom-2 -right-2 bg-white dark:bg-surface-dark rounded-full p-1 shadow-sm">
-<span class="material-symbols-outlined text-primary fill-1">verified</span>
+<div class="flex-1 min-w-0">
+<h3 class="font-bold text-slate-900 dark:text-white truncate">Cardiology</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">Heart health assessment</p>
+<div class="mt-3 flex items-center justify-between">
+<span class="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded">30-45 mins</span>
+<span class="font-bold text-blue-600 dark:text-blue-400 whitespace-nowrap">₱1,200</span>
 </div>
 </div>
-<div class="flex-1">
-<div class="flex justify-between items-start">
-<div>
-<h3 class="text-lg font-bold text-slate-900 dark:text-white">Dr. Sarah Jenkins</h3>
-<p class="text-sm text-primary font-medium mb-1">Cardiologist • 12 years experience</p>
-<div class="flex items-center gap-1 mb-3">
-<span class="material-symbols-outlined text-yellow-400 text-sm">star</span>
-<span class="text-sm font-bold text-slate-900 dark:text-white">4.9</span>
-<span class="text-xs text-slate-500 dark:text-slate-400">(124 reviews)</span>
 </div>
 </div>
-<div class="text-right hidden sm:block">
-<p class="text-sm text-slate-500 dark:text-slate-400">Consultation Fee</p>
-<p class="text-lg font-bold text-slate-900 dark:text-white">$120</p>
+
+<!-- Service Card: Dermatology -->
+<div class="service-card cursor-pointer p-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 hover:border-primary/50 hover:shadow-md transition-all" data-service="dermatology" data-name="Dermatology Consultation" data-price="900">
+<div class="flex items-start gap-3 overflow-hidden">
+<div class="size-12 rounded-lg bg-pink-50 dark:bg-pink-900/20 text-pink-600 flex items-center justify-center shrink-0 flex-shrink-0">
+<span class="material-symbols-outlined text-lg">dermatology</span>
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-bold text-slate-900 dark:text-white truncate">Dermatology</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">Skin health & treatment</p>
+<div class="mt-3 flex items-center justify-between">
+<span class="text-xs bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 px-2 py-1 rounded">20-30 mins</span>
+<span class="font-bold text-pink-600 dark:text-pink-400 whitespace-nowrap">₱900</span>
 </div>
 </div>
-<p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4 line-clamp-2">Specializes in preventative cardiology, heart failure management, and women's heart health. Dedicated to providing comprehensive and compassionate care.</p>
-<!-- Embedded Calendar & Time Selection for Active Card -->
-<div class="bg-slate-50 dark:bg-slate-900/50 rounded-lg p-4 border border-slate-100 dark:border-slate-800">
+</div>
+</div>
+
+<!-- Service Card: Orthopedics -->
+<div class="service-card cursor-pointer p-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 hover:border-primary/50 hover:shadow-md transition-all" data-service="orthopedics" data-name="Orthopedic Consultation" data-price="1100">
+<div class="flex items-start gap-3 overflow-hidden">
+<div class="size-12 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-600 flex items-center justify-center shrink-0 flex-shrink-0">
+<span class="material-symbols-outlined text-lg">skeletal_muscle</span>
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-bold text-slate-900 dark:text-white truncate">Orthopedics</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">Bone & joint disorders</p>
+<div class="mt-3 flex items-center justify-between">
+<span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-1 rounded">30-45 mins</span>
+<span class="font-bold text-green-600 dark:text-green-400 whitespace-nowrap">₱1,100</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Service Card: Pediatrics -->
+<div class="service-card cursor-pointer p-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 hover:border-primary/50 hover:shadow-md transition-all" data-service="pediatrics" data-name="Pediatric Consultation" data-price="800">
+<div class="flex items-start gap-3 overflow-hidden">
+<div class="size-12 rounded-lg bg-purple-50 dark:bg-purple-900/20 text-purple-600 flex items-center justify-center shrink-0 flex-shrink-0">
+<span class="material-symbols-outlined text-lg">child_friendly</span>
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-bold text-slate-900 dark:text-white truncate">Pediatrics</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">Child health & development</p>
+<div class="mt-3 flex items-center justify-between">
+<span class="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-1 rounded">20-30 mins</span>
+<span class="font-bold text-purple-600 dark:text-purple-400 whitespace-nowrap">₱800</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Service Card: General Medicine -->
+<div class="service-card cursor-pointer p-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 hover:border-primary/50 hover:shadow-md transition-all" data-service="general" data-name="General Medicine" data-price="750">
+<div class="flex items-start gap-3 overflow-hidden">
+<div class="size-12 rounded-lg bg-orange-50 dark:bg-orange-900/20 text-orange-600 flex items-center justify-center shrink-0 flex-shrink-0">
+<span class="material-symbols-outlined text-lg">health_and_safety</span>
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-bold text-slate-900 dark:text-white truncate">General Medicine</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">General checkup & consultation</p>
+<div class="mt-3 flex items-center justify-between">
+<span class="text-xs bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 px-2 py-1 rounded">20-30 mins</span>
+<span class="font-bold text-orange-600 dark:text-orange-400 whitespace-nowrap">₱750</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Service Card: Psychiatry -->
+<div class="service-card cursor-pointer p-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 hover:border-primary/50 hover:shadow-md transition-all" data-service="psychiatry" data-name="Psychiatry Consultation" data-price="1400">
+<div class="flex items-start gap-3 overflow-hidden">
+<div class="size-12 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 flex items-center justify-center shrink-0 flex-shrink-0">
+<span class="material-symbols-outlined text-lg">psychology</span>
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-bold text-slate-900 dark:text-white truncate">Psychiatry</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">Mental health & therapy</p>
+<div class="mt-3 flex items-center justify-between">
+<span class="text-xs bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 px-2 py-1 rounded">45-60 mins</span>
+<span class="font-bold text-indigo-600 dark:text-indigo-400 whitespace-nowrap">₱1,400</span>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="flex justify-between mt-8">
+<button onclick="goToStep(1)" class="px-6 py-2.5 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-white font-medium text-sm">Back</button>
+<button id="btn-next-1" onclick="goToStep(2)" class="px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-dark text-white font-medium text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>Continue</button>
+</div>
+</div>
+</div>
+
+<!-- ============ STEP 2: DOCTOR SELECTION ============ -->
+<div id="step-2" class="step-content hidden">
+<div class="bg-card-light dark:bg-card-dark rounded-xl shadow-md border border-slate-200 dark:border-slate-800 p-6">
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Select a Doctor</h2>
+<p class="text-slate-600 dark:text-slate-300 mb-6">Choose from available specialists</p>
+
+<div id="doctor-list" class="space-y-4">
+<!-- Doctor cards will be populated via JavaScript -->
+</div>
+
+<div class="flex justify-between mt-8">
+<button onclick="goToStep(1)" class="px-6 py-2.5 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-white font-medium text-sm">Back</button>
+<button id="btn-next-2" onclick="goToStep(3)" class="px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-dark text-white font-medium text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>Continue</button>
+</div>
+</div>
+</div>
+
+<!-- ============ STEP 3: DATE & TIME ============ -->
+<div id="step-3" class="step-content hidden">
+<div class="bg-card-light dark:bg-card-dark rounded-xl shadow-md border border-slate-200 dark:border-slate-800 p-6">
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Select Date & Time</h2>
+<p class="text-slate-600 dark:text-slate-300 mb-6">Choose your preferred appointment slot</p>
+
+<!-- Calendar Section -->
+<div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 border border-slate-100 dark:border-slate-700 mb-6">
 <div class="flex items-center justify-between mb-4">
 <h4 class="text-sm font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-<span class="material-symbols-outlined text-primary">calendar_month</span> Available Slots
-                                            </h4>
+<span class="material-symbols-outlined text-primary">calendar_month</span> Pick a Date
+</h4>
 <div class="flex gap-1">
-<button class="size-7 flex items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500"><span class="material-symbols-outlined text-sm">chevron_left</span></button>
-<span class="text-sm font-medium text-slate-700 dark:text-slate-300 self-center">October 2023</span>
-<button class="size-7 flex items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500"><span class="material-symbols-outlined text-sm">chevron_right</span></button>
-</div>
-</div>
-<!-- Date Strip -->
-<div class="flex justify-between gap-2 mb-4 overflow-x-auto pb-2 no-scrollbar">
-<button class="flex flex-col items-center justify-center min-w-[3.5rem] h-16 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-surface-dark hover:border-primary/50 transition-colors">
-<span class="text-xs text-slate-500 uppercase font-medium">Mon</span>
-<span class="text-lg font-bold text-slate-900 dark:text-white">23</span>
+<button onclick="prevWeek()" class="size-7 flex items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
 </button>
-<button class="flex flex-col items-center justify-center min-w-[3.5rem] h-16 rounded-lg bg-primary text-white shadow-md shadow-primary/30 transform scale-105">
-<span class="text-xs text-white/80 uppercase font-medium">Tue</span>
-<span class="text-lg font-bold">24</span>
-</button>
-<button class="flex flex-col items-center justify-center min-w-[3.5rem] h-16 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-surface-dark hover:border-primary/50 transition-colors">
-<span class="text-xs text-slate-500 uppercase font-medium">Wed</span>
-<span class="text-lg font-bold text-slate-900 dark:text-white">25</span>
-</button>
-<button class="flex flex-col items-center justify-center min-w-[3.5rem] h-16 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-surface-dark hover:border-primary/50 transition-colors opacity-50 cursor-not-allowed">
-<span class="text-xs text-slate-500 uppercase font-medium">Thu</span>
-<span class="text-lg font-bold text-slate-900 dark:text-white">26</span>
-</button>
-<button class="flex flex-col items-center justify-center min-w-[3.5rem] h-16 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-surface-dark hover:border-primary/50 transition-colors">
-<span class="text-xs text-slate-500 uppercase font-medium">Fri</span>
-<span class="text-lg font-bold text-slate-900 dark:text-white">27</span>
+<span id="month-display" class="text-sm font-medium text-slate-700 dark:text-slate-300 self-center min-w-[120px] text-center">Oct 2024</span>
+<button onclick="nextWeek()" class="size-7 flex items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
 </button>
 </div>
-<!-- Time Slots Grid -->
+</div>
+
+<div id="date-list" class="flex justify-between gap-2 overflow-x-auto pb-2 no-scrollbar">
+<!-- Date buttons populated via JavaScript -->
+</div>
+</div>
+
+<!-- Time Slots -->
+<div class="space-y-4">
 <div>
-<p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Morning</p>
-<div class="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-4">
-<button class="px-3 py-2 rounded-md text-sm font-medium border border-slate-200 dark:border-slate-700 hover:border-primary hover:text-primary dark:hover:border-primary dark:hover:text-primary bg-white dark:bg-surface-dark transition-all">09:00 AM</button>
-<button class="px-3 py-2 rounded-md text-sm font-medium bg-primary text-white shadow-sm ring-2 ring-primary ring-offset-1 dark:ring-offset-surface-dark">09:30 AM</button>
-<button class="px-3 py-2 rounded-md text-sm font-medium border border-slate-200 dark:border-slate-700 hover:border-primary hover:text-primary dark:hover:border-primary dark:hover:text-primary bg-white dark:bg-surface-dark transition-all">10:00 AM</button>
-<button class="px-3 py-2 rounded-md text-sm font-medium border border-slate-200 dark:border-slate-700 text-slate-300 dark:text-slate-600 cursor-not-allowed bg-slate-50 dark:bg-slate-900">10:30 AM</button>
-</div>
-<p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Afternoon</p>
-<div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
-<button class="px-3 py-2 rounded-md text-sm font-medium border border-slate-200 dark:border-slate-700 hover:border-primary hover:text-primary dark:hover:border-primary dark:hover:text-primary bg-white dark:bg-surface-dark transition-all">02:00 PM</button>
-<button class="px-3 py-2 rounded-md text-sm font-medium border border-slate-200 dark:border-slate-700 hover:border-primary hover:text-primary dark:hover:border-primary dark:hover:text-primary bg-white dark:bg-surface-dark transition-all">02:30 PM</button>
-<button class="px-3 py-2 rounded-md text-sm font-medium border border-slate-200 dark:border-slate-700 hover:border-primary hover:text-primary dark:hover:border-primary dark:hover:text-primary bg-white dark:bg-surface-dark transition-all">04:00 PM</button>
+<p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase">🌅 Morning (9:00 AM - 12:00 PM)</p>
+<div class="grid grid-cols-3 sm:grid-cols-4 gap-2" id="morning-slots">
+<!-- Populated via JS -->
 </div>
 </div>
-</div>
-</div>
-</div>
-</div>
-<div class="bg-primary/5 dark:bg-primary/10 px-6 py-3 border-t border-primary/10 flex justify-between items-center">
-<span class="text-sm font-medium text-primary">Selected: Tue, Oct 24 at 09:30 AM</span>
-<button class="hidden sm:block text-sm font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white">View Profile</button>
-</div>
-</div>
-<!-- Doctor Card 2 (Standard) -->
-<div class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-md transition-shadow group">
-<div class="flex flex-col sm:flex-row gap-5 items-center sm:items-start">
-<div class="relative shrink-0">
-<div class="size-20 rounded-lg bg-cover bg-center" data-alt="Portrait of Dr. Michael Chen" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBU2qagK1Tic0aL69KyBwh14Evx7HdLY04aQ5OR7OizHeqhA2DSQwqo3mS-1vWxB2PcU2VA9T-koc1gApJTjBjFBZ4LQgerRPAwc5jyGgtXQs1JjjzQ6Z91mHFtBXodPbXmQk_oLKeO8MfLy31Xy5Qw_xp6zc5u4aO0P47DCfcYXUTNeOkYk6nhqCCNBRTDOSNeNAGiu-jSGoQ237bTms4-VcKDPq9RvksZYHQOq9-bVi2ER6CQ0sn9tgFEVLAGrSFnd5BeNI0sueTV");'></div>
-</div>
-<div class="flex-1 text-center sm:text-left">
-<div class="flex flex-col sm:flex-row justify-between items-center sm:items-start mb-2">
+
 <div>
-<h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">Dr. Michael Chen</h3>
-<p class="text-sm text-slate-500 dark:text-slate-400">Cardiologist • 8 years experience</p>
-</div>
-<div class="flex items-center gap-1 mt-1 sm:mt-0">
-<span class="material-symbols-outlined text-yellow-400 text-sm">star</span>
-<span class="text-sm font-bold text-slate-900 dark:text-white">4.7</span>
+<p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase">☀️ Afternoon (1:00 PM - 5:00 PM)</p>
+<div class="grid grid-cols-3 sm:grid-cols-4 gap-2" id="afternoon-slots">
+<!-- Populated via JS -->
 </div>
 </div>
-<div class="flex items-center justify-center sm:justify-start gap-4 mb-4">
-<div class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">
-<span class="material-symbols-outlined text-xs">language</span> English, Mandarin
-                                     </div>
-<div class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">
-<span class="material-symbols-outlined text-xs">location_on</span> Main Clinic
-                                     </div>
-</div>
-</div>
-<div class="shrink-0 w-full sm:w-auto">
-<button class="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-medium text-sm hover:border-primary hover:text-primary dark:hover:border-primary dark:hover:text-primary transition-all shadow-sm">
-                                    View Availability
-                                </button>
-</div>
-</div>
-</div>
-<!-- Doctor Card 3 (Standard) -->
-<div class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-md transition-shadow group">
-<div class="flex flex-col sm:flex-row gap-5 items-center sm:items-start">
-<div class="relative shrink-0">
-<div class="size-20 rounded-lg bg-cover bg-center" data-alt="Portrait of Dr. Emily Rodriguez" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAW3FWv4steA9ywdigEp5vy83EWk9NALDtiEtarIBfdPLZmvQTVpz3yeGWB8iPdqidZ-5c7GnVwjVRub4NHQxccsZu-VjZTK0BG_P4mLxhbFyEC0zTgMUYR1QB9S9qdH0olUeRV5Sv7rZkpaRYcCOosPGDkpyDheYkgIo_YZADk7mIFGxnlVy8EdyykeA1tQLHyTJLvPDWD75Y9myhZPQiHK_OrQKs0kgzmBBY01NK6wNqLSu_RlfO2WIutaaxTO-Y74fz9p30bLOi4");'></div>
-</div>
-<div class="flex-1 text-center sm:text-left">
-<div class="flex flex-col sm:flex-row justify-between items-center sm:items-start mb-2">
+
 <div>
-<h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">Dr. Emily Rodriguez</h3>
-<p class="text-sm text-slate-500 dark:text-slate-400">Cardiologist • 15 years experience</p>
-</div>
-<div class="flex items-center gap-1 mt-1 sm:mt-0">
-<span class="material-symbols-outlined text-yellow-400 text-sm">star</span>
-<span class="text-sm font-bold text-slate-900 dark:text-white">5.0</span>
-</div>
-</div>
-<div class="flex items-center justify-center sm:justify-start gap-4 mb-4">
-<div class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">
-<span class="material-symbols-outlined text-xs">language</span> English, Spanish
-                                     </div>
-<div class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">
-<span class="material-symbols-outlined text-xs">location_on</span> City Hospital
-                                     </div>
-</div>
-</div>
-<div class="shrink-0 w-full sm:w-auto">
-<button class="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-medium text-sm hover:border-primary hover:text-primary dark:hover:border-primary dark:hover:text-primary transition-all shadow-sm">
-                                    View Availability
-                                </button>
+<p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase">🌆 Evening (4:00 PM - 6:00 PM)</p>
+<div class="grid grid-cols-3 sm:grid-cols-4 gap-2" id="evening-slots">
+<!-- Populated via JS -->
 </div>
 </div>
 </div>
-<!-- Pagination -->
-<div class="flex justify-center pt-4">
-<button class="px-4 py-2 text-sm text-slate-500 dark:text-slate-400 font-medium hover:text-primary">Load More Specialists</button>
+
+<div class="flex justify-between mt-8">
+<button onclick="goToStep(2)" class="px-6 py-2.5 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-white font-medium text-sm">Back</button>
+<button id="btn-next-3" onclick="goToStep(4)" class="px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-dark text-white font-medium text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>Review & Confirm</button>
 </div>
 </div>
+</div>
+
+<!-- ============ STEP 4: CONFIRMATION ============ -->
+<div id="step-4" class="step-content hidden">
+<div class="bg-card-light dark:bg-card-dark rounded-xl shadow-md border border-slate-200 dark:border-slate-800 p-6">
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Review Your Appointment</h2>
+<p class="text-slate-600 dark:text-slate-300 mb-6">Please verify all details before confirming</p>
+
+<!-- Summary Cards -->
+<div class="space-y-4 mb-8">
+
+<!-- Service -->
+<div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
+<div class="flex gap-3">
+<div class="size-10 rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-600 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">medical_services</span>
+</div>
+<div class="flex-1">
+<p class="text-xs text-slate-600 dark:text-slate-400 uppercase font-semibold">Service</p>
+<p id="confirm-service" class="text-lg font-bold text-slate-900 dark:text-white mt-1">-</p>
+<p id="confirm-service-price" class="text-sm text-blue-600 dark:text-blue-400 font-semibold mt-1">-</p>
+</div>
+</div>
+</div>
+
+<!-- Doctor -->
+<div class="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-4">
+<div class="flex gap-3">
+<div class="size-10 rounded-lg bg-purple-100 dark:bg-purple-900/40 text-purple-600 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div class="flex-1">
+<p class="text-xs text-slate-600 dark:text-slate-400 uppercase font-semibold">Doctor</p>
+<p id="confirm-doctor" class="text-lg font-bold text-slate-900 dark:text-white mt-1">-</p>
+<p id="confirm-doctor-exp" class="text-sm text-purple-600 dark:text-purple-400 mt-1">-</p>
+</div>
+</div>
+</div>
+
+<!-- Date & Time -->
+<div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4">
+<div class="flex gap-3">
+<div class="size-10 rounded-lg bg-green-100 dark:bg-green-900/40 text-green-600 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div class="flex-1">
+<p class="text-xs text-slate-600 dark:text-slate-400 uppercase font-semibold">Date & Time</p>
+<p id="confirm-datetime" class="text-lg font-bold text-slate-900 dark:text-white mt-1">-</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Pricing -->
+<div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 mb-6 border border-slate-200 dark:border-slate-700">
+<div class="flex justify-between items-center">
+<span class="text-base font-bold text-slate-900 dark:text-white">Total Cost</span>
+<span id="confirm-total-price" class="text-2xl font-bold text-primary">₱0</span>
+</div>
+</div>
+
+<!-- Important Notes -->
+<div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4 mb-6">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-amber-600 dark:text-amber-400 shrink-0">info</span>
+<div class="text-sm text-amber-900 dark:text-amber-100">
+<p class="font-semibold mb-2">Important Information:</p>
+<ul class="list-disc list-inside space-y-1 text-xs">
+<li><strong>Pending Validation:</strong> Your appointment is pending admin review and confirmation</li>
+<li><strong>Confirmation Email:</strong> You'll receive an email once the medical team approves</li>
+<li><strong>Arrival Time:</strong> Please arrive 10 minutes before your scheduled appointment</li>
+<li><strong>Documentation:</strong> Bring valid ID and any relevant medical records</li>
+<li><strong>Rescheduling:</strong> You can reschedule up to 24 hours before the appointment</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- Verification Checkbox -->
+<div class="bg-slate-100 dark:bg-slate-800/50 rounded-xl p-4 mb-6 border border-slate-200 dark:border-slate-700">
+<label class="flex items-start gap-3 cursor-pointer">
+<input id="confirm-checkbox" type="checkbox" class="mt-1 size-4 rounded border-2 border-slate-300 dark:border-slate-600 accent-primary cursor-pointer">
+<span class="text-sm text-slate-900 dark:text-white">
+I have reviewed all appointment details and confirm they are correct. I understand this appointment is pending admin validation and will receive confirmation notification.
+</span>
+</label>
+</div>
+
+<div class="flex justify-between mt-8">
+<button onclick="goToStep(3)" class="px-6 py-2.5 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-white font-medium text-sm">Back</button>
+<button id="btn-submit" class="px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-dark text-white font-medium text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2" disabled>
+<span class="material-symbols-outlined text-sm">check_circle</span> Submit Appointment
+</button>
+</div>
+</div>
+</div>
+
+</div>
+
 <!-- RIGHT COLUMN: Sticky Summary -->
 <div class="w-full lg:w-1/3">
 <div class="sticky top-24 space-y-4">
-<!-- Summary Card -->
-<div class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-lg border border-slate-100 dark:border-slate-800 overflow-hidden">
+
+<!-- Booking Summary -->
+<div class="bg-card-light dark:bg-card-dark rounded-xl shadow-lg border border-slate-100 dark:border-slate-800 overflow-hidden">
 <div class="bg-slate-50 dark:bg-slate-800/50 p-4 border-b border-slate-200 dark:border-slate-700">
 <h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-<span class="material-symbols-outlined text-primary">receipt_long</span> Appointment Summary
-                                </h3>
+<span class="material-symbols-outlined text-primary">receipt_long</span> Your Booking
+</h3>
 </div>
-<div class="p-5 flex flex-col gap-4">
-<!-- Selected Service -->
+<div class="p-5 space-y-4">
+
 <div class="flex gap-3">
-<div class="size-10 rounded bg-blue-50 dark:bg-blue-900/20 text-primary flex items-center justify-center shrink-0">
-<span class="material-symbols-outlined">cardiology</span>
+<div class="size-10 rounded bg-blue-50 dark:bg-blue-900/20 text-blue-600 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm">local_offer</span>
 </div>
 <div>
 <p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Service</p>
-<p class="text-sm font-medium text-slate-900 dark:text-white">Cardiology Consultation</p>
-<p class="text-xs text-slate-400 dark:text-slate-500">Initial Checkup</p>
+<p id="summary-service" class="text-sm font-medium text-slate-900 dark:text-white mt-1">Not selected</p>
 </div>
 </div>
-<div class="h-px bg-slate-100 dark:bg-slate-800 w-full"></div>
-<!-- Selected Doctor -->
+
+<div class="h-px bg-slate-100 dark:bg-slate-800"></div>
+
 <div class="flex gap-3">
-<div class="size-10 rounded bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0">
-<span class="material-symbols-outlined">person</span>
+<div class="size-10 rounded bg-purple-50 dark:bg-purple-900/20 text-purple-600 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm">person</span>
 </div>
 <div>
 <p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Doctor</p>
-<p class="text-sm font-medium text-slate-900 dark:text-white">Dr. Sarah Jenkins</p>
-<p class="text-xs text-slate-400 dark:text-slate-500">Cardiologist</p>
+<p id="summary-doctor" class="text-sm font-medium text-slate-900 dark:text-white mt-1">Not selected</p>
 </div>
 </div>
-<div class="h-px bg-slate-100 dark:bg-slate-800 w-full"></div>
-<!-- Selected Time -->
+
+<div class="h-px bg-slate-100 dark:bg-slate-800"></div>
+
 <div class="flex gap-3">
-<div class="size-10 rounded bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 flex items-center justify-center shrink-0">
-<span class="material-symbols-outlined">schedule</span>
+<div class="size-10 rounded bg-green-50 dark:bg-green-900/20 text-green-600 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm">access_time</span>
 </div>
 <div>
-<p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Date &amp; Time</p>
-<p class="text-sm font-medium text-slate-900 dark:text-white">Tue, 24 Oct 2023</p>
-<p class="text-xs text-slate-400 dark:text-slate-500">09:30 AM</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Date & Time</p>
+<p id="summary-date" class="text-sm font-medium text-slate-900 dark:text-white mt-1">Not selected</p>
 </div>
 </div>
-<!-- Cost -->
-<div class="mt-2 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3 flex justify-between items-center">
-<span class="text-sm font-medium text-slate-600 dark:text-slate-300">Estimated Cost</span>
-<span class="text-lg font-bold text-slate-900 dark:text-white">$120.00</span>
+
+<div class="mt-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3 flex justify-between items-center border border-slate-100 dark:border-slate-700">
+<span class="text-sm font-semibold text-slate-600 dark:text-slate-300">Total Cost</span>
+<span id="summary-price" class="text-lg font-bold text-primary">₱0</span>
 </div>
-<!-- Action Button -->
-<button id="confirmBtn" class="w-full mt-2 py-3 rounded-lg bg-primary hover:bg-primary-dark text-white font-semibold shadow-md shadow-primary/20 transition-all flex items-center justify-center gap-2">
-                                    Confirm Appointment <span class="material-symbols-outlined text-sm">arrow_forward</span>
-</button>
-<p class="text-xs text-center text-slate-400 dark:text-slate-500 mt-2">
-                                    You won't be charged yet.
-                                </p>
+
+<div class="pt-3 border-t border-slate-200 dark:border-slate-700">
+<p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">Current Step</p>
+<p id="current-step" class="text-sm font-bold text-primary mt-1">Step 1: Service Selection</p>
 </div>
 </div>
+</div>
+
 <!-- Help Card -->
-<div class="bg-white dark:bg-surface-dark rounded-xl p-4 border border-slate-100 dark:border-slate-800 shadow-sm flex items-start gap-3">
-<span class="material-symbols-outlined text-slate-400">info</span>
+<div class="bg-white dark:bg-card-dark rounded-xl p-4 border border-slate-100 dark:border-slate-800 shadow-sm flex items-start gap-3">
+<span class="material-symbols-outlined text-slate-400">help</span>
 <div>
 <p class="text-sm font-medium text-slate-900 dark:text-white">Need help?</p>
-<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Call our support line at <a class="text-primary hover:underline" href="#">1-800-MEDILINK</a> for assistance with your booking.</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Call <a href="#" class="text-primary hover:underline font-semibold">1-800-MEDILINK</a></p>
 </div>
 </div>
+
 </div>
 </div>
-</div>
+
 </main>
 </div>
 
 <script>
-// Book Appointment functionality
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Book Appointment page loaded');
-    
-    // Doctor card selection
-    const doctorCards = document.querySelectorAll('.group');
-    doctorCards.forEach(card => {
-        card.addEventListener('click', function() {
-            // Remove previous selection
-            document.querySelectorAll('.border-2').forEach(c => {
-                c.classList.remove('border-2', 'border-primary');
-            });
-            // Add selection to clicked card
-            this.classList.add('border-2', 'border-primary');
-        });
-    });
-    
-    // Time slot selection
-    const timeSlots = document.querySelectorAll('button');
-    timeSlots.forEach(slot => {
-        if (slot.textContent.includes(':')) {
-            slot.addEventListener('click', function() {
-                // Remove previous selection
-                timeSlots.forEach(s => {
-                    if (s.textContent.includes(':')) {
-                        s.classList.remove('bg-primary', 'text-white');
-                        s.classList.add('border', 'border-slate-200');
-                    }
-                });
-                // Add selection to clicked slot
-                this.classList.remove('border', 'border-slate-200');
-                this.classList.add('bg-primary', 'text-white');
-            });
-        }
-    });
-    
-    // Confirm appointment
-    const confirmBtn = document.getElementById('confirmBtn');
-    if (confirmBtn) {
-        confirmBtn.addEventListener('click', function() {
-            // Show loading state
-            this.disabled = true;
-            this.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Processing...';
+// Data for doctors
+const doctors = {
+    cardiology: [
+        { id: 1, name: 'Dr. Sarah Jenkins', specialty: 'Cardiologist', exp: '12 years', rating: 4.9, price: 1200 },
+        { id: 2, name: 'Dr. Michael Chen', specialty: 'Cardiologist', exp: '8 years', rating: 4.7, price: 1200 },
+        { id: 3, name: 'Dr. Emily Rodriguez', specialty: 'Cardiologist', exp: '15 years', rating: 5.0, price: 1200 }
+    ],
+    dermatology: [
+        { id: 4, name: 'Dr. Lisa Kim', specialty: 'Dermatologist', exp: '10 years', rating: 4.8, price: 900 },
+        { id: 5, name: 'Dr. James Miller', specialty: 'Dermatologist', exp: '7 years', rating: 4.6, price: 900 }
+    ],
+    orthopedics: [
+        { id: 6, name: 'Dr. Robert Thompson', specialty: 'Orthopedist', exp: '14 years', rating: 4.9, price: 1100 },
+        { id: 7, name: 'Dr. Jessica Lee', specialty: 'Orthopedist', exp: '9 years', rating: 4.7, price: 1100 }
+    ],
+    pediatrics: [
+        { id: 8, name: 'Dr. David Wilson', specialty: 'Pediatrician', exp: '11 years', rating: 5.0, price: 800 }
+    ],
+    general: [
+        { id: 9, name: 'Dr. Maria Santos', specialty: 'General Practitioner', exp: '13 years', rating: 4.8, price: 750 },
+        { id: 10, name: 'Dr. John Anderson', specialty: 'General Practitioner', exp: '6 years', rating: 4.5, price: 750 }
+    ],
+    psychiatry: [
+        { id: 11, name: 'Dr. Patricia Brown', specialty: 'Psychiatrist', exp: '16 years', rating: 4.9, price: 1400 }
+    ]
+};
+
+// Booking State
+let booking = {
+    service: null,
+    serviceName: null,
+    servicePrice: null,
+    doctor: null,
+    doctorName: null,
+    doctorExp: null,
+    date: null,
+    time: null,
+    currentStep: 1
+};
+
+// Time slots
+const timeSlots = {
+    morning: ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30'],
+    afternoon: ['13:00', '13:30', '14:00', '14:30', '15:00', '15:30'],
+    evening: ['16:00', '16:30', '17:00', '17:30']
+};
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    setupServiceCards();
+    setupTimeSlots();
+    setupDates();
+    setupCheckbox();
+});
+
+// Setup Service Cards
+function setupServiceCards() {
+    document.querySelectorAll('.service-card').forEach(card => {
+        card.addEventListener('click', () => {
+            document.querySelectorAll('.service-card').forEach(c => c.classList.remove('border-primary', 'bg-slate-50', 'dark:bg-slate-900'));
+            card.classList.add('border-primary', 'bg-slate-50', 'dark:bg-slate-900');
             
-            // Simulate booking process
-            setTimeout(() => {
-                alert('Appointment confirmed! You will receive a confirmation shortly.');
-                window.location.href = 'dashboard.html';
-            }, 2000);
+            booking.service = card.dataset.service;
+            booking.serviceName = card.dataset.name;
+            booking.servicePrice = parseInt(card.dataset.price);
+            
+            updateSummary();
+            document.getElementById('btn-next-1').disabled = false;
         });
+    });
+}
+
+// Load Doctors for Service
+function loadDoctors(service) {
+    const list = document.getElementById('doctor-list');
+    list.innerHTML = '';
+    
+    const servicesDoctors = doctors[service] || [];
+    
+    servicesDoctors.forEach(doc => {
+        const card = document.createElement('div');
+        card.className = 'doctor-card cursor-pointer p-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 hover:border-primary/50 hover:shadow-md transition-all';
+        card.dataset.doctorId = doc.id;
+        
+        card.innerHTML = `
+            <div class="flex items-start gap-3">
+                <div class="size-12 rounded-lg bg-purple-50 dark:bg-purple-900/20 text-purple-600 flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined">person</span>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-bold text-slate-900 dark:text-white">${doc.name}</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">${doc.specialty} • ${doc.exp} experience</p>
+                    <div class="flex items-center gap-1 mt-2">
+                        <span class="material-symbols-outlined text-yellow-400 text-xs">star</span>
+                        <span class="text-xs font-bold text-slate-900 dark:text-white">${doc.rating}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        card.addEventListener('click', () => {
+            document.querySelectorAll('.doctor-card').forEach(c => c.classList.remove('border-primary'));
+            card.classList.add('border-primary');
+            
+            booking.doctor = doc.id;
+            booking.doctorName = doc.name;
+            booking.doctorExp = doc.exp;
+            
+            updateSummary();
+            document.getElementById('btn-next-2').disabled = false;
+        });
+        
+        list.appendChild(card);
+    });
+}
+
+// Setup Dates
+function setupDates() {
+    const today = new Date();
+    const dateList = document.getElementById('date-list');
+    dateList.innerHTML = '';
+    
+    for (let i = 0; i < 10; i++) {
+        const date = new Date(today);
+        date.setDate(date.getDate() + i);
+        
+        const btn = document.createElement('button');
+        btn.className = 'date-btn flex flex-col items-center justify-center min-w-[3.5rem] h-16 rounded-lg border-2 border-slate-200 dark:border-slate-700 hover:border-primary/50 transition-all';
+        btn.type = 'button';
+        
+        const dayName = date.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+        const dayNum = date.getDate();
+        
+        btn.innerHTML = `<span class="text-xs text-slate-500">${dayName}</span><span class="text-lg font-bold text-slate-900 dark:text-white">${dayNum}</span>`;
+        
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('border-primary', 'bg-primary', 'text-white'));
+            btn.classList.add('border-primary', 'bg-primary', 'text-white');
+            
+            booking.date = date.toISOString().split('T')[0];
+            updateSummary();
+        });
+        
+        dateList.appendChild(btn);
+    }
+}
+
+// Setup Time Slots
+function setupTimeSlots() {
+    ['morning', 'afternoon', 'evening'].forEach(period => {
+        const container = document.getElementById(`${period}-slots`);
+        timeSlots[period].forEach(time => {
+            const btn = document.createElement('button');
+            btn.className = 'time-btn px-3 py-2 rounded-lg border-2 border-slate-200 dark:border-slate-700 hover:border-primary hover:text-primary transition-all text-sm font-medium';
+            btn.type = 'button';
+            btn.dataset.time = time;
+            btn.textContent = new Date(`2024-01-01 ${time}`).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('border-primary', 'bg-primary', 'text-white'));
+                btn.classList.add('border-primary', 'bg-primary', 'text-white');
+                
+                booking.time = time;
+                updateSummary();
+                document.getElementById('btn-next-3').disabled = false;
+            });
+            
+            container.appendChild(btn);
+        });
+    });
+}
+
+// Setup Checksum
+function setupCheckbox() {
+    document.getElementById('confirm-checkbox').addEventListener('change', (e) => {
+        document.getElementById('btn-submit').disabled = !e.target.checked;
+    });
+}
+
+// Update Summary
+function updateSummary() {
+    document.getElementById('summary-service').textContent = booking.serviceName || 'Not selected';
+    document.getElementById('summary-doctor').textContent = booking.doctorName || 'Not selected';
+    document.getElementById('summary-price').textContent = `₱${booking.servicePrice || 0}`;
+    
+    if (booking.date && booking.time) {
+        const dateObj = new Date(booking.date);
+        const dateStr = dateObj.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+        const timeStr = new Date(`2024-01-01 ${booking.time}`).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('summary-date').textContent = `${dateStr} at ${timeStr}`;
     }
     
-    // View Availability buttons
-    const viewAvailabilityBtns = document.querySelectorAll('button');
-    viewAvailabilityBtns.forEach(btn => {
-        if (btn.textContent.includes('View Availability')) {
-            btn.addEventListener('click', function() {
-                alert('Availability calendar would open here for this doctor');
-            });
+    // Confirmation page
+    document.getElementById('confirm-service').textContent = booking.serviceName || '-';
+    document.getElementById('confirm-service-price').textContent = `₱${booking.servicePrice || 0}`;
+    document.getElementById('confirm-doctor').textContent = booking.doctorName || '-';
+    document.getElementById('confirm-doctor-exp').textContent = `${booking.doctorExp || '-'} experience`;
+    
+    if (booking.date && booking.time) {
+        const dateObj = new Date(booking.date);
+        const dateStr = dateObj.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+        const timeStr = new Date(`2024-01-01 ${booking.time}`).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('confirm-datetime').textContent = `${dateStr} at ${timeStr}`;
+    }
+    
+    document.getElementById('confirm-total-price').textContent = `₱${booking.servicePrice || 0}`;
+}
+
+// Navigate Steps
+function goToStep(step) {
+    // Hide all steps
+    document.querySelectorAll('.step-content').forEach(s => s.classList.add('hidden'));
+    
+    // Show current step
+    document.getElementById(`step-${step}`).classList.remove('hidden');
+    
+    // Update progress
+    const progress = ((step - 1) / 3) * 100;
+    document.getElementById('progressBar').style.width = progress + '%';
+    
+    // Update step indicators
+    document.querySelectorAll('.step-indicator').forEach((ind, idx) => {
+        const indStep = idx + 1;
+        const circle = ind.querySelector('.step-circle');
+        const text = ind.querySelector('span:last-child');
+        
+        if (indStep < step) {
+            circle.innerHTML = '<span class="material-symbols-outlined text-sm">check</span>';
+            circle.classList.remove('bg-slate-200', 'text-slate-500', 'dark:bg-slate-700', 'dark:text-slate-400');
+            circle.classList.add('bg-primary', 'text-white');
+            text.classList.remove('text-slate-500', 'dark:text-slate-400');
+            text.classList.add('text-primary');
+        } else if (indStep === step) {
+            circle.innerHTML = `<span class="text-sm">${step}</span>`;
+            circle.classList.remove('bg-slate-200', 'text-slate-500', 'dark:bg-slate-700', 'dark:text-slate-400');
+            circle.classList.add('bg-primary', 'text-white', 'shadow-lg', 'shadow-primary/20');
+            text.classList.remove('text-slate-500', 'dark:text-slate-400');
+            text.classList.add('text-primary', 'font-bold');
+        } else {
+            circle.innerHTML = `<span class="text-sm">${indStep}</span>`;
+            circle.classList.add('bg-slate-200', 'text-slate-500', 'dark:bg-slate-700', 'dark:text-slate-400');
+            circle.classList.remove('bg-primary', 'text-white');
+            text.classList.add('text-slate-500', 'dark:text-slate-400');
+            text.classList.remove('text-primary', 'font-bold');
         }
     });
     
-    // Filter chips
-    const filterChips = document.querySelectorAll('button');
-    filterChips.forEach(chip => {
-        if (chip.textContent.includes('Cardiology') || chip.textContent.includes('Availability') || chip.textContent.includes('Gender')) {
-            chip.addEventListener('click', function() {
-                alert(`Filter by ${this.textContent.trim()} would be applied here`);
-            });
-        }
-    });
+    // Load doctors on step 2
+    if (step === 2 && booking.service) {
+        loadDoctors(booking.service);
+    }
+    
+    // Update step display
+    const stepNames = ['', 'Step 1: Service Selection', 'Step 2: Doctor Selection', 'Step 3: Date & Time', 'Step 4: Confirmation'];
+    document.getElementById('current-step').textContent = stepNames[step];
+    
+    booking.currentStep = step;
+}
+
+// Submit Appointment
+document.getElementById('btn-submit')?.addEventListener('click', () => {
+    const btn = document.getElementById('btn-submit');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Submitting...';
+    
+    // Mock submission
+    setTimeout(() => {
+        alert('✅ Appointment submitted successfully!\n\nYour appointment is pending admin validation. You will receive a confirmation email shortly.');
+        window.location.href = 'dashboard.html';
+    }, 2000);
 });
+
+prevWeek = () => alert('Previous week');
+nextWeek = () => alert('Next week');
 </script>
-</body></html>
+
+</body>
+</html>

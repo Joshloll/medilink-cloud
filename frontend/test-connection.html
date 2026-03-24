@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Connection Test - MediLink Cloud</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+    <div class="max-w-2xl w-full mx-4">
+        <div class="bg-white rounded-xl shadow-lg p-8">
+            <h1 class="text-2xl font-bold text-gray-900 mb-6">🔍 Supabase Connection Test</h1>
+            
+            <div id="testResults" class="space-y-4">
+                <!-- Test results will appear here -->
+            </div>
+
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <button onclick="runTests()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    🔄 Run Connection Tests
+                </button>
+                <button onclick="window.location.href='index.html'" class="ml-4 bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    🏠 Back to Home
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script>
+        const { SUPABASE_CONFIG } = window;
+        let supabaseClient;
+
+        function addResult(message, type = 'info') {
+            const resultsDiv = document.getElementById('testResults');
+            const resultDiv = document.createElement('div');
+            
+            const colors = {
+                success: 'bg-green-50 border-green-200 text-green-800',
+                error: 'bg-red-50 border-red-200 text-red-800',
+                warning: 'bg-yellow-50 border-yellow-200 text-yellow-800',
+                info: 'bg-blue-50 border-blue-200 text-blue-800'
+            };
+            
+            resultDiv.className = `p-4 rounded-lg border ${colors[type]}`;
+            resultDiv.innerHTML = `<p class="font-medium">${message}</p>`;
+            
+            resultsDiv.appendChild(resultDiv);
+        }
+
+        function clearResults() {
+            document.getElementById('testResults').innerHTML = '';
+        }
+
+        async function runTests() {
+            clearResults();
+            
+            addResult('🔍 Starting Supabase connection tests...', 'info');
+
+            // Test 1: Check config.js
+            addResult('📋 Checking config.js...', 'info');
+            if (!SUPABASE_CONFIG) {
+                addResult('❌ SUPABASE_CONFIG not found in config.js', 'error');
+                return;
+            }
+
+            if (SUPABASE_CONFIG.URL === 'https://your-project.supabase.co') {
+                addResult('❌ SUPABASE_CONFIG.URL is still placeholder value', 'error');
+                addResult('🔧 Please update config.js with your actual Supabase credentials', 'warning');
+                return;
+            }
+
+            if (SUPABASE_CONFIG.ANON_KEY === 'your-anon-key-here') {
+                addResult('❌ SUPABASE_CONFIG.ANON_KEY is still placeholder value', 'error');
+                addResult('🔧 Please update config.js with your actual Supabase credentials', 'warning');
+                return;
+            }
+
+            addResult('✅ Configuration loaded successfully', 'success');
+            addResult(`📡 Project URL: ${SUPABASE_CONFIG.URL}`, 'info');
+            addResult(`🔑 Anon Key: ${SUPABASE_CONFIG.ANON_KEY.substring(0, 20)}...`, 'info');
+
+            // Test 2: Initialize Supabase client
+            try {
+                addResult('🔌 Initializing Supabase client...', 'info');
+                const { createClient } = supabase;
+                supabaseClient = createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY);
+                addResult('✅ Supabase client initialized', 'success');
+            } catch (error) {
+                addResult(`❌ Failed to initialize Supabase client: ${error.message}`, 'error');
+                return;
+            }
+
+            // Test 3: Test connection
+            try {
+                addResult('🌐 Testing database connection...', 'info');
+                const { data, error } = await supabaseClient
+                    .from('user_profiles')
+                    .select('count')
+                    .limit(1);
+
+                if (error) {
+                    addResult(`❌ Database connection failed: ${error.message}`, 'error');
+                    
+                    if (error.message.includes('relation "user_profiles" does not exist')) {
+                        addResult('🔧 Database tables not created. Please run the SQL schema from database/supabase-schema.sql', 'warning');
+                    }
+                } else {
+                    addResult('✅ Database connection successful', 'success');
+                    addResult(`📊 Found user_profiles table`, 'info');
+                }
+            } catch (error) {
+                addResult(`❌ Connection test failed: ${error.message}`, 'error');
+            }
+
+            // Test 4: Test auth system
+            try {
+                addResult('🔐 Testing authentication system...', 'info');
+                const { data, error } = await supabaseClient.auth.getSession();
+                
+                if (error) {
+                    addResult(`❌ Auth system test failed: ${error.message}`, 'error');
+                } else {
+                    addResult('✅ Authentication system working', 'success');
+                }
+            } catch (error) {
+                addResult(`❌ Auth test failed: ${error.message}`, 'error');
+            }
+
+            addResult('🎉 Connection tests completed!', 'success');
+            addResult('💡 If all tests pass, you can try registering and logging in', 'info');
+        }
+
+        // Auto-run tests when page loads
+        window.addEventListener('load', runTests);
+    </script>
+</body>
+</html>

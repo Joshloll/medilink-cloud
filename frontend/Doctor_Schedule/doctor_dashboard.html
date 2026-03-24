@@ -145,7 +145,7 @@
                 <div class="p-6">
                     <!-- Welcome Section -->
                     <div class="mb-8">
-                        <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">Welcome back, Dr. Sarah Jenkins</h1>
+                        <h1 id="doctorGreeting" class="text-3xl font-bold text-slate-900 dark:text-white mb-2">Welcome back</h1>
                         <p class="text-slate-600 dark:text-slate-400">Here's what's happening with your practice today.</p>
                     </div>
 
@@ -327,54 +327,237 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Doctor Dashboard functionality
+        // Initialize Supabase
+        const supabaseUrl = 'https://zczlhrsmlecannuqknju.supabase.co'
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjemxocnNtbGVjYW5udXFrbmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Njk3MjEsImV4cCI6MjA4ODA0NTcyMX0.bymF387OBZ_5JNojgm2cbm8rAUMyUfdaSKScrjnvMfc'
+        
+        const { createClient } = window.supabase
+        const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+        // ============= AUTHENTICATION CHECK =============
+        async function checkAuth() {
+            try {
+                const { data: { session } } = await supabase.auth.getSession()
+                
+                if (!session) {
+                    window.location.href = '../login.html'
+                    return
+                }
+
+                // Get user profile
+                const { data: profile, error: profileError } = await supabase
+                    .from('user_profiles')
+                    .select('*')
+                    .eq('user_id', session.user.id)
+                    .single()
+
+                if (profileError || !profile) {
+                    window.location.href = '../login.html'
+                    return
+                }
+
+                // Check if user is doctor
+                if (profile.role !== 'doctor') {
+                    window.location.href = '../login.html'
+                    return
+                }
+
+                // Get doctor profile
+                const { data: doctorData, error: doctorError } = await supabase
+                    .from('doctors')
+                    .select('*')
+                    .eq('user_id', session.user.id)
+                    .single()
+
+                if (doctorError || !doctorData) {
+                    console.error('Doctor profile not found')
+                    window.location.href = '../login.html'
+                    return
+                }
+
+                // Check if doctor is verified
+                if (!doctorData.verified) {
+                    showMessage('Your account is pending verification. Please contact admin.')
+                    setTimeout(() => window.location.href = '../login.html', 2000)
+                    return
+                }
+
+                // Load doctor data and display
+                loadDoctorData(profile, doctorData, session.user.id)
+                setupLogout()
+
+            } catch (error) {
+                console.error('Auth check error:', error)
+                window.location.href = '../login.html'
+            }
+        }
+
+        // ============= LOAD DOCTOR DATA =============
+        async function loadDoctorData(profile, doctorData, userId) {
+            try {
+                // Update header with doctor info
+                const doctorName = `Dr. ${profile.first_name} ${profile.last_name}`
+                updateHeaderWithDoctorInfo(doctorName, profile.email, doctorData.specialization)
+
+                // Load today's appointments
+                loadTodaysAppointments(userId)
+
+            } catch (error) {
+                console.error('Error loading doctor data:', error)
+            }
+        }
+
+        // ============= UPDATE HEADER =============
+        function updateHeaderWithDoctorInfo(name, email, specialty) {
+            // Update doctor name in header if exists
+            const headerName = document.querySelector('header p.font-bold')
+            if (headerName) {
+                headerName.textContent = name
+            }
+
+            // Update greeting with full name
+            const greeting = document.getElementById('doctorGreeting')
+            if (greeting) {
+                greeting.textContent = `Welcome back, ${name}`
+            }
+
+            // Update specialty info if exists
+            const headerSubtitle = document.querySelector('header .text-slate-500')
+            if (headerSubtitle) {
+                headerSubtitle.textContent = specialty || 'Doctor'
+            }
+        }
+
+        // ============= LOAD TODAY'S APPOINTMENTS =============
+        async function loadTodaysAppointments(doctorId) {
+            try {
+                const today = new Date().toISOString().split('T')[0]
+
+                const { data: appointments, error } = await supabase
+                    .from('appointments')
+                    .select(`
+                        id,
+                        appointment_date,
+                        appointment_time,
+                        service,
+                        status,
+                        patient_id,
+                        user_profiles:patient_id(first_name, last_name, email)
+                    `)
+                    .eq('doctor_id', doctorId)
+                    .eq('appointment_date', today)
+                    .order('appointment_time', { ascending: true })
+
+                if (error) {
+                    console.error('Error loading appointments:', error)
+                    return
+                }
+
+                // Update appointments display
+                const scheduleContainer = document.querySelector('[id*="schedule"]')
+                if (scheduleContainer) {
+                    console.log(`Loaded ${appointments?.length || 0} appointments for today`)
+                }
+
+            } catch (error) {
+                console.error('Error in loadTodaysAppointments:', error)
+            }
+        }
+
+        // ============= LOGOUT FUNCTION =============
+        function setupLogout() {
+            // Add logout to logout buttons if they exist
+            const logoutButtons = document.querySelectorAll('[onclick*="logout"], .logout-btn')
+            logoutButtons.forEach(btn => {
+                btn.addEventListener('click', handleLogout)
+            })
+        }
+
+        async function handleLogout() {
+            try {
+                await supabase.auth.signOut()
+                window.location.href = '../login.html'
+            } catch (error) {
+                console.error('Logout error:', error)
+                window.location.href = '../login.html'
+            }
+        }
+
+        // Make logout global
+        window.handleLogout = handleLogout
+
+        // ============= INITIALIZATION =============
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Doctor Dashboard loaded');
-            
+            checkAuth()
+
             // Make navigation items clickable
-            const navDashboard = document.getElementById('navDashboard');
-            const navSchedule = document.getElementById('navSchedule');
-            const navPatients = document.getElementById('navPatients');
-            const navRecords = document.getElementById('navRecords');
-            const navSettings = document.getElementById('navSettings');
+            const navDashboard = document.getElementById('navDashboard')
+            const navSchedule = document.getElementById('navSchedule')
+            const navPatients = document.getElementById('navPatients')
+            const navRecords = document.getElementById('navRecords')
+            const navSettings = document.getElementById('navSettings')
             
             if (navDashboard) {
                 navDashboard.addEventListener('click', function(e) {
-                    e.preventDefault();
+                    e.preventDefault()
                     // Already on dashboard
-                    console.log('Already on doctor dashboard');
-                });
+                    console.log('Already on doctor dashboard')
+                })
             }
             
             if (navSchedule) {
                 navSchedule.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    window.location.href = 'schedule.html';
-                });
+                    e.preventDefault()
+                    window.location.href = 'schedule.html'
+                })
             }
             
             if (navPatients) {
                 navPatients.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    window.location.href = 'patients.html';
-                });
+                    e.preventDefault()
+                    window.location.href = 'patients.html'
+                })
             }
             
             if (navRecords) {
                 navRecords.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    window.location.href = 'records.html';
-                });
+                    e.preventDefault()
+                    window.location.href = 'records.html'
+                })
             }
             
             if (navSettings) {
                 navSettings.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    window.location.href = 'doctor_settings.html';
-                });
+                    e.preventDefault()
+                    window.location.href = 'doctor_settings.html'
+                })
             }
-        });
+        })
+
+        // ============= AUTH STATE LISTENER =============
+        supabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_OUT') {
+                window.location.href = '../login.html'
+            }
+        })
+
+        // ============= ERROR MESSAGE DISPLAY =============
+        function showMessage(message) {
+            const alertDiv = document.createElement('div')
+            alertDiv.className = 'fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded'
+            alertDiv.textContent = message
+            document.body.appendChild(alertDiv)
+            setTimeout(() => alertDiv.remove(), 5000)
+        }
+    </script>
+
+    <script>
+        // Doctor Dashboard functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Doctor Dashboard loaded')
+        })
     </script>
 </body>
 </html>

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings - MediLink Cloud</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1e293b",
+                        "border-light": "#e2e8f0",
+                        "border-dark": "#334155",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.375rem", 
+                        "lg": "0.5rem", 
+                        "xl": "0.75rem", 
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display transition-colors duration-200 overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- SideNavBar -->
+<aside class="w-64 flex-shrink-0 border-r border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark flex flex-col justify-between hidden md:flex z-20">
+<div class="flex flex-col p-4 gap-6">
+<!-- Brand -->
+<div class="flex items-center gap-3 px-2">
+<div class="bg-primary/10 flex items-center justify-center rounded-lg size-10 text-primary">
+<span class="material-symbols-outlined text-2xl">local_hospital</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-base font-bold leading-tight">MediLink Cloud</h1>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-normal">Admin Portal</p>
+</div>
+</div>
+<!-- Navigation -->
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="dashboard.html">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="schedule.html">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="text-sm font-medium">Schedule</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="patients.html">
+<span class="material-symbols-outlined">groups</span>
+<span class="text-sm font-medium">Patients</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="billing.html">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-sm font-medium">Billing</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="staff.html">
+<span class="material-symbols-outlined">stethoscope</span>
+<span class="text-sm font-medium">Staff</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary group transition-colors" href="settings.html">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+</div>
+<!-- Bottom Actions -->
+<div class="p-4 border-t border-border-light dark:border-border-dark">
+<button onclick="handleLogout()" class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-md hover:bg-blue-600 transition-colors">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+<span class="truncate">Lock Screen</span>
+</button>
+</div>
+</aside>
+<!-- Main Content -->
+<div class="flex-1 flex flex-col h-full overflow-hidden relative">
+<!-- TopNavBar -->
+<header class="h-16 flex items-center justify-between px-6 border-b border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark flex-shrink-0 z-10">
+<div class="flex items-center gap-4">
+<!-- Mobile Menu Toggle (Visible on small screens) -->
+<button class="md:hidden text-slate-500 hover:text-slate-700">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="hidden sm:block text-lg font-bold tracking-tight">System Settings</h2>
+</div>
+<div class="flex items-center gap-3">
+<div class="h-6 w-px bg-slate-200 dark:bg-slate-700 mx-1"></div>
+<button class="relative p-2 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full border-2 border-surface-light dark:border-surface-dark"></span>
+</button>
+<div class="flex items-center gap-2 ml-2 pl-2 border-l border-slate-200 dark:border-slate-700">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-medium leading-none">Dr. Sarah West</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Admin</p>
+</div>
+<div class="size-9 rounded-full bg-slate-200 bg-cover bg-center border border-slate-200 dark:border-slate-700" data-alt="Profile picture of Dr. Sarah West" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA7ysvdVtAVeubo-bHhGUxDQ4Z7xg3CEs1GyFkZ_pHsM9QBIzyl0ABC5LNqsdwvh6Jh1M9H6hCr9yUDQoxXCVCLLQ3qqmOK0bdGDGhrqiSPEeaYqIX2FIBx7t_o5B3BfK37G93gFuWeErliUaIC6ytdNoqDoEMpMJOz-oxZGjqW8r-BzhkT-x6HZPdvj0VyI73TZ8jpfGcQNyKaZxapM4AXOk6leZ52Sd682w4YDZtytaG-NK58T_wBG-CfVjRlPOoZzbsylFb1TlFX')"></div>
+</div>
+</div>
+</header>
+<!-- Scrollable Dashboard Content -->
+<main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6">
+<!-- Settings Sections -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Left Column - Settings Menu -->
+<div class="lg:col-span-1">
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm p-4">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Settings</h3>
+<nav class="space-y-1">
+<button onclick="showSettingsSection('general')" class="settings-tab w-full text-left px-3 py-2 rounded-lg bg-primary/10 text-primary text-sm font-medium transition-colors">
+<span class="material-symbols-outlined text-[18px] mr-2">settings</span>
+General
+</button>
+<button onclick="showSettingsSection('clinic')" class="settings-tab w-full text-left px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium transition-colors">
+<span class="material-symbols-outlined text-[18px] mr-2">local_hospital</span>
+Clinic Information
+</button>
+<button onclick="showSettingsSection('notifications')" class="settings-tab w-full text-left px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium transition-colors">
+<span class="material-symbols-outlined text-[18px] mr-2">notifications</span>
+Notifications
+</button>
+<button onclick="showSettingsSection('security')" class="settings-tab w-full text-left px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium transition-colors">
+<span class="material-symbols-outlined text-[18px] mr-2">security</span>
+Security
+</button>
+<button onclick="showSettingsSection('backup')" class="settings-tab w-full text-left px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium transition-colors">
+<span class="material-symbols-outlined text-[18px] mr-2">backup</span>
+Backup & Recovery
+</button>
+<button onclick="showSettingsSection('integration')" class="settings-tab w-full text-left px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium transition-colors">
+<span class="material-symbols-outlined text-[18px] mr-2">integration_instructions</span>
+Integrations
+</button>
+</nav>
+</div>
+</div>
+<!-- Right Column - Settings Content -->
+<div class="lg:col-span-2">
+<!-- General Settings -->
+<div id="general-settings" class="settings-section bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm p-6">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6">General Settings</h3>
+<div class="space-y-6">
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">System Name</label>
+<input type="text" class="w-full p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100" value="MediLink Cloud">
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Default Language</label>
+<select class="w-full p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100">
+<option value="en">English</option>
+<option value="es">Spanish</option>
+<option value="fr">French</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Time Zone</label>
+<select class="w-full p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100">
+<option value="UTC">UTC</option>
+<option value="EST">Eastern Time</option>
+<option value="PST">Pacific Time</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Date Format</label>
+<select class="w-full p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100">
+<option value="MM/DD/YYYY">MM/DD/YYYY</option>
+<option value="DD/MM/YYYY">DD/MM/YYYY</option>
+<option value="YYYY-MM-DD">YYYY-MM-DD</option>
+</select>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-medium text-slate-700 dark:text-slate-300">Enable Dark Mode</p>
+<p class="text-xs text-slate-500">Allow users to switch between light and dark themes</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input type="checkbox" class="sr-only peer" checked>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- Clinic Information -->
+<div id="clinic-settings" class="settings-section bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm p-6 hidden">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Clinic Information</h3>
+<div class="space-y-6">
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Clinic Name</label>
+<input type="text" class="w-full p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100" value="MediLink Health Center">
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Phone Number</label>
+<input type="tel" class="w-full p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100" value="+1 (555) 123-4567">
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Address</label>
+<textarea class="w-full p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100" rows="3">123 Medical Center Drive
+Health City, HC 12345
+United States</textarea>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email</label>
+<input type="email" class="w-full p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100" value="info@medilink.com">
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Website</label>
+<input type="url" class="w-full p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100" value="www.medilink.com">
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Operating Hours</label>
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<span class="w-20 text-sm">Mon-Fri:</span>
+<input type="text" class="flex-1 p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100" value="8:00 AM - 6:00 PM">
+</div>
+<div class="flex items-center gap-2">
+<span class="w-20 text-sm">Saturday:</span>
+<input type="text" class="flex-1 p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100" value="9:00 AM - 2:00 PM">
+</div>
+<div class="flex items-center gap-2">
+<span class="w-20 text-sm">Sunday:</span>
+<input type="text" class="flex-1 p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100" value="Closed">
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Notification Settings -->
+<div id="notifications-settings" class="settings-section bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm p-6 hidden">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Notification Settings</h3>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-medium text-slate-700 dark:text-slate-300">Email Notifications</p>
+<p class="text-xs text-slate-500">Receive notifications via email</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input type="checkbox" class="sr-only peer" checked>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-medium text-slate-700 dark:text-slate-300">SMS Notifications</p>
+<p class="text-xs text-slate-500">Receive SMS alerts for urgent matters</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input type="checkbox" class="sr-only peer">
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-medium text-slate-700 dark:text-slate-300">Appointment Reminders</p>
+<p class="text-xs text-slate-500">Send reminders to patients before appointments</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input type="checkbox" class="sr-only peer" checked>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Default Reminder Time</label>
+<select class="w-full p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100">
+<option value="24">24 hours before</option>
+<option value="48">48 hours before</option>
+<option value="72">72 hours before</option>
+</select>
+</div>
+</div>
+</div>
+<!-- Security Settings -->
+<div id="security-settings" class="settings-section bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm p-6 hidden">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Security Settings</h3>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-medium text-slate-700 dark:text-slate-300">Two-Factor Authentication</p>
+<p class="text-xs text-slate-500">Require 2FA for all admin accounts</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input type="checkbox" class="sr-only peer">
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Session Timeout (minutes)</label>
+<select class="w-full p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100">
+<option value="15">15 minutes</option>
+<option value="30" selected>30 minutes</option>
+<option value="60">60 minutes</option>
+<option value="120">120 minutes</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Password Policy</label>
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<input type="checkbox" class="rounded border-border-light dark:border-border-dark" checked>
+<label class="text-sm text-slate-600 dark:text-slate-400">Minimum 8 characters</label>
+</div>
+<div class="flex items-center gap-2">
+<input type="checkbox" class="rounded border-border-light dark:border-border-dark" checked>
+<label class="text-sm text-slate-600 dark:text-slate-400">Include uppercase and lowercase</label>
+</div>
+<div class="flex items-center gap-2">
+<input type="checkbox" class="rounded border-border-light dark:border-border-dark" checked>
+<label class="text-sm text-slate-600 dark:text-slate-400">Include numbers</label>
+</div>
+<div class="flex items-center gap-2">
+<input type="checkbox" class="rounded border-border-light dark:border-border-dark">
+<label class="text-sm text-slate-600 dark:text-slate-400">Include special characters</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Backup Settings -->
+<div id="backup-settings" class="settings-section bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm p-6 hidden">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Backup & Recovery</h3>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-medium text-slate-700 dark:text-slate-300">Automatic Backups</p>
+<p class="text-xs text-slate-500">Enable automatic daily backups</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input type="checkbox" class="sr-only peer" checked>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Backup Frequency</label>
+<select class="w-full p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100">
+<option value="daily" selected>Daily</option>
+<option value="weekly">Weekly</option>
+<option value="monthly">Monthly</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Backup Retention Period</label>
+<select class="w-full p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100">
+<option value="7">7 days</option>
+<option value="30" selected>30 days</option>
+<option value="90">90 days</option>
+</select>
+</div>
+<div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-4">
+<div class="flex items-center justify-between mb-2">
+<p class="text-sm font-medium text-slate-700 dark:text-slate-300">Last Backup</p>
+<p class="text-sm text-slate-600 dark:text-slate-400">March 3, 2026 at 2:00 AM</p>
+</div>
+<div class="flex items-center justify-between mb-2">
+<p class="text-sm font-medium text-slate-700 dark:text-slate-300">Next Scheduled Backup</p>
+<p class="text-sm text-slate-600 dark:text-slate-400">March 4, 2026 at 2:00 AM</p>
+</div>
+<button class="w-full mt-3 px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors">
+Create Manual Backup
+</button>
+</div>
+</div>
+</div>
+<!-- Integration Settings -->
+<div id="integration-settings" class="settings-section bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm p-6 hidden">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Third-Party Integrations</h3>
+<div class="space-y-6">
+<div class="border border-border-light dark:border-border-dark rounded-lg p-4">
+<div class="flex items-center justify-between mb-3">
+<div>
+<h4 class="font-medium text-slate-900 dark:text-white">Electronic Health Records (EHR)</h4>
+<p class="text-sm text-slate-500">Connect with external EHR systems</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input type="checkbox" class="sr-only peer">
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<button class="text-sm text-primary hover:underline">Configure Integration</button>
+</div>
+<div class="border border-border-light dark:border-border-dark rounded-lg p-4">
+<div class="flex items-center justify-between mb-3">
+<div>
+<h4 class="font-medium text-slate-900 dark:text-white">Payment Processing</h4>
+<p class="text-sm text-slate-500">Stripe, PayPal, and other payment gateways</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input type="checkbox" class="sr-only peer" checked>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<button class="text-sm text-primary hover:underline">Configure Integration</button>
+</div>
+<div class="border border-border-light dark:border-border-dark rounded-lg p-4">
+<div class="flex items-center justify-between mb-3">
+<div>
+<h4 class="font-medium text-slate-900 dark:text-white">Lab Results API</h4>
+<p class="text-sm text-slate-500">Connect with laboratory information systems</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input type="checkbox" class="sr-only peer">
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<button class="text-sm text-primary hover:underline">Configure Integration</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Save Button -->
+<div class="flex justify-end mt-6">
+<button class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors">
+Save Changes
+</button>
+</div>
+</main>
+</div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+
+const supabase = createClient(
+  'https://zczlhrsmlecannuqknju.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjemxocnNtbGVjYW5udXFrbmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Njk3MjEsImV4cCI6MjA4ODA0NTcyMX0.bymF387OBZ_5JNojgm2cbm8rAUMyUfdaSKScrjnvMfc'
+);
+
+// Check authentication on page load
+async function checkAuth() {
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (!session) {
+      window.location.href = '../login.html';
+      return;
+    }
+
+    const { data: profile } = await supabase
+      .from('user_profiles')
+      .select('*')
+      .eq('user_id', session.user.id)
+      .single();
+
+    if (!profile || profile.role !== 'doctor') {
+      window.location.href = profile?.role === 'patient' ? '../dashboard.html' : '../login.html';
+      return;
+    }
+
+    updateUserInfo(profile);
+  } catch (error) {
+    console.error('Auth check error:', error);
+    window.location.href = '../login.html';
+  }
+}
+
+function updateUserInfo(profile) {
+  const userName = document.querySelector('.text-right.hidden.sm:block p.text-sm.font-medium');
+  if (userName) {
+    userName.textContent = `Dr. ${profile.first_name} ${profile.last_name}`;
+  }
+}
+
+async function handleLogout() {
+  try {
+    await supabase.auth.signOut();
+    window.location.href = '../login.html';
+  } catch (error) {
+    console.error('Logout error:', error);
+    window.location.href = '../login.html';
+  }
+}
+
+function showSettingsSection(section) {
+  // Hide all sections
+  document.querySelectorAll('.settings-section').forEach(el => {
+    el.classList.add('hidden');
+  });
+  
+  // Show selected section
+  document.getElementById(section + '-settings').classList.remove('hidden');
+  
+  // Update tab styles
+  document.querySelectorAll('.settings-tab').forEach(tab => {
+    tab.classList.remove('bg-primary/10', 'text-primary');
+    tab.classList.add('text-slate-600', 'dark:text-slate-300');
+  });
+  
+  event.target.classList.remove('text-slate-600', 'dark:text-slate-300');
+  event.target.classList.add('bg-primary/10', 'text-primary');
+}
+
+window.handleLogout = handleLogout;
+window.showSettingsSection = showSettingsSection;
+
+checkAuth();
+supabase.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_OUT') {
+    window.location.href = '../login.html';
+  } else if (event === 'SIGNED_IN') {
+    checkAuth();
+  }
+});
+</script>
+
+</body>
+</html>

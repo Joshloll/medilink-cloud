@@ -143,6 +143,25 @@ CREATE TRIGGER update_appointments_updated_at BEFORE UPDATE ON appointments
 CREATE TRIGGER update_health_records_updated_at BEFORE UPDATE ON health_records
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+-- Clinic Codes table for admin validation
+CREATE TABLE clinic_codes (
+    id SERIAL PRIMARY KEY,
+    code VARCHAR(50) UNIQUE NOT NULL,
+    clinic_id INTEGER,
+    clinic_name VARCHAR(255) NOT NULL,
+    is_active BOOLEAN DEFAULT true,
+    used_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    used_at TIMESTAMP,
+    created_by VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP
+);
+
+-- Indexes for clinic_codes
+CREATE INDEX idx_clinic_codes_code ON clinic_codes(code);
+CREATE INDEX idx_clinic_codes_active ON clinic_codes(is_active);
+CREATE INDEX idx_clinic_codes_clinic ON clinic_codes(clinic_id);
+
 -- Insert sample admin user (password: Admin@123)
 INSERT INTO users (email, password, role, first_name, last_name, phone, is_verified)
 VALUES ('admin@medilink.com', '$2b$10$YourHashedPasswordHere', 'admin', 'System', 'Administrator', '1234567890', true);

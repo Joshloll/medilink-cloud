@@ -13,6 +13,9 @@ yarn-error.log*
 # Supabase credentials - NEVER commit these
 supabase-config.js
 *supabase*.js
+config-secure.js
+config-local.js
+config-loader.js
 
 # Operating System
 .DS_Store

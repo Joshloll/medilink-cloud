@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediLink Cloud - Authentication</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+body { font-family: 'Inter', sans-serif; }
+
+.split-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.hero-side {
+  flex: 1;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-side::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+  background-size: cover;
+}
+
+.form-side {
+  flex: 1;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  overflow-y: auto;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 400px;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.input-group input,
+.input-group select {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 3rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: all 0.3s;
+  font-family: 'Inter', sans-serif;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.input-group .material-symbols-outlined {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  pointer-events: none;
+}
+
+.role-selector {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.role-btn {
+  flex: 1;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  background: white;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+
+.role-btn.active {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  display: none;
+}
+
+.alert-error {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.alert-success {
+  background: #d1fae5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+}
+
+.divider {
+  text-align: center;
+  margin: 1.5rem 0;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.tab-button {
+  flex: 1;
+  py: 2;
+  px: 4;
+  text-white;
+  rounded-lg;
+  font-medium;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.tab-button.active {
+  background: #3b82f6;
+  color: white;
+}
+
+.tab-button.inactive {
+  background: transparent;
+  border: 1px solid #d1d5db;
+  color: #6b7280;
+}
+
+.tab-button.inactive:hover {
+  background: #f9fafb;
+}
+
+.hidden {
+  display: none;
+}
+
+.visible {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .split-container {
+    flex-direction: column;
+  }
+
+  .hero-side {
+    min-height: 300px;
+    padding: 2rem;
+  }
+
+  .form-side {
+    padding: 2rem;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="split-container">
+
+  <!-- LEFT - Hero Section -->
+  <div class="hero-side">
+    <div class="text-center relative z-10">
+      <h1 class="text-4xl font-bold mb-6">Secure Health Management for Everyone</h1>
+      <p class="text-xl mb-8 opacity-90">Join thousands of clinics and healthcare providers managing patient records securely in the Cloud. Compliant, fast, and reliable.</p>
+      <div class="flex items-center justify-center gap-4">
+        <div class="flex -space-x-2">
+          <img src="https://i.pravatar.cc/40?img=1" alt="User 1" class="w-10 h-10 rounded-full border-2 border-white">
+          <img src="https://i.pravatar.cc/40?img=2" alt="User 2" class="w-10 h-10 rounded-full border-2 border-white">
+          <img src="https://i.pravatar.cc/40?img=3" alt="User 3" class="w-10 h-10 rounded-full border-2 border-white">
+        </div>
+        <span class="text-lg">Trusted by 10,000+ professionals</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT - Form Section -->
+  <div class="form-side">
+    <div class="form-container">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">Welcome to MediLink</h2>
+        <p class="text-gray-600">Manage your health records securely</p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex gap-2 mb-6">
+        <button id="loginTab" class="tab-button active" style="background: #3b82f6; color: white;">Login</button>
+        <button id="registerTab" class="tab-button inactive" style="border: 1px solid #d1d5db; background: white; color: #6b7280;">Register</button>
+      </div>
+
+      <div id="msg" class="alert alert-error"></div>
+      <div id="successMsg" class="alert alert-success"></div>
+
+      <!-- LOGIN FORM -->
+      <form id="loginForm" class="visible">
+        <div class="input-group">
+          <span class="material-symbols-outlined">email</span>
+          <input type="email" id="loginEmail" placeholder="Email" required>
+        </div>
+
+        <div class="input-group">
+          <span class="material-symbols-outlined">lock</span>
+          <input type="password" id="loginPassword" placeholder="Password" required>
+        </div>
+
+        <div class="mb-6">
+          <label class="text-sm font-medium text-gray-700 block mb-2">Login as:</label>
+          <div class="role-selector" style="grid-template-columns: repeat(3, 1fr); display: grid; gap: 0.5rem;">
+            <button type="button" class="role-btn active" id="loginRolePatient" data-role="patient">Patient</button>
+            <button type="button" class="role-btn" id="loginRoleDoctor" data-role="doctor">Doctor</button>
+            <button type="button" class="role-btn" id="loginRoleAdmin" data-role="admin">Admin</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary">Sign In →</button>
+      </form>
+
+      <!-- REGISTER FORM -->
+      <form id="registerForm" class="hidden">
+        <div class="input-group">
+          <span class="material-symbols-outlined">email</span>
+          <input type="email" id="email" placeholder="Email" required>
+        </div>
+
+        <div class="input-group">
+          <span class="material-symbols-outlined">lock</span>
+          <input type="password" id="password" placeholder="Password" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+          <div class="input-group" style="margin-bottom: 1rem;">
+            <span class="material-symbols-outlined">person</span>
+            <input type="text" id="first_name" placeholder="First Name" required>
+          </div>
+
+          <div class="input-group" style="margin-bottom: 1rem;">
+            <span class="material-symbols-outlined">person</span>
+            <input type="text" id="last_name" placeholder="Last Name" required>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <span class="material-symbols-outlined">phone</span>
+          <input type="tel" id="phone" placeholder="Phone Number" required>
+        </div>
+
+        <div class="mb-6">
+          <label class="text-sm font-medium text-gray-700 block mb-2">Register as:</label>
+          <div class="role-selector" style="grid-template-columns: repeat(3, 1fr); display: grid; gap: 0.5rem;">
+            <button type="button" class="role-btn active" id="registerRolePatient" data-role="patient">Patient</button>
+            <button type="button" class="role-btn" id="registerRoleDoctor" data-role="doctor">Doctor</button>
+            <button type="button" class="role-btn" id="registerRoleAdmin" data-role="admin">Admin</button>
+          </div>
+        </div>
+
+        <!-- Patient Fields -->
+        <div id="patientFields" class="visible">
+          <div class="input-group">
+            <span class="material-symbols-outlined">calendar_today</span>
+            <input type="date" id="dob">
+          </div>
+
+          <div class="input-group">
+            <span class="material-symbols-outlined">wc</span>
+            <input type="text" id="gender" placeholder="Gender">
+          </div>
+        </div>
+
+        <!-- Doctor Fields -->
+        <div id="doctorFields" class="hidden">
+          <div class="input-group">
+            <span class="material-symbols-outlined">verified_user</span>
+            <input type="text" id="license" placeholder="License Number">
+          </div>
+
+          <div class="input-group">
+            <span class="material-symbols-outlined">medical_services</span>
+            <select id="specialization">
+              <option value="">Select Specialization</option>
+              <option value="Cardiology">Cardiology</option>
+              <option value="Dermatology">Dermatology</option>
+              <option value="Orthopedics">Orthopedics</option>
+              <option value="Pediatrics">Pediatrics</option>
+              <option value="General Medicine">General Medicine</option>
+              <option value="Psychiatry">Psychiatry</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Admin Fields -->
+        <div id="adminFields" class="hidden">
+          <div class="input-group">
+            <span class="material-symbols-outlined">verified</span>
+            <input type="text" id="clinicCode" placeholder="Clinic Validation Code">
+          </div>
+
+          <p class="text-xs text-gray-500 mt-2 mb-3">Contact your clinic administrator for the unique validation code to register as admin.</p>
+        </div>
+
+        <button type="submit" class="btn-primary">Create Account →</button>
+      </form>
+
+      <div class="divider">
+        Already have an account? <a href="#" id="switchToLogin" class="text-blue-600 hover:underline font-medium">Sign In</a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+
+const supabase = createClient(
+  'https://zczlhrsmlecannuqknju.supabase.co', 
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjemxocnNtbGVjYW5udXFrbmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Njk3MjEsImV4cCI6MjA4ODA0NTcyMX0.bymF387OBZ_5JNojgm2cbm8rAUMyUfdaSKScrjnvMfc'
+)
+
+// DOM Elements
+const loginForm = document.getElementById('loginForm')
+const registerForm = document.getElementById('registerForm')
+const loginTab = document.getElementById('loginTab')
+const registerTab = document.getElementById('registerTab')
+const msg = document.getElementById('msg')
+const successMsg = document.getElementById('successMsg')
+const switchToLogin = document.getElementById('switchToLogin')
+
+// Role buttons
+const loginRolePatient = document.getElementById('loginRolePatient')
+const loginRoleDoctor = document.getElementById('loginRoleDoctor')
+const loginRoleAdmin = document.getElementById('loginRoleAdmin')
+const registerRolePatient = document.getElementById('registerRolePatient')
+const registerRoleDoctor = document.getElementById('registerRoleDoctor')
+const registerRoleAdmin = document.getElementById('registerRoleAdmin')
+
+// Current selected role
+let currentLoginRole = 'patient'
+let currentRegisterRole = 'patient'
+
+// Helper function to show message
+function showMessage(text, isError = true) {
+  msg.style.display = 'none'
+  successMsg.style.display = 'none'
+  
+  if (isError) {
+    msg.innerText = text
+    msg.style.display = 'block'
+  } else {
+    successMsg.innerText = text
+    successMsg.style.display = 'block'
+  }
+  
+  setTimeout(() => {
+    msg.style.display = 'none'
+    successMsg.style.display = 'none'
+  }, 5000)
+}
+
+// Tab Switching
+function switchToLoginTab() {
+  loginForm.classList.remove('hidden')
+  registerForm.classList.add('hidden')
+  loginTab.classList.remove('inactive')
+  loginTab.classList.add('active')
+  loginTab.style.background = '#3b82f6'
+  loginTab.style.color = 'white'
+  registerTab.classList.add('inactive')
+  registerTab.classList.remove('active')
+  registerTab.style.background = 'white'
+  registerTab.style.color = '#6b7280'
+  registerTab.style.border = '1px solid #d1d5db'
+}
+
+function switchToRegisterTab() {
+  loginForm.classList.add('hidden')
+  registerForm.classList.remove('hidden')
+  registerTab.classList.remove('inactive')
+  registerTab.classList.add('active')
+  registerTab.style.background = '#3b82f6'
+  registerTab.style.color = 'white'
+  loginTab.classList.add('inactive')
+  loginTab.classList.remove('active')
+  loginTab.style.background = 'white'
+  loginTab.style.color = '#6b7280'
+  loginTab.style.border = '1px solid #d1d5db'
+}
+
+loginTab.onclick = switchToLoginTab
+registerTab.onclick = switchToRegisterTab
+switchToLogin.onclick = (e) => {
+  e.preventDefault()
+  switchToLoginTab()
+}
+
+// LOGIN Role Selection
+loginRolePatient.onclick = () => {
+  currentLoginRole = 'patient'
+  loginRolePatient.classList.add('active')
+  loginRoleDoctor.classList.remove('active')
+  loginRoleAdmin.classList.remove('active')
+}
+
+loginRoleDoctor.onclick = () => {
+  currentLoginRole = 'doctor'
+  loginRoleDoctor.classList.add('active')
+  loginRolePatient.classList.remove('active')
+  loginRoleAdmin.classList.remove('active')
+}
+
+loginRoleAdmin.onclick = () => {
+  currentLoginRole = 'admin'
+  loginRoleAdmin.classList.add('active')
+  loginRolePatient.classList.remove('active')
+  loginRoleDoctor.classList.remove('active')
+}
+
+// REGISTER Role Selection
+registerRolePatient.onclick = () => {
+  currentRegisterRole = 'patient'
+  registerRolePatient.classList.add('active')
+  registerRoleDoctor.classList.remove('active')
+  registerRoleAdmin.classList.remove('active')
+  document.getElementById('patientFields').classList.remove('hidden')
+  document.getElementById('patientFields').classList.add('visible')
+  document.getElementById('doctorFields').classList.add('hidden')
+  document.getElementById('doctorFields').classList.remove('visible')
+  document.getElementById('adminFields').classList.add('hidden')
+  document.getElementById('adminFields').classList.remove('visible')
+}
+
+registerRoleDoctor.onclick = () => {
+  currentRegisterRole = 'doctor'
+  registerRoleDoctor.classList.add('active')
+  registerRolePatient.classList.remove('active')
+  registerRoleAdmin.classList.remove('active')
+  document.getElementById('doctorFields').classList.remove('hidden')
+  document.getElementById('doctorFields').classList.add('visible')
+  document.getElementById('patientFields').classList.add('hidden')
+  document.getElementById('patientFields').classList.remove('visible')
+  document.getElementById('adminFields').classList.add('hidden')
+  document.getElementById('adminFields').classList.remove('visible')
+}
+
+registerRoleAdmin.onclick = () => {
+  currentRegisterRole = 'admin'
+  registerRoleAdmin.classList.add('active')
+  registerRolePatient.classList.remove('active')
+  registerRoleDoctor.classList.remove('active')
+  document.getElementById('adminFields').classList.remove('hidden')
+  document.getElementById('adminFields').classList.add('visible')
+  document.getElementById('patientFields').classList.add('hidden')
+  document.getElementById('patientFields').classList.remove('visible')
+  document.getElementById('doctorFields').classList.add('hidden')
+  document.getElementById('doctorFields').classList.remove('visible')
+}
+
+// REGISTER Form Submission
+registerForm.onsubmit = async e => {
+  e.preventDefault()
+
+  const email = document.getElementById('email').value
+  const password = document.getElementById('password').value
+  const first_name = document.getElementById('first_name').value
+  const last_name = document.getElementById('last_name').value
+  const phone = document.getElementById('phone').value
+  
+  // Validate role-specific required fields
+  if (currentRegisterRole === 'patient') {
+    const dob = document.getElementById('dob').value
+    const gender = document.getElementById('gender').value
+    
+    if (!dob || !gender) {
+      showMessage('Please fill in all patient fields (Date of Birth and Gender)')
+      return
+    }
+  } else if (currentRegisterRole === 'doctor') {
+    const license = document.getElementById('license').value
+    const specialization = document.getElementById('specialization').value
+    
+    if (!license || !specialization) {
+      showMessage('Please fill in all doctor fields (License Number and Specialization)')
+      return
+    }
+  } else if (currentRegisterRole === 'admin') {
+    const clinicCode = document.getElementById('clinicCode').value
+    
+    if (!clinicCode) {
+      showMessage('Please enter your Clinic Validation Code')
+      return
+    }
+  }
+  
+  try {
+    // For admin, validate clinic code BEFORE creating user
+    if (currentRegisterRole === 'admin') {
+      const clinicCode = document.getElementById('clinicCode').value
+      
+      // Allow hardcoded test code for development
+      if (clinicCode !== '12345678') {
+        // Verify clinic code against database
+        const { data: clinicCodeData, error: codeError } = await supabase
+          .from('clinic_codes')
+          .select('*')
+          .eq('code', clinicCode)
+          .eq('is_active', true)
+          .single()
+        
+        if (codeError || !clinicCodeData) {
+          showMessage('Invalid or expired clinic validation code. Please contact your clinic administrator.')
+          return
+        }
+      }
+    }
+
+    const { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: password
+    })
+
+    if (error) {
+      showMessage(error.message)
+      return
+    }
+
+    // Insert user profile
+    const profileData = {
+      user_id: data.user.id,
+      email: email,
+      role: currentRegisterRole,
+      first_name: first_name,
+      last_name: last_name,
+      phone: phone
+    }
+
+    // Add clinic_id for admins
+    if (currentRegisterRole === 'admin') {
+      const clinicCode = document.getElementById('clinicCode').value
+      
+      profileData.verified = true
+      
+      // If using test code, skip clinic_id lookup
+      if (clinicCode !== '12345678') {
+        const { data: clinicCodeData } = await supabase
+          .from('clinic_codes')
+          .select('*')
+          .eq('code', clinicCode)
+          .eq('is_active', true)
+          .single()
+        
+        profileData.clinic_id = clinicCodeData.clinic_id
+      } else {
+        // For test code, use a default clinic_id (can be updated later)
+        profileData.clinic_id = 1
+      }
+    }
+
+    const { error: profileError } = await supabase.from('user_profiles').insert(profileData)
+
+    if (profileError) {
+      showMessage(profileError.message)
+      return
+    }
+
+    // Insert role-specific data
+    if (currentRegisterRole === 'patient') {
+      const dob = document.getElementById('dob').value
+      const gender = document.getElementById('gender').value
+      
+      // Update user_profiles with additional patient fields
+      const { error: updateError } = await supabase.from('user_profiles').update({
+        date_of_birth: dob,
+        gender: gender
+      }).eq('user_id', data.user.id)
+      
+      if (updateError) {
+        showMessage('Error updating patient profile: ' + updateError.message)
+        return
+      }
+    } else if (currentRegisterRole === 'doctor') {
+      const license = document.getElementById('license').value
+      const specialization = document.getElementById('specialization').value
+      
+      // Insert into doctors table linked to user_profiles
+      const { error: doctorError } = await supabase.from('doctors').insert({
+        user_id: data.user.id,
+        license_number: license,
+        specialization: specialization,
+        verified: false
+      })
+      
+      if (doctorError) {
+        showMessage('Error creating doctor profile: ' + doctorError.message)
+        return
+      }
+    } else if (currentRegisterRole === 'admin') {
+      const clinicCode = document.getElementById('clinicCode').value
+      const { data: clinicCodeData } = await supabase
+        .from('clinic_codes')
+        .select('clinic_id')
+        .eq('code', clinicCode)
+        .eq('is_active', true)
+        .single()
+      
+      // Mark clinic code as used
+      await supabase.from('clinic_codes').update({
+        used_by: data.user.id,
+        used_at: new Date().toISOString()
+      }).eq('code', clinicCode)
+    }
+
+    showMessage('Account created successfully! Please login.', false)
+    registerForm.reset()
+    setTimeout(() => switchToLoginTab(), 2000)
+  } catch (error) {
+    showMessage(error.message)
+  }
+}
+
+// LOGIN Form Submission
+loginForm.onsubmit = async e => {
+  e.preventDefault()
+
+  const email = document.getElementById('loginEmail').value
+  const password = document.getElementById('loginPassword').value
+
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password
+    })
+
+    if (error) {
+      showMessage(error.message)
+      return
+    }
+
+    const { data: profile, error: profileError } = await supabase
+      .from('user_profiles')
+      .select('*')
+      .eq('user_id', data.user.id)
+      .single()
+
+    if (profileError || !profile) {
+      showMessage('User profile not found. Please register first.')
+      return
+    }
+
+    if (profile.role !== currentLoginRole) {
+      showMessage('This account is registered as a ' + profile.role + '. Please select the correct role.')
+      return
+    }
+
+    // Check if doctor is verified
+    if (profile.role === 'doctor') {
+      const { data: doctorData, error: doctorError } = await supabase
+        .from('doctors')
+        .select('verified')
+        .eq('user_id', data.user.id)
+        .single()
+      
+      if (doctorError || !doctorData || !doctorData.verified) {
+        showMessage('Your doctor account is pending verification. You will receive an email once approved by our admin team.')
+        return
+      }
+    }
+
+    // Check if admin code is valid
+    if (profile.role === 'admin' && !profile.verified) {
+      showMessage('Your admin account is not yet verified. Please contact your clinic administrator.')
+      return
+    }
+
+    showMessage('Login successful! Redirecting...', false)
+    setTimeout(() => {
+      if (currentLoginRole === 'doctor') {
+        window.location.href = 'Doctor_Schedule/doctor_dashboard.html'
+      } else if (currentLoginRole === 'admin') {
+        window.location.href = 'Admin/dashboard.html'
+      } else {
+        window.location.href = 'dashboard.html'
+      }
+    }, 1500)
+  } catch (error) {
+    showMessage(error.message)
+  }
+}
+</script>
+
+</body>
+</html>

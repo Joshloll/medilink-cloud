@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Billing - MediLink Cloud</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1e293b",
+                        "border-light": "#e2e8f0",
+                        "border-dark": "#334155",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.375rem", 
+                        "lg": "0.5rem", 
+                        "xl": "0.75rem", 
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display transition-colors duration-200 overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- SideNavBar -->
+<aside class="w-64 flex-shrink-0 border-r border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark flex flex-col justify-between hidden md:flex z-20">
+<div class="flex flex-col p-4 gap-6">
+<!-- Brand -->
+<div class="flex items-center gap-3 px-2">
+<div class="bg-primary/10 flex items-center justify-center rounded-lg size-10 text-primary">
+<span class="material-symbols-outlined text-2xl">local_hospital</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-base font-bold leading-tight">MediLink Cloud</h1>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-normal">Admin Portal</p>
+</div>
+</div>
+<!-- Navigation -->
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="dashboard.html">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="schedule.html">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="text-sm font-medium">Schedule</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="patients.html">
+<span class="material-symbols-outlined">groups</span>
+<span class="text-sm font-medium">Patients</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary group transition-colors" href="billing.html">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-sm font-medium">Billing</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="staff.html">
+<span class="material-symbols-outlined">stethoscope</span>
+<span class="text-sm font-medium">Staff</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="settings.html">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+</div>
+<!-- Bottom Actions -->
+<div class="p-4 border-t border-border-light dark:border-border-dark">
+<button onclick="handleLogout()" class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-md hover:bg-blue-600 transition-colors">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+<span class="truncate">Lock Screen</span>
+</button>
+</div>
+</aside>
+<!-- Main Content -->
+<div class="flex-1 flex flex-col h-full overflow-hidden relative">
+<!-- TopNavBar -->
+<header class="h-16 flex items-center justify-between px-6 border-b border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark flex-shrink-0 z-10">
+<div class="flex items-center gap-4">
+<!-- Mobile Menu Toggle (Visible on small screens) -->
+<button class="md:hidden text-slate-500 hover:text-slate-700">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="hidden sm:block text-lg font-bold tracking-tight">Billing & Invoicing</h2>
+<!-- Search Bar -->
+<div class="hidden md:flex w-80 items-center h-10 rounded-lg bg-background-light dark:bg-slate-800 border border-transparent focus-within:border-primary focus-within:ring-1 focus-within:ring-primary ml-4 transition-all">
+<div class="pl-3 text-slate-400 dark:text-slate-500 flex items-center justify-center">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="w-full h-full bg-transparent border-none text-sm px-3 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:ring-0" placeholder="Search invoices..."/>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<!-- Quick Actions Menu -->
+<button onclick="openNewInvoiceModal()" class="hidden sm:flex h-9 items-center gap-2 px-3 rounded-lg bg-primary text-white text-sm font-medium hover:bg-blue-600 transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>New Invoice</span>
+</button>
+<div class="h-6 w-px bg-slate-200 dark:bg-slate-700 mx-1"></div>
+<button class="relative p-2 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full border-2 border-surface-light dark:border-surface-dark"></span>
+</button>
+<div class="flex items-center gap-2 ml-2 pl-2 border-l border-slate-200 dark:border-slate-700">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-medium leading-none">Dr. Sarah West</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Admin</p>
+</div>
+<div class="size-9 rounded-full bg-slate-200 bg-cover bg-center border border-slate-200 dark:border-slate-700" data-alt="Profile picture of Dr. Sarah West" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA7ysvdVtAVeubo-bHhGUxDQ4Z7xg3CEs1GyFkZ_pHsM9QBIzyl0ABC5LNqsdwvh6Jh1M9H6hCr9yUDQoxXCVCLLQ3qqmOK0bdGDGhrqiSPEeaYqIX2FIBx7t_o5B3BfK37G93gFuWeErliUaIC6ytdNoqDoEMpMJOz-oxZGjqW8r-BzhkT-x6HZPdvj0VyI73TZ8jpfGcQNyKaZxapM4AXOk6leZ52Sd682w4YDZtytaG-NK58T_wBG-CfVjRlPOoZzbsylFb1TlFX')"></div>
+</div>
+</div>
+</header>
+<!-- Scrollable Dashboard Content -->
+<main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6">
+<!-- Search Bar -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm p-4">
+<div class="flex items-center gap-4">
+<div class="flex-1 relative">
+<div class="pl-3 text-slate-400 dark:text-slate-500 flex items-center justify-center absolute left-0 top-1/2 transform -translate-y-1/2">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input type="text" id="billingSearch" class="w-full h-10 pl-10 pr-4 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary" placeholder="Search by Patient or Billing Status...">
+</div>
+<button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+Filter
+</button>
+</div>
+</div>
+
+<!-- Patient Billing -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm overflow-hidden">
+<div class="p-6 border-b border-border-light dark:border-border-dark">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white">Patient Billing</h3>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead class="bg-slate-50 dark:bg-slate-800/50 border-b border-border-light dark:border-border-dark">
+<tr>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Patient Name</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Current Bills</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Previous Payments</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Balance</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Status</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-light dark:divide-border-dark">
+<!-- Patient 1 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Patient" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCHcgJ2iROoE4fF6uxz4GPDRDczjIeFKvkBcdmViI2GQujCg1BSEZBtNITy1iJFBnmyfKem-R_UHZNOblZ3-CB880_ARBhvNQdMNfmodmXtgsdsA-tV90jKtILsH2h4aTmltq89h-g5vDIx98RK9LqkY6EkDAfOBLbElIA-GckrLf9Jn9uTbPl2Sqnwnj8alnxmvQ7c2M8JwhIJ0I-jMYr141zsxa84sSl1rJBcYAgkRwCOZBbNLn_jqVyAd3jQiKUZijpP6l_HssLE')"></div>
+<div>
+<div class="font-medium text-slate-900 dark:text-white">John Doe</div>
+<div class="text-xs text-slate-500">ID: #P-2024-001</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm font-semibold text-slate-900 dark:text-white">$450.00</div>
+<div class="text-xs text-slate-500">2 invoices</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm text-slate-600 dark:text-slate-400">$300.00</div>
+<div class="text-xs text-slate-500">3 payments</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm font-semibold text-slate-900 dark:text-white">$150.00</div>
+<div class="text-xs text-slate-500">Outstanding</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 text-xs font-medium rounded">Pending</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">receipt_long</span>
+</button>
+<button class="text-green-600 hover:text-green-700 transition-colors">
+<span class="material-symbols-outlined">payments</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Patient 2 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Patient" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCNTskn7UVIQNK0Q0AgngK71B2Kx-lWaoKDVri_EiQxLCW4L0eKQLfa3hJvdE5_KJV9MlXwfLd2don1TnIiOoyjmAMcr81rpjRNN3gOrcYIyY3XJFRIDse-Gm1D43hrpm2bNZzsAbzsGWPqOwEaxG83NNpI2YU9pP_uJrRTup0h1XYn1k--H16NzazjMbRAGqbVk-aS_5E8G-c2zwtcys4_1UdgYxJp_TMlXLWrN05e0M4Cjb_HAIuIzG15XgNLTDlEqr8L9Id5k2XO')"></div>
+<div>
+<div class="font-medium text-slate-900 dark:text-white">Jane Miller</div>
+<div class="text-xs text-slate-500">ID: #P-2024-002</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm font-semibold text-slate-900 dark:text-white">$275.00</div>
+<div class="text-xs text-slate-500">1 invoice</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm text-slate-600 dark:text-slate-400">$275.00</div>
+<div class="text-xs text-slate-500">2 payments</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm font-semibold text-green-600 dark:text-green-400">$0.00</div>
+<div class="text-xs text-slate-500">Paid in full</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300 text-xs font-medium rounded">Paid</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">receipt_long</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Patient 3 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Patient" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA8669_zuSSsORaYd7YG_0uAHl729RJLDjJhqjlbO5IxDnGq9jC-y7Fc0usaQ_VVglloZlI7p1xpcX15ZACNhZjr6v_NPXp7rQDbQImCGcPcwz-qtDQfIrsX3VpUcIMKpZBOd-N57kRdueZx5e-MnlyQGqTvD2zlmI-U3O69_soI7czcUZ4wsdyq-sPNNcu8Vooxa9DqcvtMV6oOmKuKgLhPVNuDXpiY6Gzy5TPDaFqVue30CLAG2ygQ_qti0LqJmBnEFAqOCztRd3T')"></div>
+<div>
+<div class="font-medium text-slate-900 dark:text-white">Robert Fox</div>
+<div class="text-xs text-slate-500">ID: #P-2024-003</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm font-semibold text-slate-900 dark:text-white">$600.00</div>
+<div class="text-xs text-slate-500">3 invoices</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm text-slate-600 dark:text-slate-400">$0.00</div>
+<div class="text-xs text-slate-500">No payments</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm font-semibold text-slate-900 dark:text-white">$600.00</div>
+<div class="text-xs text-slate-500">Outstanding</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300 text-xs font-medium rounded">Overdue</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">receipt_long</span>
+</button>
+<button class="text-green-600 hover:text-green-700 transition-colors">
+<span class="material-symbols-outlined">payments</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Patient 4 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Patient" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuABfUwRh5QH-R8IKUdSTdK9xc9-9_-nbNtVdBQ2tjVD8_IUFCk5cLnXhPyGM5gxoTjVud3HGCGCd-DFfTfLnG2E663mks1ZVopMEASce3ZHJk6XzFdlZRWPRag9HxDhUaDAp5Dchf7JVRyp4yGlgnKeI-QmmxYXz3p9dDEhex0O_JcByLH6nrsAQRbde2CwdSfqBARCiXhJMX6VPmSXYUsff7cslngd8X8xosysoU2ZfEWsKQjsr6-AGp7BPGTlstQ_nnn6I_EOHp5C')"></div>
+<div>
+<div class="font-medium text-slate-900 dark:text-white">Alice Cooper</div>
+<div class="text-xs text-slate-500">ID: #P-2024-004</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm font-semibold text-slate-900 dark:text-white">$180.00</div>
+<div class="text-xs text-slate-500">1 invoice</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm text-slate-600 dark:text-slate-400">$100.00</div>
+<div class="text-xs text-slate-500">1 payment</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm font-semibold text-slate-900 dark:text-white">$80.00</div>
+<div class="text-xs text-slate-500">Outstanding</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 text-xs font-medium rounded">Pending</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">receipt_long</span>
+</button>
+<button class="text-green-600 hover:text-green-700 transition-colors">
+<span class="material-symbols-outlined">payments</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-4 border-t border-border-light dark:border-border-dark flex items-center justify-between">
+<p class="text-sm text-slate-500 dark:text-slate-400">Showing 1-10 of 142 billing records</p>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">Previous</button>
+<button class="px-3 py-1 text-sm rounded-lg bg-primary text-white">1</button>
+<button class="px-3 py-1 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">2</button>
+<button class="px-3 py-1 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">3</button>
+<button class="px-3 py-1 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">Next</button>
+</div>
+</div>
+</div>
+<!-- Recent Invoices -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm overflow-hidden">
+<div class="p-6 border-b border-border-light dark:border-border-dark">
+<div class="flex items-center justify-between">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white">Recent Invoices</h3>
+<div class="flex items-center gap-2">
+<select class="px-3 py-1.5 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-border-light dark:border-border-dark">
+<option value="all">All Status</option>
+<option value="paid">Paid</option>
+<option value="pending">Pending</option>
+<option value="overdue">Overdue</option>
+</select>
+<button class="px-3 py-1.5 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+Export
+</button>
+</div>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead class="bg-slate-50 dark:bg-slate-800/50 border-b border-border-light dark:border-border-dark">
+<tr>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Invoice #</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Patient</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 hidden md:table-cell">Date</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 hidden lg:table-cell">Services</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Amount</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Status</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-light dark:divide-border-dark">
+<!-- Invoice 1 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="font-medium text-slate-900 dark:text-white">#INV-2024-001</div>
+<div class="text-xs text-slate-500">Consultation</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="size-8 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Patient" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCHcgJ2iROoE4fF6uxz4GPDRDczjIeFKvkBcdmViI2GQujCg1BSEZBtNITy1iJFBnmyfKem-R_UHZNOblZ3-CB880_ARBhvNQdMNfmodmXtgsdsA-tV90jKtILsH2h4aTmltq89h-g5vDIx98RK9LqkY6EkDAfOBLbElIA-GckrLf9Jn9uTbPl2Sqnwnj8alnxmvQ7c2M8JwhIJ0I-jMYr141zsxa84sSl1rJBcYAgkRwCOZBbNLn_jqVyAd3jQiKUZijpP6l_HssLE')"></div>
+<div>
+<div class="font-medium text-slate-900 dark:text-white">John Doe</div>
+<div class="text-xs text-slate-500">ID: #P-2024-001</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 hidden md:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">Mar 1, 2026</div>
+</td>
+<td class="px-6 py-4 hidden lg:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">General Consultation</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm font-semibold text-slate-900 dark:text-white">$150.00</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300 text-xs font-medium rounded">Paid</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">download</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Invoice 2 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="font-medium text-slate-900 dark:text-white">#INV-2024-002</div>
+<div class="text-xs text-slate-500">Lab Tests</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="size-8 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Patient" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCNTskn7UVIQNK0Q0AgngK71B2Kx-lWaoKDVri_EiQxLCW4L0eKQLfa3hJvdE5_KJV9MlXwfLd2don1TnIiOoyjmAMcr81rpjRNN3gOrcYIyY3XJFRIDse-Gm1D43hrpm2bNZzsAbzsGWPqOwEaxG83NNpI2YU9pP_uJrRTup0h1XYn1k--H16NzazjMbRAGqbVk-aS_5E8G-c2zwtcys4_1UdgYxJp_TMlXLWrN05e0M4Cjb_HAIuIzG15XgNLTDlEqr8L9Id5k2XO')"></div>
+<div>
+<div class="font-medium text-slate-900 dark:text-white">Jane Miller</div>
+<div class="text-xs text-slate-500">ID: #P-2024-002</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 hidden md:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">Mar 2, 2026</div>
+</td>
+<td class="px-6 py-4 hidden lg:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">Blood Work, X-Ray</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm font-semibold text-slate-900 dark:text-white">$275.00</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 text-xs font-medium rounded">Pending</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">download</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Invoice 3 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="font-medium text-slate-900 dark:text-white">#INV-2024-003</div>
+<div class="text-xs text-slate-500">Specialist Visit</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="size-8 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Patient" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA8669_zuSSsORaYd7YG_0uAHl729RJLDjJhqjlbO5IxDnGq9jC-y7Fc0usaQ_VVglloZlI7p1xpcX15ZACNhZjr6v_NPXp7rQDbQImCGcPcwz-qtDQfIrsX3VpUcIMKpZBOd-N57kRdueZx5e-MnlyQGqTvD2zlmI-U3O69_soI7czcUZ4wsdyq-sPNNcu8Vooxa9DqcvtMV6oOmKuKgLhPVNuDXpiY6Gzy5TPDaFqVue30CLAG2ygQ_qti0LqJmBnEFAqOCztRd3T')"></div>
+<div>
+<div class="font-medium text-slate-900 dark:text-white">Robert Fox</div>
+<div class="text-xs text-slate-500">ID: #P-2024-003</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 hidden md:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">Feb 15, 2026</div>
+</td>
+<td class="px-6 py-4 hidden lg:table-cell">
+<div class="text-sm text-slate-600 dark:text-slate-400">Cardiology Consultation</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm font-semibold text-slate-900 dark:text-white">$300.00</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300 text-xs font-medium rounded">Overdue</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">download</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-4 border-t border-border-light dark:border-border-dark flex items-center justify-between">
+<p class="text-sm text-slate-500 dark:text-slate-400">Showing 1-10 of 142 invoices</p>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">Previous</button>
+<button class="px-3 py-1 text-sm rounded-lg bg-primary text-white">1</button>
+<button class="px-3 py-1 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">2</button>
+<button class="px-3 py-1 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">3</button>
+<button class="px-3 py-1 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">Next</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+
+<!-- New Invoice Modal -->
+<div id="newInvoiceModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Create New Invoice</h3>
+<form class="space-y-4">
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Patient</label>
+<select class="w-full p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100">
+<option value="">Select Patient</option>
+<option value="john">John Doe - #P-2024-001</option>
+<option value="jane">Jane Miller - #P-2024-002</option>
+<option value="robert">Robert Fox - #P-2024-003</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Service Type</label>
+<select class="w-full p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100">
+<option value="">Select Service</option>
+<option value="consultation">General Consultation</option>
+<option value="specialist">Specialist Visit</option>
+<option value="lab">Lab Tests</option>
+<option value="imaging">Imaging Services</option>
+<option value="procedure">Medical Procedure</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Description</label>
+<textarea class="w-full p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100" rows="3" placeholder="Service description..."></textarea>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Quantity</label>
+<input type="number" class="w-full p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100" value="1" min="1">
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Unit Price ($)</label>
+<input type="number" class="w-full p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100" placeholder="0.00" min="0" step="0.01">
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Total Amount ($)</label>
+<input type="text" class="w-full p-2 border border-border-light dark:border-border-dark rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300" readonly placeholder="0.00">
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Due Date</label>
+<input type="date" class="w-full p-2 border border-border-light dark:border-border-dark rounded-lg bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100">
+</div>
+<div class="flex gap-2 pt-4">
+<button type="button" onclick="closeNewInvoiceModal()" class="flex-1 px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700">Cancel</button>
+<button type="submit" class="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600">Create Invoice</button>
+</div>
+</form>
+</div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+
+const supabase = createClient(
+  'https://zczlhrsmlecannuqknju.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjemxocnNtbGVjYW5udXFrbmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Njk3MjEsImV4cCI6MjA4ODA0NTcyMX0.bymF387OBZ_5JNojgm2cbm8rAUMyUfdaSKScrjnvMfc'
+);
+
+// Check authentication on page load
+async function checkAuth() {
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (!session) {
+      window.location.href = '../login.html';
+      return;
+    }
+
+    const { data: profile } = await supabase
+      .from('user_profiles')
+      .select('*')
+      .eq('user_id', session.user.id)
+      .single();
+
+    if (!profile || profile.role !== 'doctor') {
+      window.location.href = profile?.role === 'patient' ? '../dashboard.html' : '../login.html';
+      return;
+    }
+
+    updateUserInfo(profile);
+  } catch (error) {
+    console.error('Auth check error:', error);
+    window.location.href = '../login.html';
+  }
+}
+
+function updateUserInfo(profile) {
+  const userName = document.querySelector('.text-right.hidden.sm:block p.text-sm.font-medium');
+  if (userName) {
+    userName.textContent = `Dr. ${profile.first_name} ${profile.last_name}`;
+  }
+}
+
+async function handleLogout() {
+  try {
+    await supabase.auth.signOut();
+    window.location.href = '../login.html';
+  } catch (error) {
+    console.error('Logout error:', error);
+    window.location.href = '../login.html';
+  }
+}
+
+function openNewInvoiceModal() {
+  document.getElementById('newInvoiceModal').classList.remove('hidden');
+}
+
+function closeNewInvoiceModal() {
+  document.getElementById('newInvoiceModal').classList.add('hidden');
+}
+
+window.handleLogout = handleLogout;
+window.openNewInvoiceModal = openNewInvoiceModal;
+window.closeNewInvoiceModal = closeNewInvoiceModal;
+
+checkAuth();
+supabase.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_OUT') {
+    window.location.href = '../login.html';
+  } else if (event === 'SIGNED_IN') {
+    checkAuth();
+  }
+});
+</script>
+
+</body>
+</html>
