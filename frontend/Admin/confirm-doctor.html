@@ -551,57 +551,28 @@ Filter
 </div>
 </div>
 
-<script type="module">
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
-
-const supabase = createClient(
-  'https://zczlhrsmlecannuqknju.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjemxocnNtbGVjYW5udXFrbmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Njk3MjEsImV4cCI6MjA4ODA0NTcyMX0.bymF387OBZ_5JNojgm2cbm8rAUMyUfdaSKScrjnvMfc'
-);
-
+<script>
 // Check authentication on page load
-async function checkAuth() {
-  try {
-    const { data: { session } } = await supabase.auth.getSession();
-    
-    if (!session) {
-      window.location.href = '../login.html';
-      return;
-    }
-
-    const { data: profile } = await supabase
-      .from('user_profiles')
-      .select('*')
-      .eq('user_id', session.user.id)
-      .single();
-
-    if (!profile || profile.role !== 'doctor') {
-      window.location.href = profile?.role === 'patient' ? '../dashboard.html' : '../login.html';
-      return;
-    }
-
-    updateUserInfo(profile);
-  } catch (error) {
-    console.error('Auth check error:', error);
+function checkAuth() {
+  // Simple mock authentication - remove when implementing your own auth system
+  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+  
+  if (!isAuthenticated) {
     window.location.href = '../login.html';
+    return;
+  }
+
+  // Update UI with user info
+  const userNameElement = document.getElementById('userName');
+  if (userNameElement) {
+    userNameElement.textContent = localStorage.getItem('userName') || 'Admin User';
   }
 }
 
-function updateUserInfo(profile) {
-  const userName = document.querySelector('.text-right.hidden.sm:block p.text-sm.font-medium');
-  if (userName) {
-    userName.textContent = `Dr. ${profile.first_name} ${profile.last_name}`;
-  }
-}
-
-async function handleLogout() {
-  try {
-    await supabase.auth.signOut();
-    window.location.href = '../login.html';
-  } catch (error) {
-    console.error('Logout error:', error);
-    window.location.href = '../login.html';
-  }
+function handleLogout() {
+  localStorage.removeItem('isAuthenticated');
+  localStorage.removeItem('userName');
+  window.location.href = '../login.html';
 }
 
 // Doctor verification functions
@@ -772,13 +743,6 @@ window.closeConfirmModal = closeConfirmModal;
 window.executeConfirmAction = executeConfirmAction;
 
 checkAuth();
-supabase.auth.onAuthStateChange((event, session) => {
-  if (event === 'SIGNED_OUT') {
-    window.location.href = '../login.html';
-  } else if (event === 'SIGNED_IN') {
-    checkAuth();
-  }
-});
 </script>
 
 </body>

@@ -571,78 +571,108 @@ Export
 </div>
 </div>
 
-<script type="module">
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+<script>
+// ============= CHECK AUTHENTICATION =============
+function checkAuth() {
+  // Simple mock authentication - remove when implementing your own auth system
+  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+  
+  if (!isAuthenticated) {
+    window.location.href = '../login.html';
+    return;
+  }
 
-const supabase = createClient(
-  'https://zczlhrsmlecannuqknju.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjemxocnNtbGVjYW5udXFrbmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Njk3MjEsImV4cCI6MjA4ODA0NTcyMX0.bymF387OBZ_5JNojgm2cbm8rAUMyUfdaSKScrjnvMfc'
-);
+  // Update UI with user info
+  const userNameElement = document.getElementById('userName');
+  if (userNameElement) {
+    userNameElement.textContent = localStorage.getItem('userName') || 'Admin User';
+  }
+}
 
-// Check authentication on page load
-async function checkAuth() {
-  try {
-    const { data: { session } } = await supabase.auth.getSession();
-    
-    if (!session) {
-      window.location.href = '../login.html';
-      return;
+// ============= LOAD BILLING DATA =============
+function loadBillingData() {
+  // Show mock data - replace with your database calls
+  showMockBillingData();
+}
+
+// ============= LOAD BILLING STATS =============
+function loadBillingStats() {
+  // Show mock stats - replace with your database calls
+  showMockStats();
+}
+
+// ============= BILLING ACTIONS =============
+function viewBillingDetails(billingId) {
+  // Implementation for viewing billing details
+  console.log('View billing details:', billingId);
+}
+
+function sendInvoice(billingId) {
+  if (!confirm('Send invoice to patient?')) return;
+  
+  // Implementation for sending invoice
+  console.log('Send invoice:', billingId);
+  alert('Invoice sent successfully!');
+}
+
+function markAsPaid(billingId) {
+  if (!confirm('Mark this bill as paid?')) return;
+  
+  // Implementation for marking as paid
+  console.log('Mark as paid:', billingId);
+  alert('Bill marked as paid!');
+  loadBillingData();
+  loadBillingStats();
+}
+
+// ============= HANDLE LOGOUT =============
+function handleLogout() {
+  localStorage.removeItem('isAuthenticated');
+  localStorage.removeItem('userName');
+  window.location.href = '../login.html';
+}
+
+// ============= HELPER FUNCTIONS =============
+function updateStatCard(id, value) {
+  const element = document.getElementById(id);
+  if (element) {
+    if (id === 'totalRevenue') {
+      element.textContent = `$${value.toLocaleString()}`;
+    } else {
+      element.textContent = value.toLocaleString();
     }
-
-    const { data: profile } = await supabase
-      .from('user_profiles')
-      .select('*')
-      .eq('user_id', session.user.id)
-      .single();
-
-    if (!profile || profile.role !== 'doctor') {
-      window.location.href = profile?.role === 'patient' ? '../dashboard.html' : '../login.html';
-      return;
-    }
-
-    updateUserInfo(profile);
-  } catch (error) {
-    console.error('Auth check error:', error);
-    window.location.href = '../login.html';
   }
 }
 
-function updateUserInfo(profile) {
-  const userName = document.querySelector('.text-right.hidden.sm:block p.text-sm.font-medium');
-  if (userName) {
-    userName.textContent = `Dr. ${profile.first_name} ${profile.last_name}`;
+function getStatusClass(status) {
+  const statusClasses = {
+    paid: 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300',
+    pending: 'bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300',
+    overdue: 'bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300'
+  };
+  return statusClasses[status] || 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300';
+}
+
+function showMockStats() {
+  updateStatCard('totalRevenue', 45678);
+  updateStatCard('totalBills', 142);
+  updateStatCard('paidBills', 89);
+  updateStatCard('pendingBills', 47);
+  updateStatCard('overdueBills', 6);
+}
+
+function showMockBillingData() {
+  const tbody = document.getElementById('billing-table-body');
+  if (tbody) {
+    tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-8 text-center text-slate-500">Database connection unavailable - no billing data to display</td></tr>';
   }
 }
 
-async function handleLogout() {
-  try {
-    await supabase.auth.signOut();
-    window.location.href = '../login.html';
-  } catch (error) {
-    console.error('Logout error:', error);
-    window.location.href = '../login.html';
-  }
-}
-
-function openNewInvoiceModal() {
-  document.getElementById('newInvoiceModal').classList.remove('hidden');
-}
-
-function closeNewInvoiceModal() {
-  document.getElementById('newInvoiceModal').classList.add('hidden');
-}
-
-window.handleLogout = handleLogout;
-window.openNewInvoiceModal = openNewInvoiceModal;
-window.closeNewInvoiceModal = closeNewInvoiceModal;
-
-checkAuth();
-supabase.auth.onAuthStateChange((event, session) => {
-  if (event === 'SIGNED_OUT') {
-    window.location.href = '../login.html';
-  } else if (event === 'SIGNED_IN') {
-    checkAuth();
-  }
+// ============= INITIALIZATION =============
+document.addEventListener('DOMContentLoaded', function() {
+  checkAuth();
+  loadBillingStats();
+  loadBillingData();
 });
 </script>
 

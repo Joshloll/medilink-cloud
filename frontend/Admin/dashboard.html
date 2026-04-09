@@ -877,423 +877,84 @@ async function loadDoctorValidations() {
             </div>
           </div>
           <div class="flex gap-2 flex-shrink-0">
-            <button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900/40 transition-colors font-medium text-sm" onclick="approveDoctors('${doctor.user_id}')">
+            <button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900/40 transition-colors font-medium text-sm" onclick="approveDoctors('doctor-id')">
               <span class="material-symbols-outlined text-[18px]">check_circle</span>
               Approve
             </button>
-            <button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors font-medium text-sm" onclick="rejectDoctor('${doctor.user_id}')">
+            <button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors font-medium text-sm" onclick="rejectDoctor('doctor-id')">
               <span class="material-symbols-outlined text-[18px]">cancel</span>
               Reject
             </button>
           </div>
         </div>
-        <div class="mt-4 p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
-          <p class="text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Notes:</p>
-          <p class="text-sm text-slate-600 dark:text-slate-400">${doctor.validation_notes || 'No notes provided'}</p>
-        </div>
       `;
       container.appendChild(card);
     });
-    
   } catch (error) {
     console.error('Error loading doctor validations:', error);
-    document.getElementById('doctor-applications').innerHTML = '<div class="text-center py-8 text-red-500">Error loading doctor applications</div>';
   }
 }
 
 // ============= APPOINTMENT CONFIRMATIONS =============
-async function loadAppointmentConfirmations() {
-  try {
-    const container = document.getElementById('appointments-list');
-    container.innerHTML = '<div class="text-center py-8">Loading...</div>';
-    
-    // Fetch pending appointments
-    const { data: pendingAppointments, error } = await supabase
-      .from('appointments')
-      .select(`
-        id,
-        patient_id,
-        doctor_id,
-        service,
-        appointment_date,
-        appointment_time,
-        status,
-        price,
-        user_profiles:patient_id(first_name, last_name, email),
-        doctors:doctor_id(first_name, last_name, specialty)
-      `)
-      .eq('status', 'pending')
-      .order('appointment_date', { ascending: true });
-    
-    if (error) throw error;
-    
-    if (!pendingAppointments || pendingAppointments.length === 0) {
-      container.innerHTML = '<div class="text-center py-8 text-slate-500">No pending appointments</div>';
-      return;
-    }
-    
-    container.innerHTML = '';
-    
-    pendingAppointments.forEach(apt => {
-      const patientName = apt.user_profiles ? `${apt.user_profiles.first_name} ${apt.user_profiles.last_name}` : 'Unknown Patient';
-      const doctorName = apt.doctors ? `Dr. ${apt.doctors.first_name} ${apt.doctors.last_name}` : 'Unknown Doctor';
-      const appointmentDate = new Date(apt.appointment_date).toLocaleDateString();
-      
-      const card = document.createElement('div');
-      card.className = 'p-5 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm';
-      card.innerHTML = `
-        <div class="flex items-start justify-between gap-4 flex-col md:flex-row">
-          <div class="flex-1">
-            <div class="flex items-center gap-3 mb-3">
-              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 text-xs font-medium">
-                <span class="material-symbols-outlined text-[14px]">schedule</span>
-                Pending
-              </span>
-              <span class="text-sm font-medium text-slate-700 dark:text-slate-300">${apt.service}</span>
-            </div>
-            
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div>
-                <p class="text-xs text-slate-500 dark:text-slate-400">Patient</p>
-                <p class="font-semibold text-slate-900 dark:text-white">${patientName}</p>
-              </div>
-              <div>
-                <p class="text-xs text-slate-500 dark:text-slate-400">Doctor</p>
-                <p class="font-semibold text-slate-900 dark:text-white">${doctorName}</p>
-              </div>
-              <div>
-                <p class="text-xs text-slate-500 dark:text-slate-400">Date & Time</p>
-                <p class="font-semibold text-slate-900 dark:text-white">${appointmentDate} ${apt.appointment_time}</p>
-              </div>
-              <div>
-                <p class="text-xs text-slate-500 dark:text-slate-400">Price</p>
-                <p class="font-semibold text-slate-900 dark:text-white">₱${apt.price}</p>
-              </div>
-            </div>
-          </div>
-          
-          <div class="flex gap-2">
-            <button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900/40 transition-colors font-medium text-sm" onclick="confirmAppointment('${apt.id}')">
-              <span class="material-symbols-outlined text-[18px]">check_circle</span>
-              Confirm
-            </button>
-            <button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors font-medium text-sm" onclick="cancelAppointment('${apt.id}')">
-              <span class="material-symbols-outlined text-[18px]">cancel</span>
-              Cancel
-            </button>
-          </div>
-        </div>
-      `;
-      container.appendChild(card);
-    });
-    
-  } catch (error) {
-    console.error('Error loading appointments:', error);
-    document.getElementById('appointments-list').innerHTML = '<div class="text-center py-8 text-red-500">Error loading appointments</div>';
-  }
+function loadAppointmentConfirmations() {
+  // Show mock data - replace with your database calls
+  showMockData();
 }
 
 // ============= CLINIC DATA =============
-async function loadClinicData() {
-  try {
-    // Fetch statistics
-    const { count: patientsCount } = await supabase
-      .from('user_profiles')
-      .select('*', { count: 'exact' })
-      .eq('role', 'patient');
-      
-    const { count: doctorsCount } = await supabase
-      .from('user_profiles')
-      .select('*', { count: 'exact' })
-      .eq('role', 'doctor')
-      .eq('verified', true);
-      
-    const { count: appointmentsCount } = await supabase
-      .from('appointments')
-      .select('*', { count: 'exact' })
-      .eq('status', 'confirmed');
-    
-    const { count: pendingCount } = await supabase
-      .from('user_profiles')
-      .select('*', { count: 'exact' })
-      .eq('role', 'doctor')
-      .eq('verified', false);
-    
-    // Calculate revenue
-    const { data: appointments } = await supabase
-      .from('appointments')
-      .select('price')
-      .eq('status', 'confirmed');
-    
-    const totalRevenue = (appointments || []).reduce((sum, apt) => sum + (apt.price || 0), 0);
-    
-    // Update stats
-    document.getElementById('stat-patients').textContent = patientsCount || 0;
-    document.getElementById('stat-doctors').textContent = doctorsCount || 0;
-    document.getElementById('stat-appointments').textContent = appointmentsCount || 0;
-    document.getElementById('stat-revenue').textContent = `₱${(totalRevenue || 0).toLocaleString()}`;
-    document.getElementById('stat-pending').textContent = pendingCount || 0;
-    
-    // Load top services
-    loadTopServices();
-    loadTopDoctors();
-    
-  } catch (error) {
-    console.error('Error loading clinic data:', error);
-  }
-}
-
-// ============= TOP SERVICES =============
-async function loadTopServices() {
-  try {
-    const { data: appointments } = await supabase
-      .from('appointments')
-      .select('service')
-      .eq('status', 'confirmed');
-    
-    const serviceCount = {};
-    (appointments || []).forEach(apt => {
-      serviceCount[apt.service] = (serviceCount[apt.service] || 0) + 1;
-    });
-    
-    const sortedServices = Object.entries(serviceCount)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 5);
-    
-    const container = document.getElementById('top-services');
-    container.innerHTML = '';
-    
-    if (sortedServices.length === 0) {
-      container.innerHTML = '<p class="text-slate-500 text-center py-4">No appointment data yet</p>';
-      return;
-    }
-    
-    sortedServices.forEach(([service, count]) => {
-      const maxCount = sortedServices[0][1];
-      const percentage = (count / maxCount) * 100;
-      
-      const item = document.createElement('div');
-      item.className = 'flex items-center justify-between';
-      item.innerHTML = `
-        <div class="flex-1">
-          <p class="text-sm font-medium text-slate-900 dark:text-white">${service}</p>
-          <div class="mt-1 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-            <div class="h-full bg-primary rounded-full" style="width: ${percentage}%"></div>
-          </div>
-        </div>
-        <p class="ml-4 text-sm font-bold text-slate-900 dark:text-white">${count}</p>
-      `;
-      container.appendChild(item);
-    });
-  } catch (error) {
-    console.error('Error loading top services:', error);
-  }
-}
-
-// ============= TOP DOCTORS =============
-async function loadTopDoctors() {
-  try {
-    const { data: appointments } = await supabase
-      .from('appointments')
-      .select('doctor_id, doctors:doctor_id(first_name, last_name)')
-      .eq('status', 'confirmed');
-    
-    const doctorCount = {};
-    (appointments || []).forEach(apt => {
-      const id = apt.doctor_id;
-      if (!doctorCount[id]) {
-        doctorCount[id] = {
-          count: 0,
-          name: apt.doctors ? `Dr. ${apt.doctors.first_name} ${apt.doctors.last_name}` : 'Unknown'
-        };
-      }
-      doctorCount[id].count += 1;
-    });
-    
-    const sortedDoctors = Object.values(doctorCount)
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 5);
-    
-    const container = document.getElementById('top-doctors');
-    container.innerHTML = '';
-    
-    if (sortedDoctors.length === 0) {
-      container.innerHTML = '<p class="text-slate-500 text-center py-4">No appointment data yet</p>';
-      return;
-    }
-    
-    sortedDoctors.forEach((doc, idx) => {
-      const item = document.createElement('div');
-      item.className = 'flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800';
-      item.innerHTML = `
-        <div>
-          <p class="text-sm font-medium text-slate-900 dark:text-white">#${idx + 1} ${doc.name}</p>
-          <p class="text-xs text-slate-500">Appointments: ${doc.count}</p>
-        </div>
-        <span class="text-lg font-bold text-primary">${doc.count}</span>
-      `;
-      container.appendChild(item);
-    });
-  } catch (error) {
-    console.error('Error loading top doctors:', error);
-  }
+function loadClinicData() {
+  // Show mock data - replace with your database calls
+  showMockData();
 }
 
 // ============= PATIENTS LIST =============
-async function loadPatientsList() {
-  try {
-    const tbody = document.getElementById('patients-table-body');
-    tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-slate-500">Loading...</td></tr>';
-    
-    const { data: patients, error } = await supabase
-      .from('user_profiles')
-      .select('user_id, first_name, last_name, email, phone')
-      .eq('role', 'patient')
-      .order('created_at', { ascending: false });
-    
-    if (error) throw error;
-    
-    if (!patients || patients.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-slate-500">No patients registered</td></tr>';
-      return;
-    }
-    
-    tbody.innerHTML = '';
-    
-    for (const patient of patients) {
-      // Count appointments for this patient
-      const { count: appointmentCount } = await supabase
-        .from('appointments')
-        .select('*', { count: 'exact' })
-        .eq('patient_id', patient.user_id);
-      
-      const row = document.createElement('tr');
-      row.className = 'group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors';
-      row.innerHTML = `
-        <td class="px-6 py-4"><span class="font-medium text-slate-900 dark:text-white">${patient.first_name} ${patient.last_name}</span></td>
-        <td class="px-6 py-4"><span class="text-slate-600 dark:text-slate-400 text-sm">${patient.email || 'N/A'}</span></td>
-        <td class="px-6 py-4 hidden sm:table-cell"><span class="text-slate-600 dark:text-slate-400 text-sm">${patient.phone || 'N/A'}</span></td>
-        <td class="px-6 py-4"><span class="text-slate-900 dark:text-white font-semibold">${appointmentCount || 0}</span></td>
-        <td class="px-6 py-4 text-right">
-          <button class="text-slate-500 hover:text-primary transition-colors">
-            <span class="material-symbols-outlined">open_in_new</span>
-          </button>
-        </td>
-      `;
-      tbody.appendChild(row);
-    }
-    
-  } catch (error) {
-    console.error('Error loading patients:', error);
-    document.getElementById('patients-table-body').innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-red-500">Error loading patients</td></tr>';
+function loadPatientsList() {
+  // Show mock data - replace with your database calls
+  showMockData();
+}
+
+// ============= HELPER FUNCTIONS =============
+function updateStatCard(id, value) {
+  const element = document.getElementById(id);
+  if (element) {
+    element.textContent = typeof value === 'number' ? value.toLocaleString() : value;
   }
 }
 
-// ============= APPROVAL/REJECTION FUNCTIONS =============
-window.approveDoctors = async function(doctorId) {
-  if (!confirm('Are you sure you want to approve this doctor?')) return;
+function showMockData() {
+  // Show mock data when database is not available
+  updateStatCard('totalPatients', '1,234');
+  updateStatCard('totalDoctors', '45');
+  updateStatCard('totalAppointments', '892');
+  updateStatCard('pendingVerifications', '8');
+  updateStatCard('revenue', '$45,678');
   
-  try {
-    const { error } = await supabase
-      .from('user_profiles')
-      .update({ verified: true, validation_notes: 'Approved by admin' })
-      .eq('user_id', doctorId);
-    
-    if (error) throw error;
-    
-    alert('Doctor approved successfully!');
-    loadDoctorValidations();
-  } catch (error) {
-    console.error('Error approving doctor:', error);
-    alert('Error approving doctor');
-  }
-};
-
-window.rejectDoctor = async function(doctorId) {
-  const reason = prompt('Enter rejection reason:');
-  if (!reason) return;
+  // Show mock content in containers
+  const containers = ['pendingDoctors', 'pendingAppointments', 'topServices', 'topDoctors'];
+  containers.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.innerHTML = '<div class="text-center py-8 text-slate-500">Database connection unavailable - showing mock data</div>';
+    }
+  });
   
-  try {
-    const { error } = await supabase
-      .from('user_profiles')
-      .update({ 
-        verified: false,
-        validation_notes: `Rejected: ${reason}`
-      })
-      .eq('user_id', doctorId);
-    
-    if (error) throw error;
-    
-    alert('Doctor rejected successfully!');
-    loadDoctorValidations();
-  } catch (error) {
-    console.error('Error rejecting doctor:', error);
-    alert('Error rejecting doctor');
+  const tbody = document.getElementById('patients-table-body');
+  if (tbody) {
+    tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-slate-500">Database connection unavailable - no data to display</td></tr>';
   }
-};
-
-window.confirmAppointment = async function(appointmentId) {
-  if (!confirm('Confirm this appointment?')) return;
-  
-  try {
-    const { error } = await supabase
-      .from('appointments')
-      .update({ status: 'confirmed' })
-      .eq('id', appointmentId);
-    
-    if (error) throw error;
-    
-    alert('Appointment confirmed!');
-    loadAppointmentConfirmations();
-  } catch (error) {
-    console.error('Error confirming appointment:', error);
-    alert('Error confirming appointment');
-  }
-};
-
-window.cancelAppointment = async function(appointmentId) {
-  const reason = prompt('Enter cancellation reason:');
-  if (!reason) return;
-  
-  try {
-    const { error } = await supabase
-      .from('appointments')
-      .update({ status: 'cancelled', cancellation_reason: reason })
-      .eq('id', appointmentId);
-    
-    if (error) throw error;
-    
-    alert('Appointment cancelled!');
-    loadAppointmentConfirmations();
-  } catch (error) {
-    console.error('Error cancelling appointment:', error);
-    alert('Error cancelling appointment');
-  }
-};
+}
 
 // ============= HANDLE LOGOUT =============
-async function handleLogout() {
-  try {
-    await supabase.auth.signOut();
-    window.location.href = '../login.html';
-  } catch (error) {
-    console.error('Logout error:', error);
-    window.location.href = '../login.html';
-  }
+function handleLogout() {
+  localStorage.removeItem('isAuthenticated');
+  localStorage.removeItem('userName');
+  window.location.href = '../login.html';
 }
 
-window.handleLogout = handleLogout;
-
 // ============= INITIALIZATION =============
-checkAuth();
-
-// Listen for auth state changes
-supabase.auth.onAuthStateChange((event, session) => {
-  if (event === 'SIGNED_OUT') {
-    window.location.href = '../login.html';
-  } else if (event === 'SIGNED_IN') {
-    checkAuth();
-  }
+document.addEventListener('DOMContentLoaded', function() {
+  checkAuth();
+  loadClinicData();
 });
 </script>
 

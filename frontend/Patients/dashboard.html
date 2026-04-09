@@ -375,46 +375,27 @@
     </div>
     
     <script>
-        // Supabase Configuration
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
-        const supabase = createClient(
-            'https://zczlhrsmlecannuqknju.supabase.co',
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6emxocnNtbGVjYW5udXFrbmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk2MzE3OTMsImV4cCI6MjAyNTIwNzc5M30.Kat3PGSQ3wNRLQN0xB8Sy_dUKH0mZMfW9BF8TM0yMWI'
-        )
-
         // Load user profile and update UI
-        async function loadPatientProfile() {
-            try {
-                const { data: { session } } = await supabase.auth.getSession()
-                if (!session) {
-                    window.location.href = '../auth.html'
-                    return
-                }
+        function loadPatientProfile() {
+            // Simple mock authentication - remove when implementing your own auth system
+            const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+            
+            if (!isAuthenticated) {
+                window.location.href = '../auth.html';
+                return;
+            }
 
-                const { data: profile, error } = await supabase
-                    .from('user_profiles')
-                    .select('*')
-                    .eq('user_id', session.user.id)
-                    .single()
+            // Update UI with mock user data
+            const userNameElement = document.querySelector('.text-right.hidden.md:block p.text-sm.font-bold');
+            if (userNameElement) {
+                userNameElement.textContent = localStorage.getItem('userName') || 'Sarah Jenkins';
+            }
 
-                if (error || !profile) {
-                    console.error('Profile error:', error)
-                    return
-                }
-
-                // Update greeting
-                const greeting = document.getElementById('patientGreeting')
-                if (greeting && profile.first_name) {
-                    greeting.textContent = `Welcome back, ${profile.first_name}`
-                }
-
-                // Update header name
-                const patientName = document.getElementById('patientName')
-                if (patientName) {
-                    patientName.textContent = `${profile.first_name || ''} ${profile.last_name || ''}`.trim()
-                }
-            } catch (error) {
-                console.error('Error loading profile:', error)
+            // Update greeting
+            const greeting = document.querySelector('h1.text-slate-900.dark\\:text-white');
+            if (greeting) {
+                const userName = localStorage.getItem('userName') || 'Sarah';
+                greeting.textContent = `Welcome back, ${userName}`;
             }
         }
 
