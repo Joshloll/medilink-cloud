@@ -293,61 +293,58 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('My Appointments page loaded');
             
-            // Mock appointments data
-            const appointments = [
-                {
-                    id: 1,
-                    doctor: 'Dr. Emily Chen',
-                    specialty: 'Cardiology',
-                    date: '2023-10-25',
-                    time: '10:00 AM',
-                    type: 'Consultation',
-                    status: 'upcoming',
-                    location: 'Main Clinic',
-                    notes: 'Regular checkup',
-                    fee: 120
-                },
-                {
-                    id: 2,
-                    doctor: 'Dr. Sarah Miller',
-                    specialty: 'General Practice',
-                    date: '2023-10-28',
-                    time: '2:30 PM',
-                    type: 'Follow-up',
-                    status: 'upcoming',
-                    location: 'West Branch',
-                    notes: 'Blood pressure review',
-                    fee: 80
-                },
-                {
-                    id: 3,
-                    doctor: 'Dr. Robert Fox',
-                    specialty: 'Dermatology',
-                    date: '2023-09-15',
-                    time: '11:00 AM',
-                    type: 'Consultation',
-                    status: 'completed',
-                    location: 'Main Clinic',
-                    notes: 'Skin examination',
-                    fee: 150
-                },
-                {
-                    id: 4,
-                    doctor: 'Dr. Lisa Wang',
-                    specialty: 'Pediatrics',
-                    date: '2023-09-10',
-                    time: '3:00 PM',
-                    type: 'Emergency',
-                    status: 'cancelled',
-                    location: 'Emergency Room',
-                    notes: 'Fever and cough',
-                    fee: 200
+            const appointmentsKey = 'medilinkAppointments';
+            let appointments = getStoredAppointments();
+
+            function getStoredAppointments() {
+                const stored = localStorage.getItem(appointmentsKey);
+                const currentPatient = getCurrentPatientName();
+                const allAppointments = stored ? JSON.parse(stored) : [];
+                return allAppointments.filter(app => app.patientName === currentPatient);
+            }
+
+            function getAllStoredAppointments() {
+                const stored = localStorage.getItem(appointmentsKey);
+                return stored ? JSON.parse(stored) : [];
+            }
+
+            function saveAllStoredAppointments(data) {
+                localStorage.setItem(appointmentsKey, JSON.stringify(data));
+            }
+
+            function refreshAppointments() {
+                appointments = getStoredAppointments();
+                renderAppointments();
+            }
+
+            function updateStoredAppointment(updatedAppointment) {
+                const allAppointments = getAllStoredAppointments();
+                const index = allAppointments.findIndex(app => app.id === updatedAppointment.id);
+                if (index !== -1) {
+                    allAppointments[index] = updatedAppointment;
+                    saveAllStoredAppointments(allAppointments);
                 }
-            ];
-            
+            }
+
+            function getCurrentPatientName() {
+                const profileName = document.querySelector('header .text-right.hidden.md\\:block p.text-sm.font-bold');
+                return profileName ? profileName.textContent.trim() : 'Patient';
+            }
+
             // Render appointments
             function renderAppointments() {
                 const container = document.getElementById('appointmentsContainer');
+                if (!appointments || appointments.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center py-12">
+                            <span class="material-symbols-outlined text-6xl text-slate-300 dark:text-slate-600">calendar_month</span>
+                            <p class="text-slate-500 dark:text-slate-400 mt-4">No appointments found yet.</p>
+                            <p class="text-slate-500 dark:text-slate-400">Book an appointment to see it reflected here.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
                 container.innerHTML = appointments.map(appointment => `
                     <div class="appointment-card bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-md transition-all cursor-pointer" onclick="viewAppointment(${appointment.id})">
                         <div class="flex items-start justify-between">
@@ -416,6 +413,7 @@
             
             function getStatusColor(status) {
                 const colors = {
+                    pending: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
                     upcoming: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
                     completed: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
                     cancelled: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
@@ -425,6 +423,7 @@
             
             function getStatusIcon(status) {
                 const icons = {
+                    pending: 'hourglass_top',
                     upcoming: 'event_available',
                     completed: 'check_circle',
                     cancelled: 'cancel'
@@ -540,9 +539,14 @@
             // Cancel appointment
             window.cancelAppointment = function(appointmentId) {
                 if (confirm('Are you sure you want to cancel this appointment?')) {
-                    alert('Appointment cancelled successfully');
-                    closeModal();
-                    // In real app, this would update the appointment status
+                    const appointment = appointments.find(a => a.id === appointmentId);
+                    if (appointment) {
+                        appointment.status = 'cancelled';
+                        updateStoredAppointment(appointment);
+                        refreshAppointments();
+                        closeModal();
+                        alert('Appointment cancelled successfully');
+                    }
                 }
             };
             

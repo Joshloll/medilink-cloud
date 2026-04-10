@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="js/system-manager.js"></script>
 <script id="tailwind-config">
     tailwind.config = {
         darkMode: "class",
@@ -388,22 +389,22 @@
 <div class="text-sm text-amber-900 dark:text-amber-100">
 <p class="font-semibold mb-2">Important Information:</p>
 <ul class="list-disc list-inside space-y-1 text-xs">
-<li><strong>Pending Validation:</strong> Your appointment is pending admin review and confirmation</li>
-<li><strong>Confirmation Email:</strong> You'll receive an email once the medical team approves</li>
-<li><strong>Arrival Time:</strong> Please arrive 10 minutes before your scheduled appointment</li>
-<li><strong>Documentation:</strong> Bring valid ID and any relevant medical records</li>
-<li><strong>Rescheduling:</strong> You can reschedule up to 24 hours before the appointment</li>
-</ul>
-</div>
-</div>
-</div>
+<li><strong>Pending Confirmation:</strong> Your appointment is pending doctor confirmation and will update once the doctor approves it.</li>
+                    <li><strong>Confirmation Email:</strong> You'll receive an email once the medical team approves</li>
+                    <li><strong>Arrival Time:</strong> Please arrive 10 minutes before your scheduled appointment</li>
+                    <li><strong>Documentation:</strong> Bring valid ID and any relevant medical records</li>
+                    <li><strong>Rescheduling:</strong> You can reschedule up to 24 hours before the appointment</li>
+                </ul>
+                </div>
+                </div>
+                </div>
 
-<!-- Verification Checkbox -->
-<div class="bg-slate-100 dark:bg-slate-800/50 rounded-xl p-4 mb-6 border border-slate-200 dark:border-slate-700">
-<label class="flex items-start gap-3 cursor-pointer">
-<input id="confirm-checkbox" type="checkbox" class="mt-1 size-4 rounded border-2 border-slate-300 dark:border-slate-600 accent-primary cursor-pointer">
-<span class="text-sm text-slate-900 dark:text-white">
-I have reviewed all appointment details and confirm they are correct. I understand this appointment is pending admin validation and will receive confirmation notification.
+                <!-- Verification Checkbox -->
+                <div class="bg-slate-100 dark:bg-slate-800/50 rounded-xl p-4 mb-6 border border-slate-200 dark:border-slate-700">
+                <label class="flex items-start gap-3 cursor-pointer">
+                <input id="confirm-checkbox" type="checkbox" class="mt-1 size-4 rounded border-2 border-slate-300 dark:border-slate-600 accent-primary cursor-pointer">
+                <span class="text-sm text-slate-900 dark:text-white">
+                I have reviewed all appointment details and confirm they are correct. I understand this appointment is pending doctor confirmation and will receive notification once it is confirmed.
 </span>
 </label>
 </div>
@@ -702,6 +703,26 @@ function updateSummary() {
     document.getElementById('confirm-total-price').textContent = `₱${booking.servicePrice || 0}`;
 }
 
+function getStoredAppointments() {
+    const stored = localStorage.getItem('medilinkAppointments');
+    return stored ? JSON.parse(stored) : [];
+}
+
+function saveStoredAppointments(appointments) {
+    localStorage.setItem('medilinkAppointments', JSON.stringify(appointments));
+}
+
+function addAppointmentToStorage(appointment) {
+    const appointments = getStoredAppointments();
+    appointments.push(appointment);
+    saveStoredAppointments(appointments);
+}
+
+function getCurrentPatientName() {
+    const profileName = document.querySelector('header .text-right.hidden.md\\:block p.text-sm.font-bold');
+    return profileName ? profileName.textContent.trim() : 'Patient';
+}
+
 // Navigate Steps
 function goToStep(step) {
     // Hide all steps
@@ -758,12 +779,31 @@ document.getElementById('btn-submit')?.addEventListener('click', () => {
     const btn = document.getElementById('btn-submit');
     btn.disabled = true;
     btn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Submitting...';
-    
-    // Mock submission
+
+    const appointment = {
+        id: Date.now(),
+        patientName: getCurrentPatientName(),
+        doctor: booking.doctorName,
+        doctorId: booking.doctor,
+        department: booking.serviceName || 'General Medicine',
+        specialty: booking.service || 'Consultation',
+        date: booking.date,
+        time: booking.time,
+        type: booking.serviceName || 'Consultation',
+        status: 'pending',
+        location: 'Main Clinic',
+        fee: booking.servicePrice,
+        bill: booking.servicePrice,
+        notes: 'Awaiting confirmation from your doctor.',
+        createdAt: new Date().toISOString()
+    };
+
+    addAppointmentToStorage(appointment);
+
     setTimeout(() => {
-        alert('✅ Appointment submitted successfully!\n\nYour appointment is pending admin validation. You will receive a confirmation email shortly.');
-        window.location.href = 'dashboard.html';
-    }, 2000);
+        alert(`✅ Appointment submitted successfully!\n\nYour appointment with ${appointment.doctor} is pending confirmation. Check My Appointments to see when it is confirmed.`);
+        window.location.href = 'MyAppointments.html';
+    }, 1200);
 });
 
 prevWeek = () => alert('Previous week');

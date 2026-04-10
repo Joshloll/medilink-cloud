@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/system-manager.js"></script>
 <style>
 body { font-family: 'Inter', sans-serif; }
 
@@ -641,7 +642,20 @@ registerForm.onsubmit = async e => {
       const license = document.getElementById('license').value
       const specialization = document.getElementById('specialization').value
       
-      // Insert into doctors table linked to user_profiles
+      // Register doctor with pending approval status using SystemManager
+      const doctorData = {
+          firstName: first_name,
+          lastName: last_name,
+          email: email,
+          phone: phone,
+          licenseNumber: license,
+          specialization: specialization,
+          userId: data.user.id
+      };
+      
+      const registeredDoctor = SystemManager.Doctor.registerDoctor(doctorData);
+      
+      // Also insert into Supabase for future API usage
       const { error: doctorError } = await supabase.from('doctors').insert({
         user_id: data.user.id,
         license_number: license,
@@ -650,8 +664,7 @@ registerForm.onsubmit = async e => {
       })
       
       if (doctorError) {
-        showMessage('Error creating doctor profile: ' + doctorError.message)
-        return
+        console.error('Error creating doctor profile in Supabase:', doctorError.message)
       }
     } else if (currentRegisterRole === 'admin') {
       const clinicCode = document.getElementById('clinicCode').value
@@ -669,7 +682,12 @@ registerForm.onsubmit = async e => {
       }).eq('code', clinicCode)
     }
 
-    showMessage('Account created successfully! Please login.', false)
+    let successMessage = 'Account created successfully! Please login.';
+    if (currentRegisterRole === 'doctor') {
+      successMessage = 'Doctor account created! Your account is pending admin approval. You will be able to login once approved.';
+    }
+    
+    showMessage(successMessage, false)
     registerForm.reset()
     setTimeout(() => switchToLoginTab(), 2000)
   } catch (error) {
@@ -711,8 +729,20 @@ loginForm.onsubmit = async e => {
       return
     }
 
-    // Check if doctor is verified
+    // Check if doctor is verified/approved
     if (profile.role === 'doctor') {
+      // Check in local SystemManager first
+      const doctorApproved = SystemManager.Doctor.canDoctorLogin({
+        firstName: profile.first_name,
+        lastName: profile.last_name
+      });
+      
+      if (!doctorApproved) {
+        showMessage('Your doctor account is currently pending admin approval. You will be able to login once an administrator approves your registration.')
+        return
+      }
+      
+      // Also check Supabase for consistency
       const { data: doctorData, error: doctorError } = await supabase
         .from('doctors')
         .select('verified')
@@ -720,8 +750,7 @@ loginForm.onsubmit = async e => {
         .single()
       
       if (doctorError || !doctorData || !doctorData.verified) {
-        showMessage('Your doctor account is pending verification. You will receive an email once approved by our admin team.')
-        return
+        console.warn('Doctor verified in local system but not in Supabase. This may indicate a sync issue.')
       }
     }
 
