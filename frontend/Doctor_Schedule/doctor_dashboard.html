@@ -149,101 +149,268 @@
                         <p class="text-slate-600 dark:text-slate-400">Here's what's happening with your practice today.</p>
                     </div>
 
-                    <!-- Stats Cards -->
+                    <!-- Enhanced Stats Cards -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                        <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
-                            <div class="flex items-center justify-between">
+                        <!-- Today's Appointments -->
+                        <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-md transition-shadow">
+                            <div class="flex items-center justify-between mb-4">
                                 <div>
-                                    <p class="text-sm text-slate-500 dark:text-slate-400">Today's Appointments</p>
-                                    <p class="text-2xl font-bold text-slate-900 dark:text-white">8</p>
-                                    <p class="text-xs text-green-600 dark:text-green-400 mt-1">+2 from yesterday</p>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Today's Appointments</p>
+                                    <p class="text-3xl font-bold text-slate-900 dark:text-white mt-2">8</p>
+                                    <div class="flex items-center gap-1 mt-2">
+                                        <span class="text-xs text-green-600 dark:text-green-400 font-semibold">↑ 25%</span>
+                                        <span class="text-xs text-slate-500 dark:text-slate-400">vs last week</span>
+                                    </div>
                                 </div>
-                                <div class="size-12 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">calendar_today</span>
+                                <div class="size-14 bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/20 dark:to-blue-900/10 rounded-lg flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-3xl">calendar_today</span>
+                                </div>
+                            </div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 flex justify-between pt-2 border-t border-slate-100 dark:border-slate-700">
+                                <span>Confirmed: 6</span>
+                                <span>Pending: 2</span>
+                            </div>
+                        </div>
+
+                        <!-- Total Patients -->
+                        <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-md transition-shadow">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Total Patients</p>
+                                    <p class="text-3xl font-bold text-slate-900 dark:text-white mt-2">342</p>
+                                    <div class="flex items-center gap-1 mt-2">
+                                        <span class="text-xs text-green-600 dark:text-green-400 font-semibold">↑ 12</span>
+                                        <span class="text-xs text-slate-500 dark:text-slate-400">this month</span>
+                                    </div>
+                                </div>
+                                <div class="size-14 bg-gradient-to-br from-green-100 to-green-50 dark:from-green-900/20 dark:to-green-900/10 rounded-lg flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-3xl">people</span>
+                                </div>
+                            </div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 flex justify-between pt-2 border-t border-slate-100 dark:border-slate-700">
+                                <span>Active: 328</span>
+                                <span>Inactive: 14</span>
+                            </div>
+                        </div>
+
+                        <!-- Pending Reports -->
+                        <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-md transition-shadow">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Pending Items</p>
+                                    <p class="text-3xl font-bold text-slate-900 dark:text-white mt-2">7</p>
+                                    <div class="flex items-center gap-1 mt-2">
+                                        <span class="inline-block w-2 h-2 rounded-full bg-red-500"></span>
+                                        <span class="text-xs text-red-600 dark:text-red-400 font-semibold">3 urgent</span>
+                                    </div>
+                                </div>
+                                <div class="size-14 bg-gradient-to-br from-amber-100 to-amber-50 dark:from-amber-900/20 dark:to-amber-900/10 rounded-lg flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-3xl">pending_actions</span>
+                                </div>
+                            </div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 flex justify-between pt-2 border-t border-slate-100 dark:border-slate-700">
+                                <span>Reports: 5</span>
+                                <span>Prescriptions: 2</span>
+                            </div>
+                        </div>
+
+                        <!-- Revenue Metrics -->
+                        <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-md transition-shadow">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Month Revenue</p>
+                                    <p class="text-3xl font-bold text-slate-900 dark:text-white mt-2">$12.4K</p>
+                                    <div class="flex items-center gap-1 mt-2">
+                                        <span class="text-xs text-green-600 dark:text-green-400 font-semibold">↑ 8.2%</span>
+                                        <span class="text-xs text-slate-500 dark:text-slate-400">vs last month</span>
+                                    </div>
+                                </div>
+                                <div class="size-14 bg-gradient-to-br from-purple-100 to-purple-50 dark:from-purple-900/20 dark:to-purple-900/10 rounded-lg flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-3xl">attach_money</span>
+                                </div>
+                            </div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 flex justify-between pt-2 border-t border-slate-100 dark:border-slate-700">
+                                <span>Completed: $11.2K</span>
+                                <span>Pending: $1.2K</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Secondary Metrics Row -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <!-- Patient Satisfaction -->
+                        <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+                            <div class="flex items-start justify-between mb-4">
+                                <div>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Patient Satisfaction</p>
+                                    <div class="flex items-baseline gap-2 mt-2">
+                                        <p class="text-2xl font-bold text-slate-900 dark:text-white">4.8</p>
+                                        <span class="text-sm text-slate-500 dark:text-slate-400">/5.0</span>
+                                    </div>
+                                </div>
+                                <div class="flex gap-0.5">
+                                    <span class="text-amber-400">★</span>
+                                    <span class="text-amber-400">★</span>
+                                    <span class="text-amber-400">★</span>
+                                    <span class="text-amber-400">★</span>
+                                    <span class="text-amber-400">★</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Based on 47 reviews</p>
+                            <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700">
+                                <div class="flex items-center gap-2 text-xs">
+                                    <div class="flex-1 bg-slate-100 dark:bg-slate-700 rounded-full h-2">
+                                        <div class="bg-amber-400 rounded-full h-2" style="width: 96%"></div>
+                                    </div>
+                                    <span class="text-slate-600 dark:text-slate-300">96%</span>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Appointment Status -->
                         <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-sm text-slate-500 dark:text-slate-400">Total Patients</p>
-                                    <p class="text-2xl font-bold text-slate-900 dark:text-white">342</p>
-                                    <p class="text-xs text-green-600 dark:text-green-400 mt-1">+12 this month</p>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mb-4">Appointment Status</p>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between text-sm">
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-block w-2 h-2 rounded-full bg-green-500"></span>
+                                        <span class="text-slate-600 dark:text-slate-300">Completed</span>
+                                    </div>
+                                    <span class="font-semibold text-slate-900 dark:text-white">156</span>
                                 </div>
-                                <div class="size-12 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-green-600 dark:text-green-400">people</span>
+                                <div class="flex items-center justify-between text-sm">
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-block w-2 h-2 rounded-full bg-blue-500"></span>
+                                        <span class="text-slate-600 dark:text-slate-300">Confirmed</span>
+                                    </div>
+                                    <span class="font-semibold text-slate-900 dark:text-white">42</span>
+                                </div>
+                                <div class="flex items-center justify-between text-sm">
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-block w-2 h-2 rounded-full bg-amber-500"></span>
+                                        <span class="text-slate-600 dark:text-slate-300">Pending</span>
+                                    </div>
+                                    <span class="font-semibold text-slate-900 dark:text-white">8</span>
+                                </div>
+                                <div class="flex items-center justify-between text-sm">
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-block w-2 h-2 rounded-full bg-red-500"></span>
+                                        <span class="text-slate-600 dark:text-slate-300">Cancelled</span>
+                                    </div>
+                                    <span class="font-semibold text-slate-900 dark:text-white">3</span>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Availability Status -->
                         <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-sm text-slate-500 dark:text-slate-400">Pending Reports</p>
-                                    <p class="text-2xl font-bold text-slate-900 dark:text-white">5</p>
-                                    <p class="text-xs text-amber-600 dark:text-amber-400 mt-1">3 urgent</p>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mb-4">Weekly Overview</p>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-slate-600 dark:text-slate-300">Mon - Fri</span>
+                                    <div class="flex gap-1">
+                                        <span class="inline-block w-1.5 h-6 rounded bg-green-500"></span>
+                                        <span class="inline-block w-1.5 h-6 rounded bg-green-500"></span>
+                                        <span class="inline-block w-1.5 h-6 rounded bg-green-500"></span>
+                                        <span class="inline-block w-1.5 h-6 rounded bg-green-500"></span>
+                                        <span class="inline-block w-1.5 h-6 rounded bg-green-500"></span>
+                                    </div>
                                 </div>
-                                <div class="size-12 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-amber-600 dark:text-amber-400">pending</span>
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-slate-600 dark:text-slate-300">Saturday</span>
+                                    <span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded text-xs font-medium">Half Day</span>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-sm text-slate-500 dark:text-slate-400">Revenue This Month</p>
-                                    <p class="text-2xl font-bold text-slate-900 dark:text-white">$12,450</p>
-                                    <p class="text-xs text-green-600 dark:text-green-400 mt-1">+8% growth</p>
-                                </div>
-                                <div class="size-12 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-purple-600 dark:text-purple-400">attach_money</span>
+                                <div class="pt-2 text-xs text-slate-500 dark:text-slate-400">
+                                    <p>Next 7 days: <span class="font-semibold text-slate-900 dark:text-white">38 slots available</span></p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Today's Schedule -->
+                    <!-- Today's Schedule & Activities -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                         <div class="lg:col-span-2">
                             <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
                                 <div class="flex items-center justify-between mb-6">
-                                    <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Today's Schedule</h3>
-                                    <button class="text-sm text-primary hover:underline">View All</button>
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Today's Schedule</h3>
+                                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage your appointments for today</p>
+                                    </div>
+                                    <button class="text-sm text-primary hover:bg-blue-50 dark:hover:bg-blue-900/20 px-3 py-2 rounded-lg transition-colors">View All →</button>
                                 </div>
-                                <div class="space-y-4" id="doctorAppointmentsList">
+                                <div class="space-y-3" id="doctorAppointmentsList">
                                     <div class="text-center py-8 text-slate-500">Loading appointments...</div>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- Recent Activity -->
-                        <div>
+                        <!-- Quick Actions & Alerts -->
+                        <div class="flex flex-col gap-6">
+                            <!-- Alerts & Notifications -->
                             <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
-                                <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-6">Recent Activity</h3>
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Alerts</h3>
+                                    <span class="inline-block px-2 py-1 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400 rounded text-xs font-bold">3</span>
+                                </div>
+                                <div class="space-y-3">
+                                    <div class="p-3 bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-900 rounded-lg">
+                                        <div class="flex items-start gap-2">
+                                            <span class="material-symbols-outlined text-red-600 dark:text-red-400 text-sm flex-shrink-0">warning</span>
+                                            <div class="min-w-0">
+                                                <p class="text-sm font-semibold text-red-900 dark:text-red-300">Urgent Lab Results</p>
+                                                <p class="text-xs text-red-800 dark:text-red-400 mt-0.5">2 abnormal results pending review</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-900 rounded-lg">
+                                        <div class="flex items-start gap-2">
+                                            <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-sm flex-shrink-0">info</span>
+                                            <div class="min-w-0">
+                                                <p class="text-sm font-semibold text-amber-900 dark:text-amber-300">Prescription Refill</p>
+                                                <p class="text-xs text-amber-800 dark:text-amber-400 mt-0.5">1 patient awaiting approval</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-900 rounded-lg">
+                                        <div class="flex items-start gap-2">
+                                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-sm flex-shrink-0">schedule</span>
+                                            <div class="min-w-0">
+                                                <p class="text-sm font-semibold text-blue-900 dark:text-blue-300">Schedule Conflict</p>
+                                                <p class="text-xs text-blue-800 dark:text-blue-400 mt-0.5">Overlapping appointment in 45 min</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Recent Activity Feed -->
+                            <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+                                <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Recent Activity</h3>
                                 <div class="space-y-4">
-                                    <div class="flex items-start gap-3">
-                                        <div class="size-8 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                            <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-sm">check</span>
+                                    <div class="flex items-start gap-3 pb-3 border-b border-slate-100 dark:border-slate-700">
+                                        <div class="size-8 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-sm">check_circle</span>
                                         </div>
                                         <div>
-                                            <p class="text-sm text-slate-900 dark:text-white">Lab results completed</p>
+                                            <p class="text-sm font-medium text-slate-900 dark:text-white">Lab results completed</p>
                                             <p class="text-xs text-slate-500 dark:text-slate-400">Sarah Miller • 2 hours ago</p>
                                         </div>
                                     </div>
-                                    <div class="flex items-start gap-3">
-                                        <div class="size-8 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                    <div class="flex items-start gap-3 pb-3 border-b border-slate-100 dark:border-slate-700">
+                                        <div class="size-8 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                                             <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-sm">person_add</span>
                                         </div>
                                         <div>
-                                            <p class="text-sm text-slate-900 dark:text-white">New patient registered</p>
+                                            <p class="text-sm font-medium text-slate-900 dark:text-white">New patient registered</p>
                                             <p class="text-xs text-slate-500 dark:text-slate-400">David Wilson • 3 hours ago</p>
                                         </div>
                                     </div>
                                     <div class="flex items-start gap-3">
-                                        <div class="size-8 bg-amber-100 dark:bg-amber-900/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                            <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-sm">medication</span>
+                                        <div class="size-8 bg-amber-100 dark:bg-amber-900/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-sm">prescription</span>
                                         </div>
                                         <div>
-                                            <p class="text-sm text-slate-900 dark:text-white">Prescription refill requested</p>
+                                            <p class="text-sm font-medium text-slate-900 dark:text-white">Prescription refill requested</p>
                                             <p class="text-xs text-slate-500 dark:text-slate-400">Lisa Anderson • 5 hours ago</p>
                                         </div>
                                     </div>
@@ -252,21 +419,113 @@
                         </div>
                     </div>
 
-                    <!-- Quick Actions -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <button class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-md transition-shadow text-left">
+                    <!-- Patient Insights & Performance -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                        <!-- Top Conditions Treated -->
+                        <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+                            <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Most Common Conditions</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="flex-1">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Hypertension</span>
+                                            <span class="text-xs font-semibold text-slate-600 dark:text-slate-400">28%</span>
+                                        </div>
+                                        <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2">
+                                            <div class="bg-blue-500 h-2 rounded-full" style="width: 28%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="flex-1">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Diabetes</span>
+                                            <span class="text-xs font-semibold text-slate-600 dark:text-slate-400">22%</span>
+                                        </div>
+                                        <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2">
+                                            <div class="bg-green-500 h-2 rounded-full" style="width: 22%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="flex-1">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Thyroid Disorder</span>
+                                            <span class="text-xs font-semibold text-slate-600 dark:text-slate-400">18%</span>
+                                        </div>
+                                        <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2">
+                                            <div class="bg-purple-500 h-2 rounded-full" style="width: 18%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="flex-1">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Respiratory Issues</span>
+                                            <span class="text-xs font-semibold text-slate-600 dark:text-slate-400">15%</span>
+                                        </div>
+                                        <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2">
+                                            <div class="bg-amber-500 h-2 rounded-full" style="width: 15%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="flex-1">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Other Conditions</span>
+                                            <span class="text-xs font-semibold text-slate-600 dark:text-slate-400">17%</span>
+                                        </div>
+                                        <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2">
+                                            <div class="bg-slate-500 h-2 rounded-full" style="width: 17%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Treatment Outcomes -->
+                        <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+                            <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Treatment Outcomes</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/10 dark:to-green-900/20 rounded-lg p-4">
+                                    <p class="text-sm text-green-700 dark:text-green-400 font-medium mb-1">Improved</p>
+                                    <p class="text-3xl font-bold text-green-900 dark:text-green-300">68%</p>
+                                    <p class="text-xs text-green-600 dark:text-green-400 mt-2">233 patients</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/10 dark:to-blue-900/20 rounded-lg p-4">
+                                    <p class="text-sm text-blue-700 dark:text-blue-400 font-medium mb-1">Stable</p>
+                                    <p class="text-3xl font-bold text-blue-900 dark:text-blue-300">24%</p>
+                                    <p class="text-xs text-blue-600 dark:text-blue-400 mt-2">82 patients</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/10 dark:to-amber-900/20 rounded-lg p-4">
+                                    <p class="text-sm text-amber-700 dark:text-amber-400 font-medium mb-1">Follow-up Needed</p>
+                                    <p class="text-3xl font-bold text-amber-900 dark:text-amber-300">5%</p>
+                                    <p class="text-xs text-amber-600 dark:text-amber-400 mt-2">17 patients</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/10 dark:to-red-900/20 rounded-lg p-4">
+                                    <p class="text-sm text-red-700 dark:text-red-400 font-medium mb-1">Concerning</p>
+                                    <p class="text-3xl font-bold text-red-900 dark:text-red-300">3%</p>
+                                    <p class="text-xs text-red-600 dark:text-red-400 mt-2">10 patients</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions & Recommendations -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <button class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-lg hover:border-primary dark:hover:border-primary transition-all text-left group">
                             <div class="flex items-center gap-3 mb-3">
-                                <div class="size-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
+                                <div class="size-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                                     <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">person_add</span>
                                 </div>
-                                <h3 class="font-semibold text-slate-900 dark:text-white">Add Patient</h3>
+                                <h3 class="font-semibold text-slate-900 dark:text-white">New Patient</h3>
                             </div>
                             <p class="text-sm text-slate-600 dark:text-slate-400">Register a new patient in the system</p>
                         </button>
                         
-                        <button class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-md transition-shadow text-left">
+                        <button class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-lg hover:border-primary dark:hover:border-primary transition-all text-left group">
                             <div class="flex items-center gap-3 mb-3">
-                                <div class="size-10 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
+                                <div class="size-10 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                                     <span class="material-symbols-outlined text-green-600 dark:text-green-400">description</span>
                                 </div>
                                 <h3 class="font-semibold text-slate-900 dark:text-white">New Report</h3>
@@ -274,15 +533,49 @@
                             <p class="text-sm text-slate-600 dark:text-slate-400">Create medical report for patient</p>
                         </button>
                         
-                        <button class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-md transition-shadow text-left">
+                        <button class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-lg hover:border-primary dark:hover:border-primary transition-all text-left group">
                             <div class="flex items-center gap-3 mb-3">
-                                <div class="size-10 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-purple-600 dark:text-purple-400">medication</span>
+                                <div class="size-10 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <span class="material-symbols-outlined text-purple-600 dark:text-purple-400">prescription</span>
                                 </div>
-                                <h3 class="font-semibold text-slate-900 dark:text-white">Prescribe</h3>
+                                <h3 class="font-semibold text-slate-900 dark:text-white">Prescription</h3>
                             </div>
                             <p class="text-sm text-slate-600 dark:text-slate-400">Issue prescription to patient</p>
                         </button>
+
+                        <button class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-lg hover:border-primary dark:hover:border-primary transition-all text-left group">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="size-10 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <span class="material-symbols-outlined text-amber-600 dark:text-amber-400">lab_profile</span>
+                                </div>
+                                <h3 class="font-semibold text-slate-900 dark:text-white">Lab Order</h3>
+                            </div>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Order lab tests for patient</p>
+                        </button>
+                    </div>
+
+                    <!-- Recommendations & Insights -->
+                    <div class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/10 dark:to-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800 p-6 flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-3xl">lightbulb</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-blue-900 dark:text-blue-300 mb-2">Today's Insights</h3>
+                            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <li class="text-sm text-blue-800 dark:text-blue-400">
+                                    • <strong>3 patients</strong> are due for follow-up consultations
+                                </li>
+                                <li class="text-sm text-blue-800 dark:text-blue-400">
+                                    • <strong>5 lab results</strong> are ready for review
+                                </li>
+                                <li class="text-sm text-blue-800 dark:text-blue-400">
+                                    • <strong>2 prescriptions</strong> need your approval
+                                </li>
+                                <li class="text-sm text-blue-800 dark:text-blue-400">
+                                    • <strong>Your schedule</strong> is 85% booked today
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </main>

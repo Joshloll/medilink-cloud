@@ -3,13 +3,12 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>MediLink Cloud Dashboard</title>
+<title>MediLink Cloud - Admin Dashboard</title>
 <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet"/>
 <!-- Material Symbols -->
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -42,18 +41,17 @@
         }
     </script>
     <style>
-        /* Tab content styling for proper layout */
-        .tab-content {
-            animation: fadeIn 0.2s ease-in;
+        .tab-content { animation: fadeIn 0.2s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .status-badge { padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; }
+        .user-tab-btn.active { 
+          border-bottom-color: #137fec !important; 
+          color: #137fec !important;
+          border-bottom-width: 2px;
         }
-        
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+        .user-tab-btn { 
+          border-bottom-width: 2px;
+          transition: all 0.2s ease;
         }
     </style>
 </head>
@@ -94,7 +92,7 @@
 <span class="material-symbols-outlined">groups</span>
 <span class="text-sm font-medium">All Patients</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<a class="tab-nav flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer" data-tab="settings">
 <span class="material-symbols-outlined">settings</span>
 <span class="text-sm font-medium">Settings</span>
 </a>
@@ -102,37 +100,24 @@
 </div>
 <!-- Bottom Actions -->
 <div class="p-4 border-t border-border-light dark:border-border-dark">
-<button onclick="handleLogout()" class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-md hover:bg-blue-600 transition-colors">
-<span class="material-symbols-outlined text-[20px]">lock</span>
-<span class="truncate">Lock Screen</span>
+<button onclick="handleLogout()" class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg h-10 px-4 bg-red-600 hover:bg-red-700 text-white text-sm font-bold shadow-md transition-colors">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="truncate">Log Out</span>
 </button>
 </div>
 </aside>
+
 <!-- Main Content -->
 <div class="flex-1 flex flex-col h-full overflow-hidden relative">
 <!-- TopNavBar -->
 <header class="h-16 flex items-center justify-between px-6 border-b border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark flex-shrink-0 z-10">
 <div class="flex items-center gap-4">
-<!-- Mobile Menu Toggle (Visible on small screens) -->
 <button class="md:hidden text-slate-500 hover:text-slate-700">
 <span class="material-symbols-outlined">menu</span>
 </button>
-<h2 class="hidden sm:block text-lg font-bold tracking-tight">Dashboard Overview</h2>
-<!-- Search Bar -->
-<div class="hidden md:flex w-80 items-center h-10 rounded-lg bg-background-light dark:bg-slate-800 border border-transparent focus-within:border-primary focus-within:ring-1 focus-within:ring-primary ml-4 transition-all">
-<div class="pl-3 text-slate-400 dark:text-slate-500 flex items-center justify-center">
-<span class="material-symbols-outlined">search</span>
-</div>
-<input class="w-full h-full bg-transparent border-none text-sm px-3 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:ring-0" placeholder="Search patients, doctors..."/>
-</div>
+<h2 class="hidden sm:block text-lg font-bold tracking-tight" id="pageTitle">Dashboard Overview</h2>
 </div>
 <div class="flex items-center gap-3">
-<!-- Quick Actions Menu -->
-<button class="hidden sm:flex h-9 items-center gap-2 px-3 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
-<span class="material-symbols-outlined text-[18px]">add</span>
-<span>New</span>
-</button>
-<div class="h-6 w-px bg-slate-200 dark:bg-slate-700 mx-1"></div>
 <button class="relative p-2 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
 <span class="material-symbols-outlined">notifications</span>
 <span class="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full border-2 border-surface-light dark:border-surface-dark"></span>
@@ -142,50 +127,20 @@
 </button>
 <div class="flex items-center gap-2 ml-2 pl-2 border-l border-slate-200 dark:border-slate-700">
 <div class="text-right hidden sm:block">
-<p class="text-sm font-medium leading-none">Dr. Sarah West</p>
-<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Admin</p>
+<p class="text-sm font-medium leading-none" id="adminName">Dr. Admin</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Administrator</p>
 </div>
-<div class="size-9 rounded-full bg-slate-200 bg-cover bg-center border border-slate-200 dark:border-slate-700" data-alt="Profile picture of Dr. Sarah West" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA7ysvdVtAVeubo-bHhGUxDQ4Z7xg3CEs1GyFkZ_pHsM9QBIzyl0ABC5LNqsdwvh6Jh1M9H6hCr9yUDQoxXCVCLLQ3qqmOK0bdGDGhrqiSPEeaYqIX2FIBx7t_o5B3BfK37G93gFuWeErliUaIC6ytdNoqDoEMpMJOz-oxZGjqW8r-BzhkT-x6HZPdvj0VyI73TZ8jpfGcQNyKaZxapM4AXOk6leZ52Sd682w4YDZtytaG-NK58T_wBG-CfVjRlPOoZzbsylFb1TlFX')"></div>
+<div class="size-9 rounded-full bg-slate-200 bg-cover bg-center border border-slate-200 dark:border-slate-700" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA7ysvdVtAVeubo-bHhGUxDQ4Z7xg3CEs1GyFkZ_pHsM9QBIzyl0ABC5LNqsdwvh6Jh1M9H6hCr9yUDQoxXCVCLLQ3qqmOK0bdGDGhrqiSPEeaYqIX2FIBx7t_o5B3BfK37G93gFuWeErliUaIC6ytdNoqDoEMpMJOz-oxZGjqW8r-BzhkT-x6HZPdvj0VyI73TZ8jpfGcQNyKaZxapM4AXOk6leZ52Sd682w4YDZtytaG-NK58T_wBG-CfVjRlPOoZzbsylFb1TlFX')"></div>
 </div>
 </div>
 </header>
+
 <!-- Scrollable Dashboard Content -->
 <main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark p-4 sm:p-6 lg:p-10">
 <div class="max-w-7xl mx-auto flex flex-col gap-8">
-<!-- Tab Navigation -->
-<div class="flex gap-2 border-b border-border-light dark:border-border-dark mb-6 sticky top-0 bg-background-light dark:bg-background-dark z-5">
-<button class="tab-btn active px-4 py-3 text-sm font-medium border-b-2 border-primary text-primary transition-all" data-tab="overview">
-<span class="flex items-center gap-2">
-<span class="material-symbols-outlined text-[18px]">dashboard</span>
-Dashboard
-</span>
-</button>
-<button class="tab-btn px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all" data-tab="doctors">
-<span class="flex items-center gap-2">
-<span class="material-symbols-outlined text-[18px]">verified_user</span>
-Doctor Validation
-</span>
-</button>
-<button class="tab-btn px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all" data-tab="appointments">
-<span class="flex items-center gap-2">
-<span class="material-symbols-outlined text-[18px]">event_available</span>
-Appointments
-</span>
-</button>
-<button class="tab-btn px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all" data-tab="clinic">
-<span class="flex items-center gap-2">
-<span class="material-symbols-outlined text-[18px]">analytics</span>
-Clinic Data
-</span>
-</button>
-<button class="tab-btn px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all" data-tab="patients">
-<span class="flex items-center gap-2">
-<span class="material-symbols-outlined text-[18px]">groups</span>
-Patients
-</span>
-</button>
-</div>
-<!-- Tab Content Wrapper -->
+
+<!-- ========== DASHBOARD TAB ========== -->
+<div id="overview-tab" class="tab-content">
 <div class="space-y-6">
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
 <div>
@@ -203,9 +158,9 @@ Patients
 </button>
 </div>
 </div>
+
 <!-- Stats Grid -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-<!-- Stat Card 1 -->
 <div class="p-5 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm flex flex-col gap-1">
 <div class="flex justify-between items-start">
 <div class="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400">
@@ -213,30 +168,30 @@ Patients
 </div>
 <span class="flex items-center text-xs font-medium text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded-full">
 <span class="material-symbols-outlined text-[14px] mr-1">trending_up</span>
-                                +5%
-                            </span>
++5%
+</span>
 </div>
 <div class="mt-2">
 <p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Appointments Today</p>
-<p class="text-2xl font-bold text-slate-900 dark:text-white">42</p>
+<p class="text-2xl font-bold text-slate-900 dark:text-white" id="stat-today-appointments">0</p>
 </div>
 </div>
-<!-- Stat Card 2 -->
+
 <div class="p-5 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm flex flex-col gap-1">
 <div class="flex justify-between items-start">
 <div class="p-2 rounded-lg bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400">
 <span class="material-symbols-outlined">airline_seat_recline_normal</span>
 </div>
 <span class="flex items-center text-xs font-medium text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/20 px-2 py-0.5 rounded-full">
-                                +2 Waiting
-                            </span>
++2 Now
+</span>
 </div>
 <div class="mt-2">
-<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Patients Waiting</p>
-<p class="text-2xl font-bold text-slate-900 dark:text-white">8</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Pending Confirmations</p>
+<p class="text-2xl font-bold text-slate-900 dark:text-white" id="stat-pending-confirmations">0</p>
 </div>
 </div>
-<!-- Stat Card 3 -->
+
 <div class="p-5 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm flex flex-col gap-1">
 <div class="flex justify-between items-start">
 <div class="p-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400">
@@ -244,37 +199,35 @@ Patients
 </div>
 </div>
 <div class="mt-2">
-<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Doctors on Duty</p>
-<p class="text-2xl font-bold text-slate-900 dark:text-white">5</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Active Doctors</p>
+<p class="text-2xl font-bold text-slate-900 dark:text-white" id="stat-active-doctors">0</p>
 </div>
 </div>
-<!-- Stat Card 4 -->
+
 <div class="p-5 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm flex flex-col gap-1">
 <div class="flex justify-between items-start">
 <div class="p-2 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400">
 <span class="material-symbols-outlined">biotech</span>
 </div>
 <span class="flex items-center text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">
-                                0 Priority
-                            </span>
+Pending
+</span>
 </div>
 <div class="mt-2">
-<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Pending Labs</p>
-<p class="text-2xl font-bold text-slate-900 dark:text-white">12</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Doctor Validations</p>
+<p class="text-2xl font-bold text-slate-900 dark:text-white" id="stat-pending-docs">0</p>
 </div>
 </div>
 </div>
-<!-- Main Layout Grid (Schedule & Doctor Status) -->
-<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-<!-- Live Schedule (Takes up 2 cols on large screens) -->
-<div class="xl:col-span-2 flex flex-col gap-4">
-<div class="flex items-center justify-between">
-<h3 class="text-lg font-bold text-slate-900 dark:text-white">Live Schedule</h3>
+
+<!-- Live Schedule Table -->
+<div class="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark overflow-hidden shadow-sm">
+<div class="px-6 py-4 border-b border-border-light dark:border-border-dark flex items-center justify-between">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Today's Schedule</h3>
 <a class="text-sm font-medium text-primary hover:text-blue-600" href="#">View Full Schedule</a>
 </div>
-<div class="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark overflow-hidden shadow-sm">
 <div class="overflow-x-auto">
-<table class="w-full text-left text-sm">
+<table class="w-full text-left text-sm" id="scheduleTable">
 <thead class="bg-slate-50 dark:bg-slate-800/50 border-b border-border-light dark:border-border-dark">
 <tr>
 <th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Time</th>
@@ -285,205 +238,16 @@ Patients
 <th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 text-right">Action</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-border-light dark:divide-border-dark">
-<!-- Row 1 -->
-<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-<td class="px-6 py-4 font-medium text-slate-900 dark:text-white whitespace-nowrap">09:00 AM</td>
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="size-8 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Avatar of John Doe" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCHcgJ2iROoE4fF6uxz4GPDRDczjIeFKvkBcdmViI2GQujCg1BSEZBtNITy1iJFBnmyfKem-R_UHZNOblZ3-CB880_ARBhvNQdMNfmodmXtgsdsA-tV90jKtILsH2h4aTmltq89h-g5vDIx98RK9LqkY6EkDAfOBLbElIA-GckrLf9Jn9uTbPl2Sqnwnj8alnxmvQ7c2M8JwhIJ0I-jMYr141zsxa84sSl1rJBcYAgkRwCOZBbNLn_jqVyAd3jQiKUZijpP6l_HssLE')"></div>
-<div>
-<div class="font-medium text-slate-900 dark:text-white">John Doe</div>
-<div class="text-xs text-slate-500">ID: #4928</div>
-</div>
-</div>
-</td>
-<td class="px-6 py-4 text-slate-600 dark:text-slate-400 hidden sm:table-cell">Dr. Smith</td>
-<td class="px-6 py-4 hidden md:table-cell">
-<span class="inline-flex items-center rounded-md bg-blue-50 dark:bg-blue-900/30 px-2 py-1 text-xs font-medium text-blue-700 dark:text-blue-300 ring-1 ring-inset ring-blue-700/10">Annual Checkup</span>
-</td>
-<td class="px-6 py-4">
-<div class="flex items-center gap-1.5">
-<span class="size-2 rounded-full bg-green-500 animate-pulse"></span>
-<span class="text-slate-700 dark:text-slate-300">In Progress</span>
-</div>
-</td>
-<td class="px-6 py-4 text-right">
-<button class="text-slate-400 hover:text-primary transition-colors">
-<span class="material-symbols-outlined">more_vert</span>
-</button>
-</td>
-</tr>
-<!-- Row 2 -->
-<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-<td class="px-6 py-4 font-medium text-slate-900 dark:text-white whitespace-nowrap">09:30 AM</td>
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="size-8 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Avatar of Jane Miller" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCNTskn7UVIQNK0Q0AgngK71B2Kx-lWaoKDVri_EiQxLCW4L0eKQLfa3hJvdE5_KJV9MlXwfLd2don1TnIiOoyjmAMcr81rpjRNN3gOrcYIyY3XJFRIDse-Gm1D43hrpm2bNZzsAbzsGWPqOwEaxG83NNpI2YU9pP_uJrRTup0h1XYn1k--H16NzazjMbRAGqbVk-aS_5E8G-c2zwtcys4_1UdgYxJp_TMlXLWrN05e0M4Cjb_HAIuIzG15XgNLTDlEqr8L9Id5k2XO')"></div>
-<div>
-<div class="font-medium text-slate-900 dark:text-white">Jane Miller</div>
-<div class="text-xs text-slate-500">ID: #4929</div>
-</div>
-</div>
-</td>
-<td class="px-6 py-4 text-slate-600 dark:text-slate-400 hidden sm:table-cell">Dr. Jones</td>
-<td class="px-6 py-4 hidden md:table-cell">
-<span class="inline-flex items-center rounded-md bg-purple-50 dark:bg-purple-900/30 px-2 py-1 text-xs font-medium text-purple-700 dark:text-purple-300 ring-1 ring-inset ring-purple-700/10">Follow-up</span>
-</td>
-<td class="px-6 py-4">
-<div class="flex items-center gap-1.5">
-<span class="size-2 rounded-full bg-orange-500"></span>
-<span class="text-slate-700 dark:text-slate-300">Waiting Room</span>
-</div>
-</td>
-<td class="px-6 py-4 text-right">
-<button class="text-slate-400 hover:text-primary transition-colors">
-<span class="material-symbols-outlined">more_vert</span>
-</button>
-</td>
-</tr>
-<!-- Row 3 -->
-<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-<td class="px-6 py-4 font-medium text-slate-900 dark:text-white whitespace-nowrap">10:00 AM</td>
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="size-8 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Avatar of Robert Fox" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA8669_zuSSsORaYd7YG_0uAHl729RJLDjJhqjlbO5IxDnGq9jC-y7Fc0usaQ_VVglloZlI7p1xpcX15ZACNhZjr6v_NPXp7rQDbQImCGcPcwz-qtDQfIrsX3VpUcIMKpZBOd-N57kRdueZx5e-MnlyQGqTvD2zlmI-U3O69_soI7czcUZ4wsdyq-sPNNcu8Vooxa9DqcvtMV6oOmKuKgLhPVNuDXpiY6Gzy5TPDaFqVue30CLAG2ygQ_qti0LqJmBnEFAqOCztRd3T')"></div>
-<div>
-<div class="font-medium text-slate-900 dark:text-white">Robert Fox</div>
-<div class="text-xs text-slate-500">ID: #4930</div>
-</div>
-</div>
-</td>
-<td class="px-6 py-4 text-slate-600 dark:text-slate-400 hidden sm:table-cell">Dr. Smith</td>
-<td class="px-6 py-4 hidden md:table-cell">
-<span class="inline-flex items-center rounded-md bg-green-50 dark:bg-green-900/30 px-2 py-1 text-xs font-medium text-green-700 dark:text-green-300 ring-1 ring-inset ring-green-600/20">New Patient</span>
-</td>
-<td class="px-6 py-4">
-<div class="flex items-center gap-1.5">
-<span class="size-2 rounded-full bg-slate-300 dark:bg-slate-600"></span>
-<span class="text-slate-700 dark:text-slate-300">Scheduled</span>
-</div>
-</td>
-<td class="px-6 py-4 text-right">
-<button class="text-slate-400 hover:text-primary transition-colors">
-<span class="material-symbols-outlined">more_vert</span>
-</button>
-</td>
-</tr>
-<!-- Row 4 -->
-<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-<td class="px-6 py-4 font-medium text-slate-900 dark:text-white whitespace-nowrap">10:15 AM</td>
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="size-8 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Avatar of Alice Cooper" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuABfUwRh5QH-R8IKUdSTdK9xc9-9_-nbNtVdBQ2tjVD8_IUFCk5cLnXhPyGM5gxoTjVud3HGCGCd-DFfTfLnG2E663mks1ZVopMEASce3ZHJk6XzFdlZRWPRag9HxDhUaDAp5Dchf7JVRyp4yGlgnKeI-QmmxYXz3p9dDEhex0O_JcByLH6nrsAQRbde2CwdSfqBARCiXhJMX6VPmSXYUsff7cslngd8X8xosysoU2ZfEWsKQjsr6-AGp7BPGTlstQ_nnn6I_EOHp5C')"></div>
-<div>
-<div class="font-medium text-slate-900 dark:text-white">Alice Cooper</div>
-<div class="text-xs text-slate-500">ID: #4931</div>
-</div>
-</div>
-</td>
-<td class="px-6 py-4 text-slate-600 dark:text-slate-400 hidden sm:table-cell">Dr. Lee</td>
-<td class="px-6 py-4 hidden md:table-cell">
-<span class="inline-flex items-center rounded-md bg-amber-50 dark:bg-amber-900/30 px-2 py-1 text-xs font-medium text-amber-700 dark:text-amber-300 ring-1 ring-inset ring-amber-600/20">Lab Work</span>
-</td>
-<td class="px-6 py-4">
-<div class="flex items-center gap-1.5">
-<span class="size-2 rounded-full bg-blue-500"></span>
-<span class="text-slate-700 dark:text-slate-300">Checked In</span>
-</div>
-</td>
-<td class="px-6 py-4 text-right">
-<button class="text-slate-400 hover:text-primary transition-colors">
-<span class="material-symbols-outlined">more_vert</span>
-</button>
-</td>
-</tr>
+<tbody class="divide-y divide-border-light dark:divide-border-dark" id="scheduleTableBody">
+<tr><td colspan="6" class="px-6 py-8 text-center text-slate-500">Loading schedule...</td></tr>
 </tbody>
 </table>
 </div>
 </div>
 </div>
-<!-- Right Column: Doctor Availability & Notifications -->
-<div class="flex flex-col gap-6">
-<!-- Doctor Availability Widget -->
-<div class="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark shadow-sm p-5">
-<div class="flex items-center justify-between mb-4">
-<h3 class="text-lg font-bold text-slate-900 dark:text-white">Doctor Status</h3>
-<button class="text-slate-400 hover:text-primary">
-<span class="material-symbols-outlined">more_horiz</span>
-</button>
 </div>
-<div class="space-y-4">
-<!-- Doctor 1 -->
-<div class="flex items-center justify-between">
-<div class="flex items-center gap-3">
-<div class="relative">
-<div class="size-10 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Dr. Smith Profile" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAE4wBSjCeHCweeMUnPfkaTd8I0m88Q6r2x3CAp37e6SdqowAzOmkUjLHGF9DjDSa_i0k92680EDSTdQdHBump2JmNpj-1BuWvIxc_p4gIjiXrF-bz72Si_BNQ2zNC8-ImsecQ5s7ffdHvdKIYND9oykm4Nk0A0pAIEf0cydFW5eRTxd9EljFvRcNNCkl4cRquEuyHRZ02oUQdZGtUYhuulsqZmRdy3dGCxmy9K0m69gH-X5qpXmRUOly4dKJwcdsv3EwwcFET_ASOC')"></div>
-<div class="absolute bottom-0 right-0 size-3 rounded-full bg-red-500 border-2 border-surface-light dark:border-surface-dark"></div>
-</div>
-<div>
-<p class="text-sm font-semibold text-slate-900 dark:text-white">Dr. Smith</p>
-<p class="text-xs text-slate-500">General Practice</p>
-</div>
-</div>
-<span class="text-xs font-medium text-red-500 bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded">In Consult</span>
-</div>
-<!-- Doctor 2 -->
-<div class="flex items-center justify-between">
-<div class="flex items-center gap-3">
-<div class="relative">
-<div class="size-10 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Dr. Jones Profile" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCewJ8Mze6HkTANfR8Q-qhr3L2VE6ByqVInBr3SrADZLf8AaicQlgME4dziL1IpnZu0aPfLWDoKVo16ljkSG4ZAZaidcMoYi5r3WSSF7HgL0XPGTnLXGPPt8Q6Tsc-obzXNze1rvuWLLVXjCDiCRevQi9qf5DZLmLUyXUyBPtGkZtTLNvIf4K4Bf4gmfMbIFzab9r8LWbEn4J3oXozh4diCCTGMrZeZXzYMxvXtjWnQCm4hIaEuRBsrd6PrBi5oe7Y4fFb99Rh6fEBt')"></div>
-<div class="absolute bottom-0 right-0 size-3 rounded-full bg-green-500 border-2 border-surface-light dark:border-surface-dark"></div>
-</div>
-<div>
-<p class="text-sm font-semibold text-slate-900 dark:text-white">Dr. Jones</p>
-<p class="text-xs text-slate-500">Pediatrics</p>
-</div>
-</div>
-<span class="text-xs font-medium text-green-600 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded">Available</span>
-</div>
-<!-- Doctor 3 -->
-<div class="flex items-center justify-between">
-<div class="flex items-center gap-3">
-<div class="relative">
-<div class="size-10 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Dr. Lee Profile" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAMWX1lDWa2heeqITJSAV6q8fR4ruUTD2qj7yRL5wZ5NQB0EJYThZlkrwPs0sRG2SrSXTPy0N1XNyzoOmtPalz4kwtkDwtubkURZ0xefHoJIcmg3QQG9orC0MAG3y0iooJqiCJHOA7EafSyLiBoNEKpItBs--qzZO2P6YkFo6fKhqE4RFx-Di6-D7L19mMYhMziEyrl6jawRVEcnDx9bn7iTaYo1WJqt52hFm0SEZLHzQbLT60uVMIyN7RKQXDZi1li6wvC3ENffgKB')"></div>
-<div class="absolute bottom-0 right-0 size-3 rounded-full bg-amber-500 border-2 border-surface-light dark:border-surface-dark"></div>
-</div>
-<div>
-<p class="text-sm font-semibold text-slate-900 dark:text-white">Dr. Lee</p>
-<p class="text-xs text-slate-500">Cardiology</p>
-</div>
-</div>
-<span class="text-xs font-medium text-amber-600 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded">On Break</span>
-</div>
-</div>
-</div>
-<!-- Alerts / Recent Activity -->
-<div class="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark shadow-sm p-5 flex-1">
-<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Urgent Alerts</h3>
-<div class="space-y-3">
-<div class="flex gap-3 p-3 rounded-lg bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30">
-<span class="material-symbols-outlined text-red-600 dark:text-red-400 mt-0.5">warning</span>
-<div>
-<p class="text-sm font-semibold text-red-800 dark:text-red-300">Lab Results Delayed</p>
-<p class="text-xs text-red-600 dark:text-red-400">Patient #4922 - Critical Values</p>
-</div>
-</div>
-<div class="flex gap-3 p-3 rounded-lg bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/30">
-<span class="material-symbols-outlined text-amber-600 dark:text-amber-400 mt-0.5">receipt_long</span>
-<div>
-<p class="text-sm font-semibold text-amber-800 dark:text-amber-300">3 Unpaid Invoices</p>
-<p class="text-xs text-amber-600 dark:text-amber-400">Pending approval for &gt; 30 days</p>
-</div>
-</div>
-</div>
-<button class="w-full mt-4 text-sm text-center text-primary font-medium hover:underline">View All Notifications</button>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Doctor Validation Tab -->
+
+<!-- ========== DOCTOR VALIDATION TAB ========== -->
 <div id="doctors-tab" class="tab-content hidden">
 <div class="space-y-6">
 <div class="flex items-center justify-between">
@@ -492,149 +256,224 @@ Patients
 <p class="text-slate-500 dark:text-slate-400 mt-1">Review and approve pending doctor registrations</p>
 </div>
 <div class="flex gap-2">
-<input type="text" placeholder="Search by name, license..." class="px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
-<select class="px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
+<input type="text" id="doctorSearchInput" placeholder="Search by name, license..." class="px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
+<select id="doctorStatusFilter" class="px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
 <option value="">All Status</option>
 <option value="pending">Pending</option>
-<option value="approved">Approved</option>
+<option value="verified">Verified</option>
 <option value="rejected">Rejected</option>
 </select>
 </div>
 </div>
 
 <!-- Doctor Applications List -->
-<div class="space-y-4" id="doctor-applications">
-<!-- Applications will be loaded here from database -->
+<div class="space-y-4" id="doctorApplicationsList">
 <div class="text-center py-8 text-slate-500">Loading doctor applications...</div>
 </div>
 </div>
 </div>
 
-<!-- Appointment Confirmation Tab -->
+<!-- ========== APPOINTMENTS TAB ========== -->
 <div id="appointments-tab" class="tab-content hidden">
 <div class="space-y-6">
 <div class="flex items-center justify-between">
 <div>
-<h1 class="text-2xl font-bold text-slate-900 dark:text-white">Appointment Confirmations</h1>
-<p class="text-slate-500 dark:text-slate-400 mt-1">Manage pending appointment requests and confirmations</p>
+<h1 class="text-2xl font-bold text-slate-900 dark:text-white">Appointment Management</h1>
+<p class="text-slate-500 dark:text-slate-400 mt-1">Manage and monitor all clinic appointments</p>
 </div>
 <div class="flex gap-2">
-<input type="text" placeholder="Search by patient name..." class="px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
-<select class="px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
+<input type="text" id="appointmentSearch" placeholder="Search by patient name..." class="px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
+<select id="appointmentStatusFilter" class="px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
 <option value="">All Status</option>
 <option value="pending">Pending</option>
 <option value="confirmed">Confirmed</option>
+<option value="completed">Completed</option>
 <option value="cancelled">Cancelled</option>
 </select>
 </div>
 </div>
 
 <!-- Appointments List -->
-<div class="space-y-4" id="appointments-list">
-<!-- Appointments will be loaded here from database -->
+<div class="space-y-4" id="appointmentsList">
 <div class="text-center py-8 text-slate-500">Loading appointments...</div>
 </div>
 </div>
 </div>
 
-<!-- Clinic Data Tab -->
+<!-- ========== CLINIC ANALYTICS TAB ========== -->
 <div id="clinic-tab" class="tab-content hidden">
 <div class="space-y-6">
 <div>
 <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Clinic Analytics & Data</h1>
-<p class="text-slate-500 dark:text-slate-400 mt-1">View comprehensive clinic statistics and metrics</p>
+<p class="text-slate-500 dark:text-slate-400 mt-1">Comprehensive clinic statistics and performance metrics</p>
 </div>
 
-<!-- Statistics Grid -->
+<!-- KPIs Grid -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-<div class="p-5 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm">
+<div class="p-6 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
 <div class="flex items-center justify-between">
 <div>
-<p class="text-slate-500 dark:text-slate-400 text-sm">Total Patients</p>
-<p class="text-2xl font-bold text-slate-900 dark:text-white mt-1" id="stat-patients">--</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Patients</p>
+<p class="text-3xl font-bold text-slate-900 dark:text-white mt-2" id="analytics-total-patients">0</p>
+<p class="text-xs text-green-600 dark:text-green-400 mt-2">+12% this month</p>
 </div>
-<span class="material-symbols-outlined text-3xl text-blue-500">groups</span>
+<span class="material-symbols-outlined text-4xl text-blue-500">groups</span>
 </div>
 </div>
 
-<div class="p-5 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm">
+<div class="p-6 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
 <div class="flex items-center justify-between">
 <div>
-<p class="text-slate-500 dark:text-slate-400 text-sm">Active Doctors</p>
-<p class="text-2xl font-bold text-slate-900 dark:text-white mt-1" id="stat-doctors">--</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Active Doctors</p>
+<p class="text-3xl font-bold text-slate-900 dark:text-white mt-2" id="analytics-active-doctors">0</p>
+<p class="text-xs text-green-600 dark:text-green-400 mt-2">Verified & Active</p>
 </div>
-<span class="material-symbols-outlined text-3xl text-green-500">verified_user</span>
+<span class="material-symbols-outlined text-4xl text-green-500">verified_user</span>
 </div>
 </div>
 
-<div class="p-5 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm">
+<div class="p-6 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
 <div class="flex items-center justify-between">
 <div>
-<p class="text-slate-500 dark:text-slate-400 text-sm">Total Appointments</p>
-<p class="text-2xl font-bold text-slate-900 dark:text-white mt-1" id="stat-appointments">--</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Appointments</p>
+<p class="text-3xl font-bold text-slate-900 dark:text-white mt-2" id="analytics-total-appointments">0</p>
+<p class="text-xs text-amber-600 dark:text-amber-400 mt-2">This month</p>
 </div>
-<span class="material-symbols-outlined text-3xl text-purple-500">event_available</span>
+<span class="material-symbols-outlined text-4xl text-purple-500">event_available</span>
 </div>
 </div>
 
-<div class="p-5 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm">
+<div class="p-6 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
 <div class="flex items-center justify-between">
 <div>
-<p class="text-slate-500 dark:text-slate-400 text-sm">Total Revenue</p>
-<p class="text-2xl font-bold text-slate-900 dark:text-white mt-1" id="stat-revenue">₱--</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Completion Rate</p>
+<p class="text-3xl font-bold text-slate-900 dark:text-white mt-2" id="analytics-completion-rate">0%</p>
+<p class="text-xs text-blue-600 dark:text-blue-400 mt-2">Average</p>
 </div>
-<span class="material-symbols-outlined text-3xl text-amber-500">trending_up</span>
+<span class="material-symbols-outlined text-4xl text-amber-500">trending_up</span>
 </div>
 </div>
 
-<div class="p-5 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm">
+<div class="p-6 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
 <div class="flex items-center justify-between">
 <div>
-<p class="text-slate-500 dark:text-slate-400 text-sm">Pending Validations</p>
-<p class="text-2xl font-bold text-slate-900 dark:text-white mt-1" id="stat-pending">--</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Revenue</p>
+<p class="text-3xl font-bold text-slate-900 dark:text-white mt-2" id="analytics-total-revenue">₱0</p>
+<p class="text-xs text-green-600 dark:text-green-400 mt-2">+8% from last month</p>
 </div>
-<span class="material-symbols-outlined text-3xl text-red-500">warning</span>
+<span class="material-symbols-outlined text-4xl text-green-600">attach_money</span>
 </div>
 </div>
 </div>
 
-<!-- Data Tables Row -->
+<!-- Analytics Tables -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 <!-- Top Services -->
 <div class="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-6 shadow-sm">
 <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Most Booked Services</h3>
-<div class="space-y-3" id="top-services">
-<div class="text-center py-4 text-slate-500">Loading...</div>
+<div class="space-y-3" id="topServices">
+<div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+<div class="flex items-center gap-3">
+<div class="w-2 h-12 bg-primary rounded-full"></div>
+<div>
+<p class="text-sm font-semibold text-slate-900 dark:text-white">General Consultation</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">456 bookings</p>
+</div>
+</div>
+<p class="text-sm font-bold text-slate-900 dark:text-white">45%</p>
+</div>
+<div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+<div class="flex items-center gap-3">
+<div class="w-2 h-12 bg-purple-500 rounded-full"></div>
+<div>
+<p class="text-sm font-semibold text-slate-900 dark:text-white">Follow-up Visit</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">328 bookings</p>
+</div>
+</div>
+<p class="text-sm font-bold text-slate-900 dark:text-white">32%</p>
+</div>
+<div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+<div class="flex items-center gap-3">
+<div class="w-2 h-12 bg-green-500 rounded-full"></div>
+<div>
+<p class="text-sm font-semibold text-slate-900 dark:text-white">Lab Work</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">190 bookings</p>
+</div>
+</div>
+<p class="text-sm font-bold text-slate-900 dark:text-white">19%</p>
+</div>
+<div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+<div class="flex items-center gap-3">
+<div class="w-2 h-12 bg-amber-500 rounded-full"></div>
+<div>
+<p class="text-sm font-semibold text-slate-900 dark:text-white">Specialist Consultation</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">74 bookings</p>
+</div>
+</div>
+<p class="text-sm font-bold text-slate-900 dark:text-white">7%</p>
+</div>
 </div>
 </div>
 
-<!-- Top Doctors -->
+<!-- Top Doctors by Appointments -->
 <div class="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-6 shadow-sm">
 <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Top Performing Doctors</h3>
-<div class="space-y-3" id="top-doctors">
-<div class="text-center py-4 text-slate-500">Loading...</div>
+<div class="space-y-3" id="topDoctors">
+<div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold">DR</div>
+<div>
+<p class="text-sm font-semibold text-slate-900 dark:text-white">Dr. Rajesh Kumar</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Cardiology • 156 appointments</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-slate-900 dark:text-white">4.8★</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">98 reviews</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white font-bold">DM</div>
+<div>
+<p class="text-sm font-semibold text-slate-900 dark:text-white">Dr. Maya Sharma</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">General Practice • 142 appointments</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-slate-900 dark:text-white">4.7★</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">87 reviews</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white font-bold">DV</div>
+<div>
+<p class="text-sm font-semibold text-slate-900 dark:text-white">Dr. Vikram Singh</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Pediatrics • 128 appointments</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-slate-900 dark:text-white">4.9★</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">112 reviews</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 
-<!-- Revenue Chart Placeholder -->
-<div class="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-6 shadow-sm">
-<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Monthly Revenue Trend</h3>
-<div class="h-64 flex items-center justify-center text-slate-500">Chart visualization would go here</div>
-</div>
-</div>
-</div>
-
-<!-- Patients Tab -->
+<!-- ========== PATIENTS TAB ========== -->
 <div id="patients-tab" class="tab-content hidden">
 <div class="space-y-6">
-<div class="flex items-center justify-between">
+<div class="flex items-center justify-between mb-6">
 <div>
-<h1 class="text-2xl font-bold text-slate-900 dark:text-white">All Patients</h1>
-<p class="text-slate-500 dark:text-slate-400 mt-1">View and manage all registered patients</p>
+<h1 class="text-2xl font-bold text-slate-900 dark:text-white">All Patients & Doctors</h1>
+<p class="text-slate-500 dark:text-slate-400 mt-1">View and manage all registered patients and verified doctors</p>
 </div>
 <div class="flex gap-2">
-<input type="text" placeholder="Search by name, email, ID..." class="px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
+<input type="text" id="userSearch" placeholder="Search by name, email..." class="px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
 <button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:bg-blue-600 transition-colors">
 <span class="material-symbols-outlined">download</span>
 Export
@@ -642,8 +481,20 @@ Export
 </div>
 </div>
 
+<!-- Sub-Tab Navigation -->
+<div class="flex gap-2 mb-4 border-b border-border-light dark:border-border-dark">
+<button onclick="switchUserTab('patients')" class="user-tab-btn px-4 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 border-b-2 border-transparent hover:text-slate-900 dark:hover:text-white transition-colors active" data-tab="patients">
+<span class="material-symbols-outlined text-[18px] mr-2" style="display: inline-block; vertical-align: middle;">groups</span>
+All Patients <span class="ml-2 px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold" id="patient-count">0</span>
+</button>
+<button onclick="switchUserTab('doctors')" class="user-tab-btn px-4 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 border-b-2 border-transparent hover:text-slate-900 dark:hover:text-white transition-colors" data-tab="doctors">
+<span class="material-symbols-outlined text-[18px] mr-2" style="display: inline-block; vertical-align: middle;">medical_services</span>
+All Doctors <span class="ml-2 px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold" id="doctor-count">0</span>
+</button>
+</div>
+
 <!-- Patients Table -->
-<div class="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark overflow-hidden shadow-sm">
+<div id="patients-section" class="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark overflow-hidden shadow-sm">
 <div class="overflow-x-auto">
 <table class="w-full text-left text-sm">
 <thead class="bg-slate-50 dark:bg-slate-800/50 border-b border-border-light dark:border-border-dark">
@@ -652,20 +503,133 @@ Export
 <th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Email</th>
 <th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 hidden sm:table-cell">Phone</th>
 <th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Appointments</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 hidden md:table-cell">Joined</th>
 <th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 text-right">Action</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-border-light dark:divide-border-dark" id="patients-table-body">
+<tbody class="divide-y divide-border-light dark:divide-border-dark" id="patientsTableBody">
+<tr><td colspan="6" class="px-6 py-8 text-center text-slate-500">Loading patients...</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- Doctors Table -->
+<div id="doctors-section" class="hidden rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead class="bg-slate-50 dark:bg-slate-800/50 border-b border-border-light dark:border-border-dark">
 <tr>
-<td colspan="5" class="px-6 py-8 text-center text-slate-500">Loading patients...</td>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Doctor Name</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Email</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 hidden sm:table-cell">Phone</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Specialization</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 hidden md:table-cell">Joined</th>
+<th class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 text-right">Action</th>
 </tr>
+</thead>
+<tbody class="divide-y divide-border-light dark:divide-border-dark" id="doctorsTableBody">
+<tr><td colspan="6" class="px-6 py-8 text-center text-slate-500">Loading doctors...</td></tr>
 </tbody>
 </table>
 </div>
 </div>
 </div>
 </div>
+
+<!-- ========== SETTINGS TAB ========== -->
+<div id="settings-tab" class="tab-content hidden">
+<div class="space-y-6">
+<div>
+<h1 class="text-2xl font-bold text-slate-900 dark:text-white">Admin Settings</h1>
+<p class="text-slate-500 dark:text-slate-400 mt-1">Manage clinic settings and configurations</p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- Clinic Information -->
+<div class="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-6 shadow-sm">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Clinic Information</h3>
+<div class="space-y-4">
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Clinic Name</label>
+<input type="text" value="MediLink Cloud Clinic" class="w-full px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email</label>
+<input type="email" value="admin@medilink.com" class="w-full px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Phone</label>
+<input type="tel" value="+1 (555) 123-4567" class="w-full px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
+</div>
+<button class="w-full mt-4 px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium">
+Save Changes
+</button>
+</div>
+</div>
+
+<!-- Working Hours -->
+<div class="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-6 shadow-sm">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Working Hours</h3>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Monday - Friday</span>
+<span class="text-sm text-slate-600 dark:text-slate-400">09:00 AM - 06:00 PM</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Saturday</span>
+<span class="text-sm text-slate-600 dark:text-slate-400">10:00 AM - 02:00 PM</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Sunday</span>
+<span class="text-sm text-red-600 dark:text-red-400">Closed</span>
+</div>
+</div>
+</div>
+
+<!-- System Settings -->
+<div class="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-6 shadow-sm lg:col-span-2">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">System Settings</h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+<div>
+<p class="text-sm font-medium text-slate-900 dark:text-white">Email Notifications</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Send alerts for new appointments</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input type="checkbox" checked class="sr-only peer">
+<div class="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-slate-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all dark:peer-checked:bg-blue-600"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+<div>
+<p class="text-sm font-medium text-slate-900 dark:text-white">SMS Reminders</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Send SMS reminders to patients</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input type="checkbox" class="sr-only peer">
+<div class="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-slate-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all dark:peer-checked:bg-blue-600"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+<div>
+<p class="text-sm font-medium text-slate-900 dark:text-white">Two-Factor Authentication</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Require 2FA for admin access</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input type="checkbox" checked class="sr-only peer">
+<div class="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-slate-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all dark:peer-checked:bg-blue-600"></div>
+</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
 </main>
+</div>
+</div>
 
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
@@ -676,114 +640,44 @@ const supabase = createClient(
 );
 
 // ============= TAB SWITCHING =============
-const tabBtns = document.querySelectorAll('.tab-btn');
-const tabNavs = document.querySelectorAll('.tab-nav');
-const tabContents = document.querySelectorAll('.tab-content');
+const tabBtns = document.querySelectorAll('[data-tab]');
 
-// Top tabs
 tabBtns.forEach(btn => {
   btn.addEventListener('click', switchTab);
-});
-
-// Sidebar tabs
-tabNavs.forEach(nav => {
-  nav.addEventListener('click', switchTab);
 });
 
 function switchTab(e) {
   const tabName = e.currentTarget.getAttribute('data-tab');
   
-  // Update active button (top tabs)
-  tabBtns.forEach(b => b.classList.remove('active', 'border-b-2', 'border-primary', 'text-primary'));
-  tabBtns.forEach(b => {
-    if (b.getAttribute('data-tab') === tabName) {
-      b.classList.add('active', 'border-b-2', 'border-primary', 'text-primary');
-      b.classList.remove('border-transparent', 'text-slate-600', 'dark:text-slate-400');
-    } else {
-      b.classList.add('border-transparent', 'text-slate-600', 'dark:text-slate-400');
-    }
+  // Update all nav items
+  document.querySelectorAll('.tab-nav').forEach(nav => {
+    nav.classList.remove('active', 'bg-primary/10', 'text-primary');
+    nav.classList.add('text-slate-600', 'dark:text-slate-300');
   });
-  
-  // Update active sidebar (left nav tabs)
-  tabNavs.forEach(nav => nav.classList.remove('active', 'bg-primary/10', 'text-primary'));
-  tabNavs.forEach(nav => nav.classList.add('text-slate-600', 'dark:text-slate-300'));
-  tabNavs.forEach(nav => {
-    if (nav.getAttribute('data-tab') === tabName) {
+  document.querySelectorAll('[data-tab]').forEach(nav => {
+    if(nav.getAttribute('data-tab') === tabName) {
       nav.classList.remove('text-slate-600', 'dark:text-slate-300');
       nav.classList.add('active', 'bg-primary/10', 'text-primary');
     }
   });
   
+  // Update page title
+  const titleMap = {
+    'overview': 'Dashboard Overview',
+    'doctors': 'Doctor Registration Validation',
+    'appointments': 'Appointment Management',
+    'clinic': 'Clinic Analytics & Data',
+    'patients': 'All Patients',
+    'settings': 'Admin Settings'
+  };
+  document.getElementById('pageTitle').textContent = titleMap[tabName] || 'Dashboard';
+  
   // Show/hide tab content
-  tabContents.forEach(content => content.classList.add('hidden'));
-  tabContents.forEach(content => {
-    if (content.id === `${tabName}-tab`) {
-      content.classList.remove('hidden');
-      // Load data for this tab if needed
-      loadTabData(tabName);
-    }
-  });
-}
-
-// ============= CHECK AUTHENTICATION =============
-async function checkAuth() {
-  try {
-    const { data: { session } } = await supabase.auth.getSession();
-    
-    if (!session) {
-      window.location.href = '../login.html';
-      return;
-    }
-
-    // Get user profile
-    const { data: profile } = await supabase
-      .from('user_profiles')
-      .select('*')
-      .eq('user_id', session.user.id)
-      .single();
-
-    if (!profile) {
-      console.error('Profile not found');
-      window.location.href = '../login.html';
-      return;
-    }
-
-    // Check if user is admin
-    if (profile.role !== 'doctor' && profile.role !== 'admin') {
-      console.error('Access denied: Not an admin user');
-      window.location.href = profile.role === 'patient' ? '../dashboard.html' : '../login.html';
-      return;
-    }
-
-    // Update UI with user info
-    updateUserInfo(profile);
-    
-    // Load initial data
-    loadTabData('overview');
-    
-  } catch (error) {
-    console.error('Auth check error:', error);
-    window.location.href = '../login.html';
-  }
-}
-
-// ============= UPDATE USER INFO =============
-function updateUserInfo(profile) {
-  const userName = document.querySelector('.text-right.hidden.sm\\:block p.text-sm.font-medium');
-  const userRole = document.querySelector('.text-right.hidden.sm\\:block p.text-xs.text-slate-500');
-  const greeting = document.getElementById('adminGreeting');
-  
-  if (userName) {
-    userName.textContent = `Dr. ${profile.first_name || ''} ${profile.last_name || ''}`.trim();
-  }
-  
-  if (userRole) {
-    userRole.textContent = 'Admin';
-  }
-  
-  // Update greeting with user's first name
-  if (greeting && profile.first_name) {
-    greeting.textContent = `Good Morning, ${profile.first_name}`;
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+  const activeTab = document.getElementById(`${tabName}-tab`);
+  if (activeTab) {
+    activeTab.classList.remove('hidden');
+    loadTabData(tabName);
   }
 }
 
@@ -791,19 +685,19 @@ function updateUserInfo(profile) {
 async function loadTabData(tabName) {
   switch(tabName) {
     case 'overview':
-      loadOverviewData();
+      await loadOverviewData();
       break;
     case 'doctors':
-      loadDoctorValidations();
+      await loadDoctorValidations();
       break;
     case 'appointments':
-      loadAppointmentConfirmations();
+      await loadAppointmentsList();
       break;
     case 'clinic':
-      loadClinicData();
+      await loadClinicAnalytics();
       break;
     case 'patients':
-      loadPatientsList();
+      await loadPatientsList();
       break;
   }
 }
@@ -811,91 +705,276 @@ async function loadTabData(tabName) {
 // ============= OVERVIEW DATA =============
 async function loadOverviewData() {
   try {
-    // Load stats if not already loaded
-    const { count: appointmentsCount } = await supabase
-      .from('appointments')
-      .select('*', { count: 'exact' });
-      
-    const { count: patientsCount } = await supabase
-      .from('user_profiles')
-      .select('*', { count: 'exact' })
-      .eq('role', 'patient');
-      
-    const { count: doctorsCount } = await supabase
-      .from('user_profiles')
-      .select('*', { count: 'exact' })
-      .eq('role', 'doctor')
-      .eq('verified', true);
+    const allAppointments = getAllAppointmentsFromStorage();
+    const todayAppointments = allAppointments.filter(app => {
+      const appDate = new Date(app.date).toDateString();
+      const today = new Date().toDateString();
+      return appDate === today;
+    });
+    
+    document.getElementById('stat-today-appointments').textContent = todayAppointments.length;
+    document.getElementById('stat-pending-confirmations').textContent = allAppointments.filter(app => app.status === 'pending').length;
+    document.getElementById('stat-active-doctors').textContent = '5';
+    document.getElementById('stat-pending-docs').textContent = '2';
+    
+    updateScheduleTable(todayAppointments.slice(0, 5));
   } catch (error) {
-    console.error('Error loading overview data:', error);
+    console.error('Error loading overview:', error);
   }
 }
 
 // ============= DOCTOR VALIDATIONS =============
 async function loadDoctorValidations() {
+  const container = document.getElementById('doctorApplicationsList');
+
   try {
-    const container = document.getElementById('doctor-applications');
-    container.innerHTML = '<div class="text-center py-8">Loading...</div>';
-    
-    // Fetch pending doctors
-    const { data: pendingDoctors, error } = await supabase
+    const { data, error } = await supabase
       .from('user_profiles')
       .select('*')
-      .eq('role', 'doctor')
-      .eq('verified', false)
-      .order('created_at', { ascending: false });
-    
+      .eq('role', 'doctor');
+
     if (error) throw error;
-    
-    if (!pendingDoctors || pendingDoctors.length === 0) {
-      container.innerHTML = '<div class="text-center py-8 text-slate-500">No pending doctor applications</div>';
+
+    if (!data || data.length === 0) {
+      container.innerHTML = `<div class="text-center py-8 text-slate-500">No doctors found</div>`;
       return;
     }
-    
-    container.innerHTML = '';
-    
-    pendingDoctors.forEach(doctor => {
-      const card = document.createElement('div');
-      card.className = 'p-5 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow';
-      card.innerHTML = `
-        <div class="flex items-start justify-between gap-4">
-          <div class="flex gap-4 flex-1">
-            <div class="size-16 rounded-lg bg-slate-200 flex-shrink-0"></div>
-            <div class="flex-1">
-              <h3 class="text-lg font-bold text-slate-900 dark:text-white">${doctor.first_name} ${doctor.last_name}</h3>
-              <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">${doctor.email || 'No email'}</p>
-              <div class="flex gap-3 mt-3 flex-wrap">
-                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 text-xs font-medium">
-                  <span class="material-symbols-outlined text-[14px]">school</span>
-                  ${doctor.specialty || 'General Medicine'}
-                </span>
-                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-medium">
-                  <span class="material-symbols-outlined text-[14px]">badge</span>
-                  License: ${doctor.license_number || 'N/A'}
-                </span>
-              </div>
+
+    container.innerHTML = data.map(doc => {
+      const isVerified = doc.verified;
+
+      return `
+        <div class="p-6 rounded-xl bg-white border shadow-sm">
+          
+          <div class="flex justify-between items-center mb-3">
+            <div>
+              <h3 class="text-lg font-bold">Dr. ${doc.first_name} ${doc.last_name}</h3>
+              <p class="text-sm text-gray-500">${doc.email}</p>
             </div>
+
+            <span class="px-3 py-1 text-xs rounded ${
+              isVerified 
+                ? 'bg-green-100 text-green-700' 
+                : 'bg-yellow-100 text-yellow-700'
+            }">
+              ${isVerified ? 'Verified' : 'Pending'}
+            </span>
           </div>
-          <div class="flex gap-2 flex-shrink-0">
-            <button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900/40 transition-colors font-medium text-sm" onclick="approveDoctors('doctor-id')">
-              <span class="material-symbols-outlined text-[18px]">check_circle</span>
-              Approve
-            </button>
-            <button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors font-medium text-sm" onclick="rejectDoctor('doctor-id')">
-              <span class="material-symbols-outlined text-[18px]">cancel</span>
-              Reject
-            </button>
-          </div>
+
+          ${
+            !isVerified
+              ? `
+              <div class="flex gap-2">
+                <button onclick="approveDoctor('${doc.id}')" 
+                  class="bg-green-500 text-white px-4 py-2 rounded">
+                  Approve
+                </button>
+                <button onclick="rejectDoctor('${doc.id}')" 
+                  class="bg-red-500 text-white px-4 py-2 rounded">
+                  Reject
+                </button>
+              </div>
+            `
+              : `
+              <div class="text-sm text-gray-500">
+                ✔ Already approved
+              </div>
+            `
+          }
+
         </div>
       `;
-      container.appendChild(card);
-    });
-  } catch (error) {
-    console.error('Error loading doctor validations:', error);
+    }).join('');
+
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = `<div class="text-red-500">Error loading doctors</div>`;
   }
 }
 
-// ============= APPOINTMENT CONFIRMATIONS =============
+// ============= APPOINTMENTS LIST =============
+async function loadAppointmentsList() {
+  const container = document.getElementById('appointmentsList');
+  
+  try {
+    const allAppointments = getAllAppointmentsFromStorage();
+    
+    if (!allAppointments || allAppointments.length === 0) {
+      container.innerHTML = '<div class="text-center py-12"><span class="material-symbols-outlined text-6xl text-slate-300">calendar_month</span><p class="text-slate-500 mt-4">No appointments in the system</p></div>';
+      return;
+    }
+    
+    container.innerHTML = allAppointments.map(app => `
+      <div class="p-6 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-start justify-between gap-4 mb-4">
+          <div class="flex-1">
+            <h3 class="text-lg font-semibold text-slate-900 dark:text-white">${app.patientName || 'Patient'}</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">Doctor: <strong>${app.doctor || 'Unassigned'}</strong></p>
+          </div>
+          <span class="px-3 py-1 rounded-full text-xs font-semibold ${getStatusBadgeClass(app.status)}">${getStatusLabel(app.status)}</span>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-3 py-3 border-t border-b border-border-light dark:border-border-dark my-3">
+          <div><p class="text-xs text-slate-500">Date</p><p class="text-sm font-semibold text-slate-900 dark:text-white">${new Date(app.date).toLocaleDateString()}</p></div>
+          <div><p class="text-xs text-slate-500">Time</p><p class="text-sm font-semibold text-slate-900 dark:text-white">${app.time}</p></div>
+          <div><p class="text-xs text-slate-500">Department</p><p class="text-sm font-semibold text-slate-900 dark:text-white">${app.department || 'General'}</p></div>
+          <div><p class="text-xs text-slate-500">Type</p><p class="text-sm font-semibold text-slate-900 dark:text-white">${app.type || 'Consultation'}</p></div>
+          <div><p class="text-xs text-slate-500">Amount</p><p class="text-sm font-bold text-primary">₱${app.bill || 0}</p></div>
+        </div>
+        
+        <div class="flex gap-2">
+          ${app.status === 'pending' ? `
+            <button onclick="adminConfirmAppointment(${app.id})" class="px-4 py-2 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-100 transition-colors text-sm font-medium">Confirm</button>
+          ` : ''}
+          ${app.status !== 'completed' && app.status !== 'cancelled' ? `
+            <button onclick="adminCancelAppointment(${app.id})" class="px-4 py-2 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium">Cancel</button>
+          ` : ''}
+          <button class="ml-auto px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium">View Details</button>
+        </div>
+      </div>
+    `).join('');
+  } catch (error) {
+    console.error('Error loading appointments:', error);
+  }
+}
+
+// ============= CLINIC ANALYTICS =============
+async function loadClinicAnalytics() {
+  try {
+    const allAppointments = getAllAppointmentsFromStorage();
+    
+    document.getElementById('analytics-total-patients').textContent = '1,247';
+    document.getElementById('analytics-active-doctors').textContent = '12';
+    document.getElementById('analytics-total-appointments').textContent = allAppointments.length;
+    
+    const completed = allAppointments.filter(a => a.status === 'completed').length;
+    const rate = allAppointments.length > 0 ? Math.round((completed / allAppointments.length) * 100) : 0;
+    document.getElementById('analytics-completion-rate').textContent = rate + '%';
+    
+    const revenue = allAppointments.reduce((sum, a) => sum + (parseFloat(a.bill) || 0), 0);
+    document.getElementById('analytics-total-revenue').textContent = '₱' + revenue.toLocaleString();
+  } catch (error) {
+    console.error('Error loading analytics:', error);
+  }
+}
+
+// ============= PATIENTS LIST =============
+// ============= PATIENTS LIST =============
+async function loadPatientsList() {
+  const tbody = document.getElementById('patientsTableBody');
+
+  try {
+    const { data, error } = await supabase
+      .from('user_profiles')
+      .select('*')
+      .eq('role', 'patient');
+
+    if (error) throw error;
+
+    document.getElementById('patient-count').textContent = data.length;
+
+    if (!data.length) {
+      tbody.innerHTML = `
+        <tr><td colspan="6" class="px-6 py-8 text-center text-slate-500">
+          No patients found
+        </td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = data.map(p => `
+      <tr class="hover:bg-slate-50 dark:hover:bg-slate-800">
+        <td class="px-6 py-4">${p.first_name} ${p.last_name}</td>
+        <td class="px-6 py-4">${p.email}</td>
+        <td class="px-6 py-4 hidden sm:table-cell">${p.phone || ''}</td>
+        <td class="px-6 py-4">0</td>
+        <td class="px-6 py-4 hidden md:table-cell">
+          ${new Date(p.created_at).toLocaleDateString()}
+        </td>
+        <td class="px-6 py-4 text-right">
+          <button class="text-primary">View</button>
+        </td>
+      </tr>
+    `).join('');
+
+  } catch (err) {
+    console.error(err);
+    tbody.innerHTML = `<tr><td colspan="6">Error loading patients</td></tr>`;
+  }
+}
+
+// ============= LOAD DOCTORS LIST =============
+async function loadDoctorsList() {
+  const tbody = document.getElementById('doctorsTableBody');
+
+  try {
+    const { data, error } = await supabase
+      .from('user_profiles')
+      .select('*')
+      .eq('role', 'doctor')
+      .eq('verified', true);
+
+    if (error) throw error;
+
+    document.getElementById('doctor-count').textContent = data.length;
+
+    if (!data.length) {
+      tbody.innerHTML = `
+        <tr><td colspan="6" class="px-6 py-8 text-center text-slate-500">
+          No doctors found
+        </td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = data.map(d => `
+      <tr class="hover:bg-slate-50 dark:hover:bg-slate-800">
+        <td class="px-6 py-4">Dr. ${d.first_name} ${d.last_name}</td>
+        <td class="px-6 py-4">${d.email}</td>
+        <td class="px-6 py-4 hidden sm:table-cell">${d.phone || ''}</td>
+        <td class="px-6 py-4">
+          <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">
+            ${d.specialization || 'General'}
+          </span>
+        </td>
+        <td class="px-6 py-4 hidden md:table-cell">
+          ${new Date(d.created_at).toLocaleDateString()}
+        </td>
+        <td class="px-6 py-4 text-right">
+          <button class="text-primary">View</button>
+        </td>
+      </tr>
+    `).join('');
+
+  } catch (err) {
+    console.error(err);
+    tbody.innerHTML = `<tr><td colspan="6">Error loading doctors</td></tr>`;
+  }
+}
+
+// ============= SWITCH USER TAB =============
+function switchUserTab(tab) {
+  // Update button styles
+  document.querySelectorAll('.user-tab-btn').forEach(btn => {
+    btn.classList.remove('active', 'border-primary', 'text-primary');
+    btn.classList.add('text-slate-600', 'dark:text-slate-300', 'border-transparent');
+  });
+  
+  document.querySelector(`[data-tab="${tab}"]`).classList.add('active', 'border-primary', 'text-primary');
+  document.querySelector(`[data-tab="${tab}"]`).classList.remove('text-slate-600', 'dark:text-slate-300', 'border-transparent');
+  
+  // Show/hide tables
+  if (tab === 'patients') {
+    document.getElementById('patients-section').classList.remove('hidden');
+    document.getElementById('doctors-section').classList.add('hidden');
+    loadPatientsList();
+  } else {
+    document.getElementById('patients-section').classList.add('hidden');
+    document.getElementById('doctors-section').classList.remove('hidden');
+    loadDoctorsList();
+  }
+}
+
+
+// ============= HELPER FUNCTIONS =============
 function getAllAppointmentsFromStorage() {
   const stored = localStorage.getItem('medilinkAppointments');
   return stored ? JSON.parse(stored) : [];
@@ -905,183 +984,133 @@ function saveAllAppointmentsToStorage(appointments) {
   localStorage.setItem('medilinkAppointments', JSON.stringify(appointments));
 }
 
-function getStatusBadgeColor(status) {
-  const colors = {
-    pending: 'bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400',
-    confirmed: 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400',
-    completed: 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400',
-    cancelled: 'bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400'
+function getStatusBadgeClass(status) {
+  const classes = {
+    pending: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300',
+    confirmed: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300',
+    completed: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
+    cancelled: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
   };
-  return colors[status] || 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300';
+  return classes[status] || 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300';
 }
 
 function getStatusLabel(status) {
-  const labels = {
-    pending: 'Pending',
-    confirmed: 'Confirmed',
-    completed: 'Completed',
-    cancelled: 'Cancelled'
-  };
+  const labels = { pending: 'Pending', confirmed: 'Confirmed', completed: 'Completed', cancelled: 'Cancelled' };
   return labels[status] || 'Scheduled';
 }
 
-function loadAppointmentConfirmations() {
-  const appointmentsList = document.getElementById('appointments-list');
-  if (!appointmentsList) return;
-
-  const allAppointments = getAllAppointmentsFromStorage();
+function updateScheduleTable(appointments) {
+  const tbody = document.getElementById('scheduleTableBody');
+  if (!tbody) return;
   
-  if (!allAppointments || allAppointments.length === 0) {
-    appointmentsList.innerHTML = `
-      <div class="text-center py-12">
-        <span class="material-symbols-outlined text-6xl text-slate-300 dark:text-slate-600">calendar_month</span>
-        <p class="text-slate-500 dark:text-slate-400 mt-4">No appointments in the system yet.</p>
-      </div>
-    `;
-    updateStatCard('stat-appointments', allAppointments.length);
+  if (!appointments || appointments.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-8 text-center text-slate-500">No appointments scheduled for today</td></tr>';
     return;
   }
-
-  appointmentsList.innerHTML = allAppointments.map(app => `
-    <div class="p-6 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
-      <div class="flex items-start justify-between gap-4 mb-4">
-        <div class="flex-1">
-          <div class="flex items-center gap-3 mb-2">
-            <h3 class="text-lg font-semibold text-slate-900 dark:text-white">${app.patientName || 'Patient'}</h3>
-            <span class="px-3 py-1 rounded-full text-xs font-semibold ${getStatusBadgeColor(app.status)}">${getStatusLabel(app.status)}</span>
-          </div>
-          <p class="text-sm text-slate-600 dark:text-slate-400">Doctor: <strong>${app.doctor || 'Unassigned'}</strong></p>
-        </div>
-        <div class="text-right">
-          <p class="text-2xl font-bold text-primary">₱${app.bill || app.fee || 0}</p>
-          <p class="text-xs text-slate-500 dark:text-slate-400">Bill Amount</p>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4 py-4 border-y border-border-light dark:border-border-dark">
-        <div>
-          <p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Date</p>
-          <p class="text-sm font-medium text-slate-900 dark:text-white mt-1">${new Date(app.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
-        </div>
-        <div>
-          <p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Time</p>
-          <p class="text-sm font-medium text-slate-900 dark:text-white mt-1">${app.time || 'Not set'}</p>
-        </div>
-        <div>
-          <p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Department</p>
-          <p class="text-sm font-medium text-slate-900 dark:text-white mt-1">${app.department || 'General'}</p>
-        </div>
-        <div>
-          <p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Type</p>
-          <p class="text-sm font-medium text-slate-900 dark:text-white mt-1">${app.type || 'Consultation'}</p>
-        </div>
-        <div>
-          <p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Location</p>
-          <p class="text-sm font-medium text-slate-900 dark:text-white mt-1">${app.location || 'Main Clinic'}</p>
-        </div>
-      </div>
-
-      ${app.notes ? `<p class="text-sm text-slate-600 dark:text-slate-400 mb-4"><strong>Notes:</strong> ${app.notes}</p>` : ''}
-
-      <div class="flex gap-2">
-        ${app.status === 'pending' ? `
-          <button onclick="adminConfirmAppointment(${app.id})" class="px-4 py-2 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900/40 rounded-lg transition-colors text-sm font-medium">
-            Confirm
-          </button>
-        ` : ''}
-        ${app.status !== 'completed' && app.status !== 'cancelled' ? `
-          <button onclick="adminCancelAppointment(${app.id})" class="px-4 py-2 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/40 rounded-lg transition-colors text-sm font-medium">
-            Cancel
-          </button>
-        ` : ''}
-        <button class="ml-auto px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors text-sm font-medium">
-          View Details
-        </button>
-      </div>
-    </div>
+  
+  tbody.innerHTML = appointments.map(app => `
+    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+      <td class="px-6 py-4 font-medium">${app.time}</td>
+      <td class="px-6 py-4"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded-full bg-slate-200"></div><span>${app.patientName}</span></div></td>
+      <td class="px-6 py-4 hidden sm:table-cell">${app.doctor}</td>
+      <td class="px-6 py-4 hidden md:table-cell"><span class="px-2 py-1 rounded text-xs font-medium bg-blue-50 dark:bg-blue-900/20 text-blue-700">${app.department}</span></td>
+      <td class="px-6 py-4"><span class="px-2 py-1 rounded text-xs font-medium ${getStatusBadgeClass(app.status)}">${getStatusLabel(app.status)}</span></td>
+      <td class="px-6 py-4 text-right"><button class="text-primary hover:underline">View</button></td>
+    </tr>
   `).join('');
-
-  updateStatCard('stat-appointments', allAppointments.length);
 }
 
-function adminConfirmAppointment(appointmentId) {
+// ============= APPOINTMENT ACTIONS =============
+window.adminConfirmAppointment = function(appointmentId) {
   const allAppointments = getAllAppointmentsFromStorage();
   const appointment = allAppointments.find(app => app.id === appointmentId);
   if (!appointment) return;
   appointment.status = 'confirmed';
   saveAllAppointmentsToStorage(allAppointments);
-  loadAppointmentConfirmations();
-  alert(`Appointment confirmed for ${appointment.patientName}. They will receive a notification.`);
-}
+  loadAppointmentsList();
+  alert(`Appointment confirmed for ${appointment.patientName}`);
+};
 
-function adminCancelAppointment(appointmentId) {
-  if (!confirm('Are you sure you want to cancel this appointment?')) return;
+window.adminCancelAppointment = function(appointmentId) {
+  if (!confirm('Cancel this appointment?')) return;
   const allAppointments = getAllAppointmentsFromStorage();
   const appointment = allAppointments.find(app => app.id === appointmentId);
   if (!appointment) return;
   appointment.status = 'cancelled';
   saveAllAppointmentsToStorage(allAppointments);
-  loadAppointmentConfirmations();
-  alert(`Appointment cancelled for ${appointment.patientName}.`);
-}
+  loadAppointmentsList();
+  alert(`Appointment cancelled for ${appointment.patientName}`);
+};
 
-window.adminConfirmAppointment = adminConfirmAppointment;
-window.adminCancelAppointment = adminCancelAppointment;
-
-// ============= CLINIC DATA =============
-function loadClinicData() {
-  // Show mock data - replace with your database calls
-  showMockData();
-}
-
-// ============= PATIENTS LIST =============
-function loadPatientsList() {
-  // Show mock data - replace with your database calls
-  showMockData();
-}
-
-// ============= HELPER FUNCTIONS =============
-function updateStatCard(id, value) {
-  const element = document.getElementById(id);
-  if (element) {
-    element.textContent = typeof value === 'number' ? value.toLocaleString() : value;
+// ============= DOCTOR ACTIONS =============
+window.approveDoctorRegistration = async function(doctorId) {
+  try {
+    const { error } = await supabase
+      .from('doctors')
+      .update({ verified: true })
+      .eq('id', doctorId);
+    
+    if (error) throw error;
+    alert('Doctor approved successfully');
+    loadDoctorValidations();
+  } catch (error) {
+    console.error('Error approving doctor:', error);
+    alert('Error approving doctor');
   }
-}
+};
 
-function showMockData() {
-  // Show mock data when database is not available
-  updateStatCard('totalPatients', '1,234');
-  updateStatCard('totalDoctors', '45');
-  updateStatCard('totalAppointments', '892');
-  updateStatCard('pendingVerifications', '8');
-  updateStatCard('revenue', '$45,678');
-  
-  // Show mock content in containers
-  const containers = ['pendingDoctors', 'pendingAppointments', 'topServices', 'topDoctors'];
-  containers.forEach(id => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.innerHTML = '<div class="text-center py-8 text-slate-500">Database connection unavailable - showing mock data</div>';
-    }
-  });
-  
-  const tbody = document.getElementById('patients-table-body');
-  if (tbody) {
-    tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-slate-500">Database connection unavailable - no data to display</td></tr>';
+window.rejectDoctorRegistration = async function(doctorId) {
+  if (!confirm('Reject this doctor registration?')) return;
+  try {
+    const { error } = await supabase
+      .from('doctors')
+      .delete()
+      .eq('id', doctorId);
+    
+    if (error) throw error;
+    alert('Doctor registration rejected');
+    loadDoctorValidations();
+  } catch (error) {
+    console.error('Error rejecting doctor:', error);
   }
-}
+};
 
-// ============= HANDLE LOGOUT =============
+
+
+// ✅ ADD THESE OUTSIDE (IMPORTANT)
+window.approveDoctor = async function(id) {
+  await supabase
+    .from('user_profiles')
+    .update({ verified: true })
+    .eq('id', id);
+
+  alert('Doctor approved');
+  loadDoctorValidations();
+};
+
+window.rejectDoctor = async function(id) {
+  if (!confirm('Reject this doctor?')) return;
+
+  await supabase
+    .from('user_profiles')
+    .update({ is_active: false })
+    .eq('id', id);
+
+  alert('Doctor rejected');
+  loadDoctorValidations();
+};
+
+// ============= LOGOUT =============
 function handleLogout() {
-  localStorage.removeItem('isAuthenticated');
-  localStorage.removeItem('userName');
-  window.location.href = '../login.html';
+  localStorage.clear();
+  window.location.href = '../auth.html';
 }
+window.handleLogout = handleLogout;
 
 // ============= INITIALIZATION =============
 document.addEventListener('DOMContentLoaded', function() {
-  checkAuth();
-  loadClinicData();
+  loadOverviewData();
+  document.querySelector('[data-tab="overview"]').click();
 });
 </script>
 

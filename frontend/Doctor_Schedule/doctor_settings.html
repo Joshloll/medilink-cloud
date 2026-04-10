@@ -192,6 +192,9 @@
                             <button onclick="showSection('notifications')" class="settings-nav-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700" data-section="notifications">
                                 Notifications
                             </button>
+                            <button onclick="showSection('availability')" class="settings-nav-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700" data-section="availability">
+                                Availability
+                            </button>
                             <button onclick="showSection('security')" class="settings-nav-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700" data-section="security">
                                 Security
                             </button>
@@ -381,7 +384,141 @@
                         </div>
                     </div>
 
-                    <!-- Security Section -->
+                    <!-- Availability Section -->
+                    <div id="availabilitySection" class="settings-section hidden">
+                        <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 mb-6">
+                            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Availability & Working Hours</h2>
+                            
+                            <div class="space-y-4 mb-6">
+                                <div class="flex items-center justify-between p-4 border border-slate-200 dark:border-slate-800 rounded-lg">
+                                    <div>
+                                        <h3 class="font-medium text-slate-900 dark:text-white">Accepting New Patients</h3>
+                                        <p class="text-sm text-slate-500 dark:text-slate-400">Allow new patient registrations</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-4 border border-slate-200 dark:border-slate-800 rounded-lg">
+                                    <div>
+                                        <h3 class="font-medium text-slate-900 dark:text-white">Online Consultations</h3>
+                                        <p class="text-sm text-slate-500 dark:text-slate-400">Enable video/virtual appointments</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Weekly Working Hours</h3>
+                            <div class="space-y-3 mb-6">
+                                <div class="flex items-center gap-4">
+                                    <span class="w-20 font-medium text-slate-700 dark:text-slate-300">Monday</span>
+                                    <input type="time" value="09:00" class="px-2 py-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded text-slate-900 dark:text-white">
+                                    <span class="text-slate-600 dark:text-slate-300">-</span>
+                                    <input type="time" value="17:00" class="px-2 py-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded text-slate-900 dark:text-white">
+                                    <label class="flex items-center gap-2 ml-auto">
+                                        <input type="checkbox" class="rounded border-slate-300 dark:border-slate-600">
+                                        <span class="text-xs text-slate-600 dark:text-slate-400">Day Off</span>
+                                    </label>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="w-20 font-medium text-slate-700 dark:text-slate-300">Tuesday</span>
+                                    <input type="time" value="09:00" class="px-2 py-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded text-slate-900 dark:text-white">
+                                    <span class="text-slate-600 dark:text-slate-300">-</span>
+                                    <input type="time" value="17:00" class="px-2 py-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded text-slate-900 dark:text-white">
+                                    <label class="flex items-center gap-2 ml-auto">
+                                        <input type="checkbox" class="rounded border-slate-300 dark:border-slate-600">
+                                        <span class="text-xs text-slate-600 dark:text-slate-400">Day Off</span>
+                                    </label>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="w-20 font-medium text-slate-700 dark:text-slate-300">Wednesday</span>
+                                    <input type="time" value="09:00" class="px-2 py-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded text-slate-900 dark:text-white">
+                                    <span class="text-slate-600 dark:text-slate-300">-</span>
+                                    <input type="time" value="17:00" class="px-2 py-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded text-slate-900 dark:text-white">
+                                    <label class="flex items-center gap-2 ml-auto">
+                                        <input type="checkbox" class="rounded border-slate-300 dark:border-slate-600">
+                                        <span class="text-xs text-slate-600 dark:text-slate-400">Day Off</span>
+                                    </label>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="w-20 font-medium text-slate-700 dark:text-slate-300">Thursday</span>
+                                    <input type="time" value="09:00" class="px-2 py-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded text-slate-900 dark:text-white">
+                                    <span class="text-slate-600 dark:text-slate-300">-</span>
+                                    <input type="time" value="17:00" class="px-2 py-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded text-slate-900 dark:text-white">
+                                    <label class="flex items-center gap-2 ml-auto">
+                                        <input type="checkbox" class="rounded border-slate-300 dark:border-slate-600">
+                                        <span class="text-xs text-slate-600 dark:text-slate-400">Day Off</span>
+                                    </label>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="w-20 font-medium text-slate-700 dark:text-slate-300">Friday</span>
+                                    <input type="time" value="09:00" class="px-2 py-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded text-slate-900 dark:text-white">
+                                    <span class="text-slate-600 dark:text-slate-300">-</span>
+                                    <input type="time" value="17:00" class="px-2 py-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded text-slate-900 dark:text-white">
+                                    <label class="flex items-center gap-2 ml-auto">
+                                        <input type="checkbox" class="rounded border-slate-300 dark:border-slate-600">
+                                        <span class="text-xs text-slate-600 dark:text-slate-400">Day Off</span>
+                                    </label>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="w-20 font-medium text-slate-700 dark:text-slate-300">Saturday</span>
+                                    <input type="time" value="09:00" class="px-2 py-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded text-slate-900 dark:text-white">
+                                    <span class="text-slate-600 dark:text-slate-300">-</span>
+                                    <input type="time" value="13:00" class="px-2 py-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded text-slate-900 dark:text-white">
+                                    <label class="flex items-center gap-2 ml-auto">
+                                        <input type="checkbox" class="rounded border-slate-300 dark:border-slate-600">
+                                        <span class="text-xs text-slate-600 dark:text-slate-400">Day Off</span>
+                                    </label>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="w-20 font-medium text-slate-700 dark:text-slate-300">Sunday</span>
+                                    <input type="time" value="00:00" class="px-2 py-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded text-slate-900 dark:text-white">
+                                    <span class="text-slate-600 dark:text-slate-300">-</span>
+                                    <input type="time" value="00:00" class="px-2 py-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded text-slate-900 dark:text-white">
+                                    <label class="flex items-center gap-2 ml-auto">
+                                        <input type="checkbox" checked class="rounded border-slate-300 dark:border-slate-600">
+                                        <span class="text-xs text-slate-600 dark:text-slate-400">Day Off</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                <h3 class="font-semibold text-slate-900 dark:text-white mb-3">Appointment Settings</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Appointment Duration (minutes)</label>
+                                        <input type="number" value="30" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Time Between Appointments (minutes)</label>
+                                        <input type="number" value="10" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Advance Booking Limit (days)</label>
+                                        <input type="number" value="90" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Cancellation Notice (hours)</label>
+                                        <input type="number" value="24" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg text-slate-900 dark:text-white">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-3">
+                                <button onclick="saveAvailability()" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                                    Save Changes
+                                </button>
+                                <button class="px-6 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <div id="securitySection" class="settings-section hidden">
                         <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 mb-6">
                             <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Security Settings</h2>
@@ -513,6 +650,10 @@
         
         function saveNotifications() {
             alert('Notification preferences saved successfully!');
+        }
+        
+        function saveAvailability() {
+            alert('Availability settings saved successfully!');
         }
         
         function changePassword() {

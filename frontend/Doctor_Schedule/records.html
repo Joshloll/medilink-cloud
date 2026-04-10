@@ -223,14 +223,208 @@
                         </div>
                     </div>
 
-                    <!-- Records List -->
-                    <div id="recordsContainer" class="space-y-4">
-                        <!-- Records will be populated here -->
-                        <div class="text-center py-12">
-                            <div class="animate-spin size-8 mx-auto mb-4 text-primary">
-                                <span class="material-symbols-outlined">refresh</span>
+                    <!-- Records List with Categories -->
+                    <div id="recordsContainer" class="space-y-6">
+                        <!-- Consultation Records Section -->
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-xl">stethoscope</span>
+                                <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Consultation Records</h3>
+                                <span class="ml-auto text-sm text-slate-500 dark:text-slate-400">12 records</span>
                             </div>
-                            <p class="text-slate-500 dark:text-slate-400">Loading records...</p>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 hover:shadow-md transition-shadow p-6 cursor-pointer">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div>
+                                            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Oct 20, 2023</p>
+                                            <h4 class="text-lg font-semibold text-slate-900 dark:text-white mt-1">John Smith</h4>
+                                        </div>
+                                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400">Completed</span>
+                                    </div>
+                                    <p class="text-sm text-slate-600 dark:text-slate-300 mb-3">Hypertension follow-up. Patient responding well to treatment. BP controlled at 128/82.</p>
+                                    <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-700">
+                                        <span class="text-xs text-slate-500 dark:text-slate-400">Dr. Sarah Jenkins</span>
+                                        <button class="text-primary hover:underline text-sm font-medium">View →</button>
+                                    </div>
+                                </div>
+                                <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 hover:shadow-md transition-shadow p-6 cursor-pointer">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div>
+                                            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Oct 18, 2023</p>
+                                            <h4 class="text-lg font-semibold text-slate-900 dark:text-white mt-1">Emily Johnson</h4>
+                                        </div>
+                                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400">Completed</span>
+                                    </div>
+                                    <p class="text-sm text-slate-600 dark:text-slate-300 mb-3">Diabetes Type 2 management. Blood glucose levels are stable. Continue current medication regimen.</p>
+                                    <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-700">
+                                        <span class="text-xs text-slate-500 dark:text-slate-400">Dr. Sarah Jenkins</span>
+                                        <button class="text-primary hover:underline text-sm font-medium">View →</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lab Results Section -->
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-xl">science</span>
+                                <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Lab Results</h3>
+                                <span class="ml-auto text-sm text-slate-500 dark:text-slate-400">8 records</span>
+                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                <div class="bg-gradient-to-br from-purple-50 to-purple-100/50 dark:from-purple-900/10 dark:to-purple-900/5 rounded-xl shadow-sm border border-purple-200 dark:border-purple-800 p-6">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div>
+                                            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Oct 19, 2023</p>
+                                            <h4 class="text-lg font-semibold text-slate-900 dark:text-white mt-1">Complete Blood Count (CBC)</h4>
+                                            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Patient: Emily Johnson</p>
+                                        </div>
+                                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400">Pending Review</span>
+                                    </div>
+                                    <div class="mt-4 space-y-2">
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-slate-600 dark:text-slate-400">WBC:</span>
+                                            <span class="font-semibold text-slate-900 dark:text-white">7.2 × 10⁹/L</span>
+                                        </div>
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-slate-600 dark:text-slate-400">RBC:</span>
+                                            <span class="font-semibold text-slate-900 dark:text-white">4.8 × 10¹²/L</span>
+                                        </div>
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-slate-600 dark:text-slate-400">Hemoglobin:</span>
+                                            <span class="font-semibold text-slate-900 dark:text-white">14.5 g/dL</span>
+                                        </div>
+                                    </div>
+                                    <button class="mt-4 w-full px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm font-semibold">
+                                        Review Results
+                                    </button>
+                                </div>
+                                <div class="bg-gradient-to-br from-purple-50 to-purple-100/50 dark:from-purple-900/10 dark:to-purple-900/5 rounded-xl shadow-sm border border-purple-200 dark:border-purple-800 p-6">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div>
+                                            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Oct 17, 2023</p>
+                                            <h4 class="text-lg font-semibold text-slate-900 dark:text-white mt-1">Lipid Profile</h4>
+                                            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Patient: John Smith</p>
+                                        </div>
+                                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400">Completed</span>
+                                    </div>
+                                    <div class="mt-4 space-y-2">
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-slate-600 dark:text-slate-400">Total Cholesterol:</span>
+                                            <span class="font-semibold text-slate-900 dark:text-white">190 mg/dL</span>
+                                        </div>
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-slate-600 dark:text-slate-400">LDL:</span>
+                                            <span class="font-semibold text-slate-900 dark:text-white">115 mg/dL</span>
+                                        </div>
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-slate-600 dark:text-slate-400">HDL:</span>
+                                            <span class="font-semibold text-slate-900 dark:text-white">55 mg/dL</span>
+                                        </div>
+                                    </div>
+                                    <button class="mt-4 w-full px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm font-semibold">
+                                        View Details
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Prescriptions Section -->
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-xl">prescription</span>
+                                <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Prescriptions</h3>
+                                <span class="ml-auto text-sm text-slate-500 dark:text-slate-400">15 records</span>
+                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div>
+                                            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Oct 20, 2023</p>
+                                            <h4 class="text-lg font-semibold text-slate-900 dark:text-white mt-1">Lisinopril</h4>
+                                            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Patient: John Smith</p>
+                                        </div>
+                                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400">Active</span>
+                                    </div>
+                                    <div class="mt-3 space-y-1 text-sm text-slate-600 dark:text-slate-300">
+                                        <p><strong>Dosage:</strong> 10 mg once daily</p>
+                                        <p><strong>Duration:</strong> 30 days</p>
+                                        <p><strong>Refills:</strong> 2 remaining</p>
+                                    </div>
+                                    <button class="mt-4 w-full px-3 py-2 border border-primary text-primary rounded-lg hover:bg-primary/10 transition-colors text-sm font-semibold">
+                                        Edit Prescription
+                                    </button>
+                                </div>
+                                <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div>
+                                            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Oct 18, 2023</p>
+                                            <h4 class="text-lg font-semibold text-slate-900 dark:text-white mt-1">Metformin</h4>
+                                            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Patient: Emily Johnson</p>
+                                        </div>
+                                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400">Active</span>
+                                    </div>
+                                    <div class="mt-3 space-y-1 text-sm text-slate-600 dark:text-slate-300">
+                                        <p><strong>Dosage:</strong> 500 mg twice daily</p>
+                                        <p><strong>Duration:</strong> 90 days</p>
+                                        <p><strong>Refills:</strong>5 remaining</p>
+                                    </div>
+                                    <button class="mt-4 w-full px-3 py-2 border border-primary text-primary rounded-lg hover:bg-primary/10 transition-colors text-sm font-semibold">
+                                        Edit Prescription
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Imaging Records Section -->
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="material-symbols-outlined text-orange-600 dark:text-orange-400 text-xl">image_search</span>
+                                <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Imaging Records</h3>
+                                <span class="ml-auto text-sm text-slate-500 dark:text-slate-400">6 records</span>
+                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div>
+                                            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Oct 15, 2023</p>
+                                            <h4 class="text-lg font-semibold text-slate-900 dark:text-white mt-1">ECG Report</h4>
+                                            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Patient: John Smith</p>
+                                        </div>
+                                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400">Normal</span>
+                                    </div>
+                                    <p class="text-sm text-slate-600 dark:text-slate-300 mt-3">Electrocardiogram shows normal sinus rhythm. No abnormalities detected.</p>
+                                    <button class="mt-4 w-full px-3 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors text-sm font-semibold flex items-center justify-center gap-2">
+                                        <span class="material-symbols-outlined text-lg">download</span>
+                                        Download Report
+                                    </button>
+                                </div>
+                                <div class="bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div>
+                                            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Oct 10, 2023</p>
+                                            <h4 class="text-lg font-semibold text-slate-900 dark:text-white mt-1">Chest X-Ray</h4>
+                                            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Patient: Michael Brown</p>
+                                        </div>
+                                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400">Normal</span>
+                                    </div>
+                                    <p class="text-sm text-slate-600 dark:text-slate-300 mt-3">Chest radiograph shows clear lungs. No signs of pneumonia or other abnormalities.</p>
+                                    <button class="mt-4 w-full px-3 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors text-sm font-semibold flex items-center justify-center gap-2">
+                                        <span class="material-symbols-outlined text-lg">download</span>
+                                        Download Report
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div class="col-span-full hidden">
+                            <div class="text-center py-12">
+                                <div class="animate-spin size-8 mx-auto mb-4 text-primary">
+                                    <span class="material-symbols-outlined">refresh</span>
+                                </div>
+                                <p class="text-slate-500 dark:text-slate-400">Loading records...</p>
+                            </div>
                         </div>
                     </div>
                 </div>
